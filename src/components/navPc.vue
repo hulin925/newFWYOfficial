@@ -29,7 +29,7 @@
             <img src="https://web.3fgj.com/imgVue/lawyer.ico" alt="">
           </div>
 
-          <div v-for="item,index in navList" @click="changeShow(index)" :class="{active:item.isId==indexData}">
+          <div v-for="item,index in navList" @click="changeShow(item,index)" :class="{active:item.isId==indexData}">
             <span>{{item.name}}</span>
           </div>
 
@@ -46,14 +46,21 @@
       </div>
     </div>
 
+    <div v-if="fatiao">
+      <LawyerFindLawDetails></LawyerFindLawDetails>
+    </div>
 
-    <LawyerFindRecommendPc></LawyerFindRecommendPc>
+    <div v-else>
+      <LawyerFindRecommendPc :val="type"></LawyerFindRecommendPc>
+    </div>
+
 
   </div>
 </template>
 
 <script>
   import LawyerFindRecommendPc from '../views/threeApp/stylePc/LawyerFindRecommendPc.vue'
+  import LawyerFindLawDetails from '../views/threeApp/LawyerFind/LawyerFindLawDetails.vue'
 
   export default {
     name: "navPc",
@@ -61,11 +68,14 @@
       return {
         navList: [],
         indexData: 1,
-        fixed:false
+        fixed:false,
+        type:{},
+        fatiao:false
       }
     },
     components: {
-      LawyerFindRecommendPc
+      LawyerFindRecommendPc,
+      LawyerFindLawDetails
     },
     mounted() {
       window.addEventListener('scroll', this.scrollTop);
@@ -82,7 +92,6 @@
       },
       scrollTop() {
         let scrollTop = document.documentElement.scrollTop; //滚动条的高
-        console.log(scrollTop,9999)
         if (scrollTop > 100) {
           this.fixed=true;
         }else{
@@ -99,13 +108,20 @@
         let options = new FormData();
         this.$store.dispatch('getType', options)
           .then(data => {
+            this.type=data[1];
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
             }
             this.navList = data;
           })
       },
-      changeShow(index) {
+      changeShow(item,index) {
+        if(index==2){
+          this.fatiao=true;
+        }else{
+          this.fatiao=false;
+        }
+        this.type=item;
         this.indexData = index;
       }
 
