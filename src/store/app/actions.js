@@ -86,7 +86,8 @@ export default {
           if (Number(res.code) == 10000) {
             resolve(res.data)
           } else if (Number(res.code) == 10001) {
-            resolve(res.code)
+            console.log(res)
+            reject(res)
           } else {
             // resolve(res.code)
           }

@@ -26,16 +26,22 @@ import AboutPc from '@/views/threeApp/Pc/AboutPc'//首页
 import DownloadPc from '@/views/threeApp/Pc/DownloadPc'//法条
 import IndexPc from '@/views/threeApp/Pc/IndexPc'//快速咨询
 import LawPc from '@/views/threeApp/Pc/LawPc'//关于我们
-
-export default[
+function get(){
+  if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){
+    return true;
+  }else{
+    return false;
+  }
+}
+let routeList = [
   //3.0律师发现页下的推荐
   {
-    path: '/navPc',
+    path: '/',
     name:'navPc',
     component: navPc,
   },
   {
-    path: '/LawyerFindRecommend',
+    path: '/',
     name:'LawyerFindRecommend',
     component: LawyerFindRecommend,
     // component(resolve){
@@ -167,3 +173,15 @@ export default[
   },
 
 ]
+if(get()){
+  routeList = routeList.filter(item=>{
+    if(item.name=='navPc'){
+      return false
+    }
+    return true
+  })
+}
+
+
+
+export default routeList

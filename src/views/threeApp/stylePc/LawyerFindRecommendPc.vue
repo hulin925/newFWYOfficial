@@ -151,15 +151,15 @@
             </div>
           </li>
         </ul>
-        <p v-show="isLoading && dataList.length" style="height: 100px;text-align:center">
+        <p v-show="isLoading && dataList.length && dataList.length < total" style="height: 100px;text-align:center">
           <img
             class="d2-home__loading"
             src="https://hly.1000da.com.cn/assets/images/loading-spinner.svg"
             alt="loading"
           >加载中
         </p>
-        <p v-show="!isLoading && dataList.length && dataList.length >= total">没有更多数据了...</p>
-        <p v-show="!dataList.length">暂无数据...</p>
+        <p v-show="!isLoading && dataList.length && dataList.length >= total" class="dataNone">没有更多数据了...</p>
+        <p v-show="!dataList.length" class="dataNone">暂无数据...</p>
       </section>
 
     <div class="showStart">
@@ -209,6 +209,7 @@
         isLoading: false,
         noneData: "",
         lid: "",
+        isNewLoading:true,
         dataList: [],
         showTop: false,
         total: 0,
@@ -220,8 +221,9 @@
       val(val) {
         this.page = 1;
         this.$nextTick(()=>{
-          this.$refs.contain.scrollTop = 0;
-          console.log(9999)
+          if(this.$refs.contain){
+            this.$refs.contain.scrollTop = 0;
+          }
         })
         this.initData()
           .then(
@@ -229,10 +231,13 @@
               if (Number(data) == 10001) {
                 //判定数据是否存在,显示关注按钮
                 this.noneData = true;
+                this.isLoading = false;
               } else {
                 this.noneData = false;
               }
-              this.total = data.total;
+              if(data.total){
+                this.total = data.total;
+              }
               var data = data.list;
               // this.total =
 
@@ -349,14 +354,17 @@
         .then(
           data => {
             if (Number(data.code) == 10001) {
+              this.isLoading = false;
               //判定数据是否存在,显示关注按钮
               this.noneData = true;
             } else {
               this.noneData = false;
             }
-            this.total = data.total;
+            if(data.total){
+              this.total = data.total;
+            }
+
             var data = data.list;
-            // this.total =
 
             this.$nextTick(() => {
               //视频处理
@@ -474,30 +482,34 @@
       // this.$nextTick(() => {
       window.addEventListener("scroll", function () {
         _this.$nextTick(()=>{
+          if(_this.$refs.contain){
+            contentH = _this.$refs.contain.clientHeight; //内容高度
+          }
           viewH = document.documentElement.clientHeight; //可见高度
-          contentH = _this.$refs.contain.clientHeight; //内容高度
           scrollTop = document.documentElement.scrollTop; //滚动高度
         })
 
         if (scrollTop / (contentH - viewH) >= 0.95) { //到达底部100px时,加载新内容
-          if (!_this.isLoading) {
+          if (!_this.isLoading&&_this.isNewLoading) {
             _this.isLoading = true;
             _this.page++;
             _this.initData()
               .then(
                 data => {
+                  console.log(data)
                   if (Number(data.code) == 10001) {
                     //判定数据是否存在,显示关注按钮
                     _this.noneData = true;
+
                   } else {
                     _this.noneData = false;
                   }
 
                   // console.log(data)
-                  _this.total = data.total;
+                  if(data.total){
+                    _this.total = data.total;
+                  }
                   var data = data.list;
-                  // this.total =
-
                   _this.$nextTick(() => {
                     //视频处理
                     var videos = document.getElementsByTagName("video");
@@ -603,7 +615,7 @@
                 },
                 err => {
                   _this.isLoading = false;
-
+                  _this.isNewLoading = false;
                 }
               )
               .catch(e => {
@@ -1076,5 +1088,10 @@
     -webkit-border-radius: 30 / @r;
     -moz-border-radius: 30 / @r;
     border-radius: 30 / @r;
+  }
+  .dataNone{
+    text-align:center;
+    line-height:100px;
+    color:#aaa;
   }
 </style>

@@ -31,8 +31,8 @@
           alt="loading"
         >加载中
       </p>
-      <p v-show="!isLoading && dataList.length && dataList.length >= total">没有更多数据了...</p>
-      <p v-show="!dataList.length">暂无数据...</p>
+      <p v-show="!isLoading && dataList.length && dataList.length >= total" class="dataNone">没有更多数据了...</p>
+      <!--<p v-show="!dataList.length" class="dataNone">暂无数据...</p>-->
 
       <!--内容...-->
 
@@ -97,8 +97,10 @@
       // this.$nextTick(() => {
       window.addEventListener("scroll", function () {
         _this.$nextTick(() => {
+          if(_this.$refs.contain){
+            contentH = _this.$refs.contain.clientHeight; //内容高度
+          }
           viewH = document.documentElement.clientHeight; //可见高度
-          contentH = _this.$refs.contain.clientHeight; //内容高度
           scrollTop = document.documentElement.scrollTop; //滚动高度
         })
 
@@ -151,23 +153,14 @@
           })
       },
       initSearch() {//获取搜索数据
-        this.page=1;
+        this.page = 1;
         let options = new FormData();
         options.append('page', this.page);
         options.append('key_words', this.keywords);
         this.$store.dispatch('LawyerFindSearch', options).then(response => {
-          console.log(response,6666);
-          if (this.page === 1) this.dataList = [];
-          this.initData()
-            .then(response => {
-              this.total = response.total;
-              this.dataList = response.list.concat(response.list);
-            }, err => {
-
-            }).catch((e) => {
-            // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
-          });
-
+          console.log(response, 6666);
+          this.total = response.total;
+          this.dataList = response.list;
         }, err => {
         }).catch((e) => {
           // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
@@ -189,8 +182,9 @@
   /*以fixed的方式固定mescroll的高度*/
   .isPc {
     top: 320/@r;
-    margin-left: 400px;
+    margin:0 auto;
   }
+
   .d2-home__loading {
     height: 22px;
     width: 22px;
@@ -310,5 +304,10 @@
     height: 180/@r;
     font-size: 36/@r;
     color: #9d9d9d;
+  }
+  .dataNone{
+    text-align:center;
+    line-height:100px;
+    color:#aaa;
   }
 </style>
