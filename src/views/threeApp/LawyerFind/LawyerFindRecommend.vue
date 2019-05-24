@@ -229,7 +229,7 @@
         fatiao: '',
         judgeId: '',
         navTag: 'tuijian',//跳转页面
-        navId: '',//nav
+        navId: 1,//nav
         navType: '',//导航
         AdvertisingData: [],//广告
         showStart: false,//点赞
@@ -293,7 +293,7 @@
           .then(data => {
             let AddType=[
               {
-                name:'首页',
+                name:'法务云',
                 tag:'IndexPc'
               },
               {
@@ -358,10 +358,19 @@
         options.append('id', this.judgeId);
         options.append('tag', this.navTag);
         options.append('page', page.num);
-        options.append('uid', '1006');
+        // options.append('uid', '1006');
         this.$store.dispatch('LawyerFindRecommend', options)
           .then(data => {
+
+            if (data == 10001) { //判定数据是否存在,显示关注按钮
+              this.noneData = true;
+            } else {
+              this.noneData = false;
+            }
+            console.log(this.noneData,data);
+
             data=data.list;
+
             this.$nextTick(() => {
               //nav
               var totalWidth = this.$refs.totalWidth;
@@ -379,12 +388,6 @@
                 eventPassthrough: 'vertical'
               });
             });
-
-            if (data == 10001) { //判定数据是否存在,显示关注按钮
-              this.noneData = true;
-            } else {
-              this.noneData = false;
-            }
             // 请求的列表数据
             let arr = data;
             // 如果是第一页需手动制空列表
@@ -589,10 +592,11 @@
     font-size: 34/@r;
     text-align: center;
     float: left;
-    width: 140/@r;
+    width: 160/@r;
     line-height: 80/@r;
     height: 80/@r;
     position: relative;
+    padding:0 10/@r;
   }
 
   .navList.active:before {

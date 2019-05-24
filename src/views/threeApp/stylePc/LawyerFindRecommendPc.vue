@@ -5,7 +5,7 @@
       <p>暂无关注律师！</p>
     </div>
 
-      <section id="contain" ref="contain" v-else>
+    <section id="contain" ref="contain" v-else>
         <ul class="list">
           <li v-for="item,index in dataList">
             <div v-if="item.pro">
@@ -218,20 +218,20 @@
     computed: Object.assign(mapGetters(["arrImg"]), {}),
     watch: {
       val(val) {
-        console.log(val)
         this.page = 1;
-        this.$refs.contain.scrollTop = 0;
+        this.$nextTick(()=>{
+          this.$refs.contain.scrollTop = 0;
+          console.log(9999)
+        })
         this.initData()
           .then(
             data => {
-              if (Number(data.code) == 10001) {
+              if (Number(data) == 10001) {
                 //判定数据是否存在,显示关注按钮
                 this.noneData = true;
               } else {
                 this.noneData = false;
               }
-
-              // console.log(data)
               this.total = data.total;
               var data = data.list;
               // this.total =
@@ -348,15 +348,12 @@
       this.initData()
         .then(
           data => {
-            console.log(data,1111)
             if (Number(data.code) == 10001) {
               //判定数据是否存在,显示关注按钮
               this.noneData = true;
             } else {
               this.noneData = false;
             }
-
-            // console.log(data)
             this.total = data.total;
             var data = data.list;
             // this.total =
@@ -471,11 +468,17 @@
     },
     mounted() {
       var _this = this;
+      var viewH;
+      var contentH;
+      var scrollTop;
       // this.$nextTick(() => {
       window.addEventListener("scroll", function () {
-        let viewH = document.documentElement.clientHeight; //可见高度
-        let contentH = _this.$refs.contain.clientHeight; //内容高度
-        let scrollTop = document.documentElement.scrollTop; //滚动高度
+        _this.$nextTick(()=>{
+          viewH = document.documentElement.clientHeight; //可见高度
+          contentH = _this.$refs.contain.clientHeight; //内容高度
+          scrollTop = document.documentElement.scrollTop; //滚动高度
+        })
+
         if (scrollTop / (contentH - viewH) >= 0.95) { //到达底部100px时,加载新内容
           if (!_this.isLoading) {
             _this.isLoading = true;
@@ -659,8 +662,7 @@
       // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
       initData() {
         //获取页面初始数据
-
-          // this.$store.commit("showLoading");
+        //   this.$store.commit("showLoading");
           let options = new FormData();
           options.append("id", this.val.id);
           options.append("tag", this.val.tag);
@@ -668,7 +670,6 @@
           // options.append("uid", 1068);
           return this.$store
             .dispatch("LawyerFindRecommend", options)
-
       },
       Fabulous(item) {
         //点赞接口
@@ -789,6 +790,7 @@
   .list li {
     padding: 32 / @r 32 / @r 0;
     border-bottom: 20 / @r solid #eee;
+    cursor:pointer;
   }
 
   .list .title {

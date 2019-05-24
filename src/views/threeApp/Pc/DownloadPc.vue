@@ -1,7 +1,7 @@
 <template>
   <section class="main">
 
-    <div :class="this.$isMobile()?'':'isPc'">
+    <div :class="this.$isMobile()?'':'isPc'" v-if="!this.$isMobile()">
       <div class="wrap clearfix">
         <div class="logo">
           <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">

@@ -37,6 +37,13 @@
 
       }
     },
+    mounted() {
+      // if (this.$isMobile()) {
+      //   this.$router.replace('/LawyerFindRecommend');
+      // } else {
+      //   this.$router.replace('/navPc');
+      // }
+    },
     created(){
     }
 

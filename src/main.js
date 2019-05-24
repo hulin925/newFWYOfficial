@@ -52,6 +52,8 @@ Vue.prototype.$isMobile = function (){
   }
 }
 
+
+
 /* eslint-disable no-new */
 new Vue({
   router,

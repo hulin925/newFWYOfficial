@@ -1,7 +1,11 @@
 
 //3.0数据
+//pc
 import navPc from '@/components/navPc'//nav
 import LawyerFindRecommendPc from '@/views/threeApp/stylePc/LawyerFindRecommendPc'//发现页下的推荐
+import LawyerFindLawDetailsPc from '@/views/threeApp/stylePc/LawyerFindLawDetailsPc'//发现页下法条详情
+import LawyerFindFatiaoPc from '@/views/threeApp/stylePc/LawyerFindFatiaoPc'//发现页下法条
+
 
 import LawyerFindRecommend from '@/views/threeApp/LawyerFind/LawyerFindRecommend'//发现页下的推荐
 import LawyerFindArticleDetail from '@/views/threeApp/LawyerFind/LawyerFindArticleDetail'//发现页下的文章详情
@@ -26,14 +30,9 @@ import LawPc from '@/views/threeApp/Pc/LawPc'//关于我们
 export default[
   //3.0律师发现页下的推荐
   {
-    path: '/',
+    path: '/navPc',
     name:'navPc',
     component: navPc,
-  },
-  {
-    path: '/LawyerFindRecommendPc',
-    name:'LawyerFindRecommendPc',
-    component: LawyerFindRecommendPc,
   },
   {
     path: '/LawyerFindRecommend',
@@ -42,6 +41,24 @@ export default[
     // component(resolve){
     //   require(['@/views/threeApp/LawyerFind/LawyerFindRecommend'],resolve)
     // }
+  },
+  //3.0律师发现页下的推荐PC
+  {
+    path: '/LawyerFindRecommendPc',
+    name:'LawyerFindRecommendPc',
+    component: LawyerFindRecommendPc,
+  },
+  //3.0律师发现页下的法条PC
+  {
+    path: '/LawyerFindFatiaoPc',
+    name:'LawyerFindFatiaoPc',
+    component: LawyerFindFatiaoPc,
+  },
+  //3.0律师发现页下的法条详情PC
+  {
+    path: '/LawyerFindLawDetailsPc',
+    name:'LawyerFindLawDetailsPc',
+    component: LawyerFindLawDetailsPc,
   },
   //3.0律师发现页下的法条
   {

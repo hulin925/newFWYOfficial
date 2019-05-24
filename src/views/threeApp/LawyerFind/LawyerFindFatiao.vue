@@ -183,9 +183,12 @@
   /*以fixed的方式固定mescroll的高度*/
   .mescroll {
     position: fixed;
-    top: 82/@r;
+    top: 0;
     bottom: 0;
     height: auto;
+  }
+  .isPc{
+    top:320/@r;
   }
 
   .app {
