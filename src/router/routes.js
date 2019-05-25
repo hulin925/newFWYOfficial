@@ -6,7 +6,7 @@ import LawyerFindRecommendPc from '@/views/threeApp/stylePc/LawyerFindRecommendP
 import LawyerFindLawDetailsPc from '@/views/threeApp/stylePc/LawyerFindLawDetailsPc'//发现页下法条详情
 import LawyerFindFatiaoPc from '@/views/threeApp/stylePc/LawyerFindFatiaoPc'//发现页下法条
 
-
+//mobile
 import LawyerFindRecommend from '@/views/threeApp/LawyerFind/LawyerFindRecommend'//发现页下的推荐
 import LawyerFindArticleDetail from '@/views/threeApp/LawyerFind/LawyerFindArticleDetail'//发现页下的文章详情
 import LawyerFindFatiao from '@/views/threeApp/LawyerFind/LawyerFindFatiao'//发现页下的法条
@@ -21,6 +21,10 @@ import video from '@/views/threeApp/LawyerSpecialRoutes/video'
 import service from '@/views/threeApp/LawyerSpecialRoutes/service'
 import consultation from '@/views/threeApp/LawyerSpecialRoutes/consultation'
 
+//案源库
+import anYuanKu from '@/views/anYuan/anYuanKu'//发现页下的推荐
+import anYuanDetail from '@/views/anYuan/anYuanDetail'//发现页下的推荐
+
 //官网PC项目
 import AboutPc from '@/views/threeApp/Pc/AboutPc'//首页
 import DownloadPc from '@/views/threeApp/Pc/DownloadPc'//法条
@@ -34,6 +38,18 @@ function get(){
   }
 }
 let routeList = [
+  //3.0案源库列表
+  {
+    path: '/anYuanKu',
+    name:'anYuanKu',
+    component: anYuanKu,
+  },
+  //3.0案源库详情
+  {
+    path: '/anYuanDetail',
+    name:'anYuanDetail',
+    component: anYuanDetail,
+  },
   //3.0律师发现页下的推荐
   {
     path: '/',

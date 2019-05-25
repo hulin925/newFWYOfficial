@@ -1,7 +1,12 @@
 
 
 // const str = 'https://xhfwy3.sanhedao.com.cn/public/index.php/client/v3';
+
 const str = 'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v3';
+
+//案源库
+const strFour = 'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4/';
+
 export default {
   //获取发现页和关注数据3.0
   initFind(store, data) {
@@ -306,7 +311,36 @@ export default {
           }
         })
     })
-  }
+  },
+  //案源库
+  anYuan(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(strFour + 'caseku/getcaselist', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //案源详情
+  anYuanDetail(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(strFour + 'caseku/getcasedetial', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+
 
 
 
