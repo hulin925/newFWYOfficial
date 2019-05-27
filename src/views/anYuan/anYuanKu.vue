@@ -9,10 +9,24 @@
         <div class="center">
           <span>案源库</span>
         </div>
-        <div class="search">
+        <div class="search" @click.stop="search">
           <i class="iconfont icon-search3"></i>
         </div>
       </div>
+
+      <popup v-model="show8" position="bottom" :show-mask="false" height="100%">
+        <div class="box">
+          <div>
+            <span @click.stop="show8=false"><</span>
+            <input type="text" ref="input" v-model="inputContent">
+            <i @click.stop="searchBtn">点解</i>
+          </div>
+          <ul>
+            <li></li>
+          </ul>
+        </div>
+
+      </popup>
 
       <div class="navBar">
         <div class="navBarBox">
@@ -37,7 +51,7 @@
 
     </div>
 
-    <ul class="list">
+    <ul class="list" v-if="dataList.length">
       <li v-for="item,index in dataList" @click.stop="anYuanDetail(item)">
         <div class="title clearfix">
           <strong>被</strong>
@@ -65,21 +79,28 @@
         </div>
       </li>
 
-      <li>暂未查询到符合条件的案件资源</li>
+    </ul>
 
+    <!--<div>-->
+    <!--<popup-picker title="时间" :inline-desc="`当前值[${formatDemoValue}]`"v-model="formatDemoValue" :data="[['01','02','03'],['11','12','13']]" :display-format="format"></popup-picker>-->
+    <!--</div>-->
+
+    <ul class="list" v-else>
+      <li>暂无数据</li>
     </ul>
 
   </div>
 </template>
 
 <script>
-  import {PopupPicker, Group} from "vux";
+  import {PopupPicker, Group, Popup} from "vux";
 
   export default {
     name: "anYuanKu",
     components: {
       PopupPicker,
-      Group
+      Group,
+      Popup
     },
     data() {
       return {
@@ -87,12 +108,14 @@
         switch6: false,
         switch7: false,
         switch8: false,
+        show8: false,
         value6: [],
         value7: [],
         value8: [],
         sort: [],//智能排序
         region: [],//地区
         screen: [],//类型
+        inputContent:''
       }
     },
     created() {
@@ -100,21 +123,28 @@
     },
     watch: {
       value6() {
-        console.log(this.value6, 99)
         this.initData();
       },
       value7() {
-        console.log(this.value7[0], 77)
         this.$nextTick(() => {
           this.initData();
         })
       },
       value8() {
-        console.log(this.value8, 88)
         this.initData();
       }
     },
     methods: {
+      searchBtn(){
+        this.initData();
+      },
+      search() {
+        this.show8 = true;
+        this.$nextTick(()=>{
+          this.$refs.input.focus();
+        })
+
+      },
       initData() {
         let options = new FormData();
         options.append('page', 1);
@@ -126,7 +156,7 @@
         }
         options.append('price', '');
         options.append('sort', this.value6);
-        options.append('keyword', '');
+        options.append('keyword', this.inputContent);
         this.$store.dispatch('anYuan', options)
           .then(data => {
             data.region.forEach((item) => {
@@ -141,6 +171,7 @@
               item.value = item.id + '';
               return item;
             });
+            console.log(data.list,666)
             this.dataList = data.list;
           })
       },
@@ -313,6 +344,12 @@
   .CourtIcon .icon-heart-off {
     display: inline-block;
     font-size: 26/@r;
+  }
+
+  .box {
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
 
 </style>
