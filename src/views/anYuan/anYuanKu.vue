@@ -227,7 +227,7 @@
   }
 
   .icon-xiala {
-    color: #aaa;
+    color: #000;
   }
 
   .header {

@@ -20,6 +20,7 @@ Object.keys(filters).forEach((key) => {
 });
 
 import '@/assets/css/reset.css' //global reset.css
+import '@/assets/css/resetVux.css' //global reset.css
 
 FastClick.attach(document.body);
 
