@@ -1,5 +1,7 @@
 <template>
-    <div>
+  <div>
+    <div class="headerBox">
+
       <div class="header clearfix">
         <div class="goBack">
           <i class="iconfont  icon-Back"></i>
@@ -12,147 +14,305 @@
         </div>
       </div>
 
-      <ul class="list">
-        <li v-for="item,index in dataList">
-          <div class="title clearfix">
-            <strong>被</strong>
-            <span>{{item.bg}}</span>
-            <i>免费案源</i>
-          </div>
-          <div class="type clearfix">
-            <div class="left">
-              <span>执行</span>
-              <span>{{item.type_cn}}</span>
-            </div>
-            <div class="right">
-              <span>标的: <i>{{item.price}}</i><strong>万元</strong></span>
-            </div>
-          </div>
-          <div class="Court">
-            <span>{{item.administer}}</span>
-          </div>
-          <div class="address">
-            <span>{{item.bg_province}} {{item.bg_city}}</span>
-          </div>
-        </li>
-      </ul>
+      <div class="navBar">
+        <div class="navBarBox">
+          <!--<span>智能排序</span>-->
+          <popup-picker v-if="!switch6" placeholder="智能排序" :data="sort" v-model="value6"
+                        style="display: inline-block;font-size:15px;" :columns="1"></popup-picker>
+          <i class="iconfont icon-xiala"></i>
+        </div>
+        <div class="navBarBox">
+          <!--<span>全国</span>-->
+          <popup-picker v-if="!switch7" placeholder="全国" :data="region" v-model="value7"
+                        style="display: inline-block;font-size:15px;" :columns="1" :show-name="true"></popup-picker>
+          <i class="iconfont icon-xiala"></i>
+        </div>
+        <div class="navBarBox">
+          <!--<span>筛选</span>-->
+          <popup-picker v-if="!switch8" placeholder="筛选" :data="screen" v-model="value8"
+                        style="display: inline-block;font-size:15px;" :columns="1" :show-name="true"></popup-picker>
+          <i class="iconfont icon-xiala"></i>
+        </div>
+      </div>
 
     </div>
+
+    <ul class="list">
+      <li v-for="item,index in dataList" @click.stop="anYuanDetail(item)">
+        <div class="title clearfix">
+          <strong>被</strong>
+          <span>{{item.bg}}</span>
+          <i>免费案源</i>
+        </div>
+        <div class="type clearfix">
+          <div class="left">
+            <span>执行</span>
+            <span>{{item.type_cn}}</span>
+          </div>
+          <div class="right">
+            <span>标的: <i>{{item.price}}</i><strong>万元</strong></span>
+          </div>
+        </div>
+        <div class="Court clearfix">
+          <div class="CourtContent">{{item.administer}}</div>
+          <div class="CourtIcon">
+            <i class="iconfont icon-heart-off"></i>
+            <span>23</span>
+          </div>
+        </div>
+        <div class="address">
+          <span>{{item.bg_province}} {{item.bg_city}}</span>
+        </div>
+      </li>
+
+      <li>暂未查询到符合条件的案件资源</li>
+
+    </ul>
+
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "anYuanKu",
-      data(){
-          return{
-            dataList:{}
-          }
-      },
-      created(){
+  import {PopupPicker, Group} from "vux";
+
+  export default {
+    name: "anYuanKu",
+    components: {
+      PopupPicker,
+      Group
+    },
+    data() {
+      return {
+        dataList: {},
+        switch6: false,
+        switch7: false,
+        switch8: false,
+        value6: [],
+        value7: [],
+        value8: [],
+        sort: [],//智能排序
+        region: [],//地区
+        screen: [],//类型
+      }
+    },
+    created() {
+      this.initData();
+    },
+    watch: {
+      value6() {
+        console.log(this.value6, 99)
         this.initData();
       },
-      methods:{
-          initData(){
-            let options=new FormData();
-            options.append('page',1);
-            this.$store.dispatch('anYuan',options)
-              .then(data=>{
-                console.log(data)
-                this.dataList=data.list;
-              })
-          },
+      value7() {
+        console.log(this.value7[0], 77)
+        this.$nextTick(() => {
+          this.initData();
+        })
+      },
+      value8() {
+        console.log(this.value8, 88)
+        this.initData();
       }
+    },
+    methods: {
+      initData() {
+        let options = new FormData();
+        options.append('page', 1);
+        if (this.value8[0]) {
+          options.append('fid', this.value8[0]);
+        }
+        if (this.value7[0]) {
+          options.append('bg_province', this.value7[0]);
+        }
+        options.append('price', '');
+        options.append('sort', this.value6);
+        options.append('keyword', '');
+        this.$store.dispatch('anYuan', options)
+          .then(data => {
+            data.region.forEach((item) => {
+              return item.name = item.region_name;
+            })
+            this.sort = data.sort;
+            this.region = data.region.map(item => {
+              item.value = item.name + '';
+              return item;
+            });
+            this.screen = data.industry.map(item => {
+              item.value = item.id + '';
+              return item;
+            });
+            this.dataList = data.list;
+          })
+      },
+      anYuanDetail(item) {
+        this.$router.push({name: 'anYuanDetail', query: {id: item.id}});
+        console.log(item.id)
+      },
 
     }
+
+  }
 </script>
 
 <style scoped lang="less" type="text/less">
-  @r:30rem;
+  @r: 30rem;
 
-  .header{
-    height:80/@r;
+  .headerBox {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+  }
+
+  .navBar {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    border-bottom: 1px solid #e5e5e5;
+    line-height: 70/@r;
+    background-color: #fff;
+    font-size: 32/@r;
+  }
+
+  .navBar .navBarBox {
+    width: 33%;
+    position: relative;
+    text-align: center;
+  }
+
+  .navBar .navBarBox:before {
+    position: absolute;
+    content: '';
+    top: 20/@r;
+    right: 0;
+    width: 1px;
+    height: 30/@r;
+    background-color: #d1d1d1;
+  }
+
+  .navBar .navBarBox:nth-child(3):before {
+    width: 0;
+  }
+
+  .icon-xiala {
+    color: #aaa;
+  }
+
+  .header {
+    height: 80/@r;
     background-color: #000;
-    padding:0 10/@r;
-    color:#fff;
+    padding: 0 10/@r;
+    color: #fff;
   }
-  .header .goBack{
-    float:left;
-    padding-top:10/@r;
+
+  .header .goBack {
+    float: left;
+    padding-top: 10/@r;
   }
-  .header .center{
-    float:left;
-    font-size:32/@r;
-    line-height:80/@r;
-    margin-left:230/@r;
+
+  .header .center {
+    float: left;
+    font-size: 32/@r;
+    line-height: 80/@r;
+    margin-left: 230/@r;
   }
-  .header .search{
-    float:right;
-    padding:14/@r 20/@r 10/@r ;
+
+  .header .search {
+    float: right;
+    padding: 14/@r 20/@r 10/@r;
   }
-  .icon-search3{
-    font-size:36/@r;
+
+  .icon-search3 {
+    font-size: 36/@r;
   }
-  .icon-Back{
-    font-size:42/@r;
-    padding:20/@r;
+
+  .icon-Back {
+    font-size: 42/@r;
+    padding: 20/@r;
   }
-  .list{
-    padding:20/@r;
-    font-size:24/@r;
-    color:#aaa;
+
+  .list {
+    padding: 160/@r 20/@r 100/@r;
+    font-size: 24/@r;
+    color: #aaa;
   }
-  .list li{
-    border-bottom:1px solid #e5e5e5;
-    padding:20/@r 0;
+
+  .list li {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 20/@r 0;
   }
-  .title strong{
-    float:left;
-    border:1px solid #fa7b83;
-    padding:0 4/@r;
-    line-height:28/@r;
-    border-radius:4/@r;
-    color:#fa7b83;
-    margin:8/@r 12/@r 0 0;
+
+  .title strong {
+    float: left;
+    border: 1px solid #fa7b83;
+    padding: 0 4/@r;
+    line-height: 28/@r;
+    border-radius: 4/@r;
+    color: #fa7b83;
+    margin: 8/@r 12/@r 0 0;
   }
-  .title span{
-    float:left;
-    font-size:30/@r;
-    color:#000;
+
+  .title span {
+    float: left;
+    font-size: 30/@r;
+    color: #000;
   }
-  .title i{
-    float:right;
-    border:1px solid #aaa;
-    padding:0 10/@r;
-    border-radius:8/@r;
-    line-height:34/@r;
+
+  .title i {
+    float: right;
+    border: 1px solid #aaa;
+    padding: 0 10/@r;
+    border-radius: 8/@r;
+    line-height: 34/@r;
   }
-  .type{
-    padding:10/@r 0;
+
+  .type {
+    padding: 10/@r 0;
   }
-  .type .left{
-    float:left;
-    border:1px solid #dab86c;
-    border-radius:6/@r;
-    color:#dab86c;
-    line-height:34/@r;
+
+  .type .left {
+    float: left;
+    border: 1px solid #dab86c;
+    border-radius: 6/@r;
+    color: #dab86c;
+    line-height: 34/@r;
   }
-  .type .left span{
-    display:inline-block;
-    height:34/@r;
-    padding:0 10/@r;
+
+  .type .left span {
+    display: inline-block;
+    height: 34/@r;
+    padding: 0 10/@r;
   }
-  .type .left span:nth-child(1){
-    background-color:#dab86c;
-    color:#fff;
+
+  .type .left span:nth-child(1) {
+    background-color: #dab86c;
+    color: #fff;
   }
-  .type .right{
-    float:right;
+
+  .type .right {
+    float: right;
   }
-  .type .right i{
-    color:#f96972;
+
+  .type .right i {
+    color: #f96972;
   }
-  .type .right strong{
-    color:#000;
+
+  .type .right strong {
+    color: #000;
+  }
+
+  .Court .CourtContent {
+    float: left;
+  }
+
+  .Court .CourtIcon {
+    float: right;
+  }
+
+  .CourtIcon .icon-heart-off {
+    display: inline-block;
+    font-size: 26/@r;
   }
 
 </style>

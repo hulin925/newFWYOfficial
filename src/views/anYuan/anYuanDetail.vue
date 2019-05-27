@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="header clearfix">
-      <div class="goBack">
+      <div class="goBack" @click.stop="goBack()">
         <i class="iconfont  icon-Back"></i>
       </div>
       <div class="center">
         <span>案源详情</span>
       </div>
       <div class="search">
-        <i class="iconfont icon-search3"></i>
+        <i class="iconfont icon-fenxiang2"></i>
       </div>
     </div>
 
@@ -28,9 +28,15 @@
             <span>标的: <i>{{dataList.price}}</i><strong>万元</strong></span>
           </div>
         </div>
-        <div class="Court">
-          <strong>管辖</strong>
-          <span>{{dataList.administer}}</span>
+        <div class="Court clearfix">
+          <div class="CourtContent">
+            <strong>管辖</strong>
+            <span>{{dataList.administer}}</span>
+          </div>
+          <div class="CourtIcon">
+            <i class="iconfont icon-heart-off"></i>
+            <span>17</span>
+          </div>
         </div>
         <div class="address">
           <strong>被告地址</strong>
@@ -41,12 +47,15 @@
 
     <div class="condition">
       <div>
+        <img src="../../assets/img/yinsi.png" alt="">
         <span>保护隐私</span>
       </div>
       <div>
+        <img src="../../assets/img/anyuan.png" alt="">
         <span>真实案源</span>
       </div>
       <div>
+        <img src="../../assets/img/mianfei.png" alt="">
         <span>免费来源</span>
       </div>
     </div>
@@ -55,10 +64,25 @@
       <div class="caseList">
         <h1>案情简介</h1>
         <div class="caseContent">
-
+          <span>{{dataList.content}}</span>
         </div>
       </div>
-      <div class="Explain"></div>
+      <div class="Explain">
+        <h1>合作说明</h1>
+        <div class="cooperation">
+          <div v-html="dataList.explain"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom clearfix">
+      <div class="follow">
+        <i class="iconfont icon-heart-off"></i>
+        <span>关注</span>
+      </div>
+      <div class="applyFollow">
+        <span>申请合作</span>
+      </div>
     </div>
 
   </div>
@@ -69,22 +93,28 @@
     name: "anYuanKu",
     data(){
       return{
-        dataList:{}
+        dataList:{},
+        id:'',
       }
     },
     created(){
+      this.id=this.$route.query.id;
       this.initData();
     },
     methods:{
       initData(){
         let options=new FormData();
-        options.append('id',1);
+        options.append('id',this.id);
         this.$store.dispatch('anYuanDetail',options)
           .then(data=>{
             console.log(data)
             this.dataList=data;
           })
       },
+      goBack(){
+        this.$router.push({name:'anYuanKu'})
+      }
+
     }
 
   }
@@ -111,10 +141,10 @@
   }
   .header .search{
     float:right;
-    padding:14/@r 20/@r 10/@r ;
+    padding:18/@r 20/@r 10/@r ;
   }
-  .icon-search3{
-    font-size:36/@r;
+  .icon-fenxiang2{
+    font-size:32/@r;
   }
   .icon-Back{
     font-size:42/@r;
@@ -139,7 +169,7 @@
   }
   .title span{
     float:left;
-    font-size:30/@r;
+    font-size:32/@r;
     color:#000;
   }
   .title i{
@@ -177,6 +207,16 @@
   .type .right strong{
     color:#000;
   }
+  .Court .CourtContent{
+    float:left;
+  }
+  .Court .CourtIcon{
+    float:right;
+  }
+  .CourtIcon .icon-heart-off{
+    display: inline-block;
+    font-size:26/@r;
+  }
   .Court strong{
     border:1px solid red;
     color:red;
@@ -200,15 +240,51 @@
   }
   .condition{
     display:flex;
-    background-color: #e3e3e3;
+    background-color: #f6f6f6;
     justify-content:space-around;
     color:#5b5b5b;
+    padding:6/@r 0;
+  }
+  .condition img{
+    display: inline-block;
+    width:40/@r;
   }
   .introduction{
-    padding:20/@r;
+    padding:40/@r 20/@r 200/@r;
   }
-  .caseList h1{
-    font-size:30/@r;
-    border-left:2px solid #ccc;
+  .introduction h1{
+    font-size:32/@r;
+    border-left:6/@r solid #d4b36b;
+    padding-left:20/@r;
+    height:40/@r;
+    line-height:40/@r;
+  }
+  .introduction .caseList .caseContent{
+    font-size:28/@r;
+    color:#666666;
+    line-height:34/@r;
+    padding:30/@r 0;
+  }
+  .Explain .cooperation{
+    color:#666666;
+    padding:30/@r 0;
+  }
+  .bottom{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    line-height:80/@r;
+    text-align:center;
+    font-size:32/@r;
+  }
+  .bottom .follow{
+    float:left;
+    width:35%;
+    background-color: #fff;
+    border-top:1px solid #ccc;
+  }
+  .bottom .applyFollow{
+    background-color: #dab86c;
+    color:#fff;
   }
 </style>

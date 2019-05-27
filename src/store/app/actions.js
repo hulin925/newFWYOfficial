@@ -320,6 +320,8 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
+          } else if(Number(res.code) == 10001){
+            resolve(res.data);
           } else {
             reject(res.message);
           }
@@ -334,7 +336,7 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
-          } else {
+          }else {
             reject(res.message);
           }
         })
