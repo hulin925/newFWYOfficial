@@ -14,14 +14,15 @@ let webpackConfig = {
   entry: {
     app: './src/main.js'
   },
-  // externals:{
-  //   'vue':'Vue',
-  //   'axios':'axios',
-  //   'vue-router':'VueRouter',
+  externals:{
+     'vue':'Vue',
+     'axios':'axios',
+    'vue-router':'VueRouter',
   //   'vue-resource':'VueResource',
   //   'vux':'vux',
-  //   'mescroll':'mescroll'
-  // },
+  //   'mescroll':'mescroll',
+     'element-ui': 'ELEMENT',
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

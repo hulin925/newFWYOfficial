@@ -21,10 +21,6 @@ import video from '@/views/threeApp/LawyerSpecialRoutes/video'
 import service from '@/views/threeApp/LawyerSpecialRoutes/service'
 import consultation from '@/views/threeApp/LawyerSpecialRoutes/consultation'
 
-//案源库
-import anYuanKu from '@/views/anYuan/anYuanKu'//发现页下的推荐
-import anYuanDetail from '@/views/anYuan/anYuanDetail'//发现页下的推荐
-
 //官网PC项目
 import AboutPc from '@/views/threeApp/Pc/AboutPc'//首页
 import DownloadPc from '@/views/threeApp/Pc/DownloadPc'//法条
@@ -38,18 +34,6 @@ function get(){
   }
 }
 let routeList = [
-  //3.0案源库列表
-  {
-    path: '/anYuanKu',
-    name:'anYuanKu',
-    component: anYuanKu,
-  },
-  //3.0案源库详情
-  {
-    path: '/anYuanDetail',
-    name:'anYuanDetail',
-    component: anYuanDetail,
-  },
   //3.0律师发现页下的推荐
   {
     path: '/',
@@ -197,7 +181,5 @@ if(get()){
     return true
   })
 }
-
-
 
 export default routeList

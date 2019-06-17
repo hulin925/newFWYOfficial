@@ -90,7 +90,12 @@
         this.$router.push({name:'myFans'})
       },
       specialBack(){//返回键
-        this.$router.push({name:'LawyerFindRecommend'});
+        // this.$router.push({name:'LawyerFindRecommend'});
+        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+          this.$router.push({name:'LawyerFindRecommend'});
+        } else {
+          this.$router.push({name:'navPc'});
+        }
       },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -150,7 +155,7 @@
 
   .isPc nav{
     width:695px;
-    left:300px;
+    /*left:300px;*/
   }
   .isPc nav div{
     padding:0 40px;

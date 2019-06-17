@@ -92,9 +92,9 @@ export default {
             resolve(res.data)
           } else if (Number(res.code) == 10001) {
             console.log(res)
-            reject(res)
+            resolve(res)
           } else {
-            // resolve(res.code)
+            reject(res.data)
           }
         })
     })
@@ -336,6 +336,56 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
+          }else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //登录
+  logOn(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/User/login', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          }else if(Number(res.code) == 10106){
+            resolve(res);
+          }else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //获取验证码
+  sendCode(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/getcode', data)
+        .then(data => {
+          console.log(data,66)
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          }else if(Number(res.code) == 10015){
+            resolve(res);
+          }else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //注册
+  register(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/User/add', data)
+        .then(data => {
+          console.log(data,66)
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          }else if(Number(res.code) == 10015){
+            resolve(res);
           }else {
             reject(res.message);
           }

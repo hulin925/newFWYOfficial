@@ -8,7 +8,7 @@
     <section id="contain" ref="contain" v-else>
         <ul class="list">
           <li v-for="item,index in dataList">
-            <div v-if="item.pro">
+            <div v-if="item.pic">
               <div class="title clearfix">
                 <div class="left">
                   <img :src="item.pic[0]" alt>
@@ -207,7 +207,7 @@
         ImgPass: {}, //传图片对象
         isOff: false,
         isLoading: false,
-        noneData: "",
+        noneData: false,
         lid: "",
         isNewLoading:true,
         dataList: [],
@@ -228,7 +228,7 @@
         this.initData()
           .then(
             data => {
-              if (Number(data) == 10001) {
+              if (Number(data.code) == 10001) {
                 //判定数据是否存在,显示关注按钮
                 this.noneData = true;
                 this.isLoading = false;
@@ -326,18 +326,10 @@
               for (let i = 0; i < this.AdvertisingData.length; i++) {
                 if (page.num == i + 1) {
                   let AdvertisingData = this.AdvertisingData[i];
-                  if (page.num == 1 && randomData + i * 9 == 0) {
-                    this.dataList.splice(
-                      randomData + i * 9 + 1,
-                      0,
-                      AdvertisingData
-                    );
+                  if (page.num == 1 && randomData + (i * 9) == 0) {
+                    this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
                   } else {
-                    this.dataList.splice(
-                      randomData + i * 9,
-                      0,
-                      AdvertisingData
-                    );
+                    this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
                   }
                 }
               }
@@ -350,6 +342,7 @@
       }
     },
     created() {
+      this.Advertisement(); //广告接口
       this.initData()
         .then(
           data => {
@@ -451,18 +444,10 @@
             for (let i = 0; i < this.AdvertisingData.length; i++) {
               if (page.num == i + 1) {
                 let AdvertisingData = this.AdvertisingData[i];
-                if (page.num == 1 && randomData + i * 9 == 0) {
-                  this.dataList.splice(
-                    randomData + i * 9 + 1,
-                    0,
-                    AdvertisingData
-                  );
+                if (page.num == 1 && randomData + (i * 9) == 0) {
+                  this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
                 } else {
-                  this.dataList.splice(
-                    randomData + i * 9,
-                    0,
-                    AdvertisingData
-                  );
+                  this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
                 }
               }
             }
@@ -472,7 +457,6 @@
         )
         .catch(e => {
         });
-      this.Advertisement(); //广告接口
     },
     mounted() {
       var _this = this;
@@ -496,11 +480,9 @@
             _this.initData()
               .then(
                 data => {
-                  console.log(data)
                   if (Number(data.code) == 10001) {
                     //判定数据是否存在,显示关注按钮
                     _this.noneData = true;
-
                   } else {
                     _this.noneData = false;
                   }
@@ -594,21 +576,13 @@
                   //广告处理
                   // this.$nextTick(()=>{
                   let randomData = Math.floor(10 * Math.random());
-                  for (let i = 0; i < _this.AdvertisingData.length; i++) {
+                  for (let i = 0; i < this.AdvertisingData.length; i++) {
                     if (page.num == i + 1) {
-                      let AdvertisingData = _this.AdvertisingData[i];
-                      if (page.num == 1 && randomData + i * 9 == 0) {
-                        _this.dataList.splice(
-                          randomData + i * 9 + 1,
-                          0,
-                          AdvertisingData
-                        );
+                      let AdvertisingData = this.AdvertisingData[i];
+                      if (page.num == 1 && randomData + (i * 9) == 0) {
+                        this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
                       } else {
-                        _this.dataList.splice(
-                          randomData + i * 9,
-                          0,
-                          AdvertisingData
-                        );
+                        this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
                       }
                     }
                   }
@@ -656,6 +630,7 @@
       PersonalTopics(item) {
         //跳转个人律师专题页
         this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}});
+
         sessionStorage.setItem("LawyerId", item.uid);
       },
       JumpDetail(obj) {

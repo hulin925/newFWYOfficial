@@ -15,14 +15,17 @@
           <h1>芯汇法务云</h1>
         </div>
         <div class="headerCenter">
-          <input type="text" placeholder="请输入想了解的法条信息">
+          <input type="text" placeholder="请输入想了解的法条信息" >
           <span @click.stop="searchFatiao()">搜索</span>
         </div>
         <div class="headerRight">
           <div class="download" @click.stop="download()">
             <span>下载APP</span>
           </div>
-          <div class="singIn" @click.stop="goSingIn()">
+          <div class="singIn" @click.stop="goSingIn()" v-if="false">
+            <span class="beforeNone">登录</span>
+          </div>
+          <div class="singIn" @click.stop="goSingIn()" v-else>
             <span class="beforeNone">登录</span>
           </div>
         </div>
@@ -71,18 +74,33 @@
             <span>芯汇法务云</span>
           </div>
 
-          <div class="singInFork" v-if="!forget">
+          <div class="singInFork" v-if="!forget"  @keyup.enter="logOn()">
             <div>
               <input type="text" placeholder="请输入手机号" v-model="loginForm.name"
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
+            <div v-show="getCode" class="sendCode" v-model="loginForm.checkcode">
+              <input type="text" placeholder="请输入验证码" oninput="">
+              <span @click="sendCode()">| 发送验证码</span>
+            </div>
             <div>
               <input type="password" placeholder="请输入密码" v-model="loginForm.password">
             </div>
-            <div v-show="getCode" class="sendCode" v-model="loginForm.checkcode">
-              <input type="text" placeholder="请输入密码" oninput="value=value.replace(/[^\d]/g,'')">
-              <span>发送验证码</span>
+
+            <div v-show="getCode" class="selectCity">
+              <el-cascader
+                v-model="value"
+                :options="options"
+                @change="handleChange"></el-cascader>
             </div>
+
+            <div class="showErr"  v-if="showErr">
+              <p>
+                <i class="iconfont icon-msnui-forbid"></i>
+                <span>{{errMessage}}</span>
+              </p>
+            </div>
+
             <div class="denglu" v-show="!getCode" @click.stop="logOn()">
               <span>登录</span>
             </div>
@@ -123,18 +141,24 @@
   import LawyerFindRecommendPc from '../views/threeApp/stylePc/LawyerFindRecommendPc.vue'
   import LawyerFindFatiaoPc from '../views/threeApp/stylePc/LawyerFindFatiaoPc.vue'
 
+  import pcProvinceData from '@/assets/pcProvinceData.js'
+
   export default {
     name: "navPc",
     data() {
       return {
+        value: [],
+        options: pcProvinceData,
+        showErr:false,//登录提示
+        errMessage:'',
         navList: [],
-        indexData: 1,
+        indexData: 0,
         fixed: false,
         type: {},
         fatiao: false,
         getCode: false,
         forget:false,
-        closeOut:false,
+        closeOut:false,//窗口
         loginForm:{
           name:'',
           password:'',
@@ -154,8 +178,42 @@
       this.getType();
     },
     methods: {
-      logOn(){
-        console.log(this.loginForm)
+      handleChange(value) {
+        console.log(value);
+      },
+      sendCode(){//发送验证码
+        let options=new FormData();
+        options.append('username',this.loginForm.name);
+        options.append('do','reg');
+        this.$store.dispatch('sendCode',options)
+          .then(data=>{
+            console.log(data);
+            if(Number(data.code)== 10015){
+              this.showErr=true;
+              this.errMessage=data.message;
+            }else{
+              this.showErr=false;
+              this.closeOut=false;
+            }
+          })
+      },
+      logOn(){//登录
+        let options=new FormData();
+        options.append('username',this.loginForm.name);
+        options.append('password',this.loginForm.password);
+        this.$store.dispatch('logOn',options)
+          .then(data=>{
+            if(Number(data.code)== 10106){
+              this.showErr=true;
+              this.errMessage=data.message;
+            }else{
+              this.showErr=false;
+              this.closeOut=false;
+            }
+            sessionStorage.setItem('userInfo',JSON.stringify(data));
+
+          },err=>{
+          })
       },
       goSingIn(){//登录
         this.closeOut=!this.closeOut;
@@ -174,13 +232,30 @@
       },
       showCode() {//注册
         this.getCode = true;
+        let options=new FormData();
+        options.append('username',this.loginForm.name);
+        options.append('password',this.loginForm.password);
+        options.append('password',this.loginForm.password);
+        options.append('password',this.loginForm.password);
+        this.$store.dispatch('register',options)
+          .then(data=>{
+            if(Number(data.code)== 10106){
+              this.showErr=true;
+              this.errMessage=data.message;
+            }else{
+              this.showErr=false;
+              this.closeOut=false;
+            }
+
+          },err=>{
+          })
+
       },
       download() {
         let routeData = this.$router.resolve({
           path: '/DownloadPc'
         })
         window.open(routeData.href, '_blank');
-        console.log(routeData,22)
       },
       scrollTop() {
         let scrollTop = document.documentElement.scrollTop; //滚动条的高
@@ -200,7 +275,9 @@
         let options = new FormData();
         this.$store.dispatch('getType', options)
           .then(data => {
-            this.type = data[1];
+            var data=data.slice(1);
+            data[0].name='首页';
+            this.type = data[0];
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
             }
@@ -213,7 +290,7 @@
       },
       changeShow(item, index) {
 
-        if (index == 2) {
+        if (index == 1) {
           this.fatiao = true;
         } else {
           this.fatiao = false;
@@ -415,9 +492,9 @@
     position: absolute;
     content: '';
     height: 3px;
-    width: 100%;
+    width: 200%;
     background-color: #da3838;
-    left: 0;
+    left: -50%;
     bottom: 0;
     border-radius: 3px;
   }
@@ -437,7 +514,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 1;
     background-color: rgba(0, 0, 0, .2);
   }
 
@@ -449,6 +526,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    z-index:2;
   }
 
   .singInLogo {
@@ -497,7 +575,21 @@
     margin: 10px auto;
     line-height: 40px;
   }
+  .singInFork .selectCity{
+    margin-bottom:30px;
+  }
+  .singInFork .showErr{
+    height: 40px;
+    width: 320px;
+    text-indent: 1em;
+    border: 1px solid red;
+    text-align:left;
+    background-color:#fff5f5;
+  }
 
+  .icon-msnui-forbid{
+    color:red;
+  }
   input::-webkit-input-placeholder {
     color: #ccc;
     /* placeholder字体大小  */
@@ -557,4 +649,9 @@
   .singInFork .alignCenter{
     text-align:center;
   }
+  input:focus
+  {
+    border-color: #409eff;
+  }
+
 </style>
