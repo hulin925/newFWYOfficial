@@ -15,20 +15,31 @@
           <h1>芯汇法务云</h1>
         </div>
         <div class="headerCenter">
-          <input type="text" placeholder="请输入想了解的法条信息" >
+          <input type="text" placeholder="请输入想了解的法条信息">
           <span @click.stop="searchFatiao()">搜索</span>
         </div>
         <div class="headerRight">
           <div class="download" @click.stop="download()">
             <span>下载APP</span>
           </div>
-          <div class="singIn" @click.stop="goSingIn()" v-if="false">
+          <div class="singIn" @click.stop="goSingIn()" v-if="!dataInfo">
             <span class="beforeNone">登录</span>
           </div>
-          <div class="singIn" @click.stop="goSingIn()" v-else>
-            <span class="beforeNone">登录</span>
+          <div class="userInfos" v-else>
+            <h1>
+              <img :src="face" alt="">
+            </h1>
+            <div class="clearfix">
+              <strong>{{dataInfo.nickname}}</strong>
+              <i class="iconfont icon-xiala"></i>
+            </div>
+            <ul class="Personal">
+              <li>个人中心</li>
+              <li @click="singOut()">退出</li>
+            </ul>
           </div>
         </div>
+
       </div>
       <div class="navBorder" :class="{navFixed:fixed}">
         <div class="nav wrap">
@@ -69,62 +80,108 @@
           <span @click.stop="Close()">×</span>
         </div>
 
-          <div class="singInLogo">
-            <img src="https://web.3fgj.com/imgVue/lawyer.ico" alt="">
-            <span>芯汇法务云</span>
-          </div>
+        <div class="singInLogo">
+          <img src="https://web.3fgj.com/imgVue/lawyer.ico" alt="">
+          <span>芯汇法务云</span>
+        </div>
 
-          <div class="singInFork" v-if="!forget"  @keyup.enter="logOn()">
+        <div class="singInFork" v-if="!forget">
+
+          <div v-if="!getCode">
             <div>
               <input type="text" placeholder="请输入手机号" v-model="loginForm.name"
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
-            <div v-show="getCode" class="sendCode" v-model="loginForm.checkcode">
-              <input type="text" placeholder="请输入验证码" oninput="">
-              <span @click="sendCode()">| 发送验证码</span>
-            </div>
             <div>
-              <input type="password" placeholder="请输入密码" v-model="loginForm.password">
+              <input type="password" placeholder="请输入密码" v-model="loginForm.password"  @keyup.enter="logOn()">
             </div>
-
-            <div v-show="getCode" class="selectCity">
-              <el-cascader
-                v-model="value"
-                :options="options"
-                @change="handleChange"></el-cascader>
-            </div>
-
-            <div class="showErr"  v-if="showErr">
+            <div class="showErr" v-if="showErr1">
               <p>
                 <i class="iconfont icon-msnui-forbid"></i>
                 <span>{{errMessage}}</span>
               </p>
             </div>
-
-            <div class="denglu" v-show="!getCode" @click.stop="logOn()">
+            <div class="denglu" @click.stop="logOn()">
               <span>登录</span>
             </div>
             <div class="register" @click.sotp="showCode()" :class="{activeBg:getCode}">
               <span>注册</span>
             </div>
-            <div class="Password" v-if="!getCode" @click.stop="forgetPassword()">
+            <div class="Password" @click.stop="forgetPassword()">
               <span>忘记密码</span>
-            </div>
-            <div class="Password" @click.stop="singIn()" v-else>
-              <span>已有账号</span>
             </div>
           </div>
 
+
+          <div v-else>
+            <div>
+              <input type="text" placeholder="请输入手机号" v-model="loginForm.name" @keyup.enter="sendCode()"
+                     oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
+            </div>
+            <div class="sendCode">
+              <input type="text" placeholder="请输入验证码" v-model="loginForm.checkcode">
+              <span @click="sendCode()" v-if="timeAction">| 发送验证码</span>
+              <span v-else>{{time}}S后重新获取</span>
+            </div>
+            <div>
+              <input type="password" placeholder="请输入密码" v-model="loginForm.registerPassword">
+            </div>
+            <div class="selectCity">
+              <el-cascader
+                v-model="value"
+                :options="options"
+                @change="handleChange"></el-cascader>
+            </div>
+            <div class="showErr" v-if="showErr2">
+              <p>
+                <i class="iconfont icon-msnui-forbid"></i>
+                <span>{{errMessage}}</span>
+              </p>
+            </div>
+            <div class="register" @click.sotp="registerData()" :class="{activeBg:getCode}">
+              <span>注册</span>
+            </div>
+            <div class="Password" @click.stop="singIn()">
+              <span>已有账号</span>
+            </div>
+          </div>
+        </div>
+
         <div class="singInFork" v-else>
-          <div>
-            <input type="text" placeholder="请输入手机号"
-                   oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
+          <div v-if="upData">
+            <div>
+              <input type="text" placeholder="请输入手机号" v-model="loginForm.name1" @keyup.enter="sendCodes()"
+                     oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
+            </div>
+            <div class="sendCode" v-show="!isShow">
+              <input type="text" placeholder="请输入验证码" v-model="loginForm.checkcode" >
+              <span @click="sendCodes()" v-if="timeActions">| 发送验证码</span>
+              <span v-else>{{times}}S后重新获取</span>
+            </div>
+            <div v-show="!isShow">
+              <input type="password" placeholder="请输入新密码" v-model="loginForm.forgetPassword" @keyup.enter="changePassword()">
+            </div>
+            <div class="showErr" v-if="showErr3">
+              <p>
+                <i class="iconfont icon-msnui-forbid"></i>
+                <span>{{errMessage}}</span>
+              </p>
+            </div>
+            <div class="denglu" @click="sendCodes()" v-if="isShow">
+              <span>发送</span>
+            </div>
+            <div class="denglu" @click="changePassword()" v-else>
+              <span>确认</span>
+            </div>
+            <div class="Password alignCenter" @click.stop="forgetPassword()">
+              <span @click.stop="backSingIn">返回登录</span>
+            </div>
           </div>
-          <div class="denglu">
-            <span>发送</span>
-          </div>
-          <div class="Password alignCenter" v-if="!getCode" @click.stop="forgetPassword()">
-            <span @click.stop="backSingIn">返回登录</span>
+          <div v-else class="upData">
+            <p>密码修改成功！</p>
+            <div class="Password alignCenter" @click.stop="forgetPassword()">
+              <span @click.stop="backSingIn">返回登录</span>
+            </div>
           </div>
         </div>
 
@@ -145,24 +202,39 @@
 
   export default {
     name: "navPc",
+    inject:['reload'],
     data() {
       return {
+        dataInfo:{},
+        face:'',
         value: [],
+        cityData: [],//选中数据
         options: pcProvinceData,
-        showErr:false,//登录提示
-        errMessage:'',
+        time:60,
+        times:60,
+        timeAction:true,
+        timeActions:true,
+        showErr1: false,//登录提示
+        showErr2: false,//登录提示
+        showErr3: false,//登录提示
+        upData:true,
+        errMessage: '',
+        isShow:true,
         navList: [],
         indexData: 0,
         fixed: false,
         type: {},
         fatiao: false,
         getCode: false,
-        forget:false,
-        closeOut:false,//窗口
-        loginForm:{
-          name:'',
-          password:'',
-          checkcode:''
+        forget: false,
+        closeOut: false,//窗口
+        loginForm: {
+          name: '',
+          name1: '',
+          password: '',
+          checkcode: '',
+          forgetPassword:'',
+          registerPassword:''
         }
       }
     },
@@ -172,82 +244,194 @@
     },
     mounted() {
       window.addEventListener('scroll', this.scrollTop);
-
     },
     created() {
       this.getType();
+      this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));
+      if(this.dataInfo){
+        this.face=this.dataInfo.weburl+this.dataInfo.face;
+      }
     },
     methods: {
-      handleChange(value) {
-        console.log(value);
+      singOut(){//退出
+        sessionStorage.removeItem('userInfo');
+        this.reload();
       },
-      sendCode(){//发送验证码
-        let options=new FormData();
-        options.append('username',this.loginForm.name);
-        options.append('do','reg');
-        this.$store.dispatch('sendCode',options)
-          .then(data=>{
-            console.log(data);
-            if(Number(data.code)== 10015){
-              this.showErr=true;
-              this.errMessage=data.message;
-            }else{
-              this.showErr=false;
-              this.closeOut=false;
+      changePassword(){//修改密码
+        let options = new FormData();
+        options.append('username', this.loginForm.name1);
+        options.append('is_login', 'false');
+        // options.append('oldpassword', '');
+        options.append('password', this.loginForm.forgetPassword);
+        options.append('checkcode', this.loginForm.checkcode);
+        // options.append('uid', '');
+        // options.append('token', '');
+        this.$store.dispatch('changePassword', options)
+          .then(data => {
+            if (Number(data.code) == 10015) {
+              this.showErr3 = true;
+              this.errMessage = data.message;
+            } else {
+              this.showErr3 = false;
+              this.upData=false;
+              // this.closeOut=false;
             }
           })
       },
-      logOn(){//登录
-        let options=new FormData();
-        options.append('username',this.loginForm.name);
-        options.append('password',this.loginForm.password);
-        this.$store.dispatch('logOn',options)
-          .then(data=>{
-            if(Number(data.code)== 10106){
-              this.showErr=true;
-              this.errMessage=data.message;
-            }else{
-              this.showErr=false;
-              this.closeOut=false;
+      sendCode() {//发送验证码
+        var phone = this.loginForm.name;
+        if(!(/^1[3456789]\d{9}$/.test(phone))){
+          this.showErr2 = true
+          this.errMessage ='您的手机号码不正确，请重新填写！';
+          return;
+        }
+        this.timeAction=false;
+        let timer=setInterval(()=>{
+          this.time--;
+          if(this.time==0){
+            this.timeAction=true;
+            this.password='重新获取';
+            clearInterval(timer);//关闭定时器
+            this.time=60;
+          }
+        },1000)
+        let options = new FormData();
+        options.append('username', this.loginForm.name);
+        options.append('do', 'reg');
+        this.$store.dispatch('sendCode', options)
+          .then(data => {
+            if (Number(data.code) == 10015) {
+              this.showErr2 = true;
+              this.errMessage = data.message;
+            } else {
+              this.showErr2 = false;
+              // this.closeOut=false;
             }
-            sessionStorage.setItem('userInfo',JSON.stringify(data));
-
-          },err=>{
           })
       },
-      goSingIn(){//登录
-        this.closeOut=!this.closeOut;
+      sendCodes() {//发送验证码,忘记密码
+        var phone = this.loginForm.name1;
+        if(!(/^1[3456789]\d{9}$/.test(phone))){
+          this.showErr3 = true
+          this.errMessage ='您的手机号码不正确，请重新填写！';
+          return;
+        }
+        this.isShow=false;
+        this.loginForm.checkcode='';
+        this.loginForm.password='';
+        this.timeActions=false;
+        let timers=setInterval(()=>{
+          this.times--;
+          if(this.times==0){
+            this.timeActions=true;
+            this.password='重新获取';
+            clearInterval(timers);//关闭定时器
+            this.times=60;
+          }
+        },1000);
+        let options = new FormData();
+        options.append('username', this.loginForm.name1);
+        options.append('do', 'reset');
+        this.$store.dispatch('sendCode', options)
+          .then(data => {
+            if (Number(data.code) == 10015) {
+              this.showErr3 = true;
+              this.errMessage = data.message;
+            } else {
+              this.showErr3 = false;
+              // this.closeOut=false;
+            }
+          })
       },
-      Close(){//关闭注册
-        this.closeOut=!this.closeOut;
+      logOn() {//登录
+        let options = new FormData();
+        options.append('username', this.loginForm.name);
+        options.append('password', this.loginForm.password);
+        this.$store.dispatch('logOn', options)
+          .then(data => {
+            if (Number(data.code) == 10106) {
+              this.showErr1 = true;
+              this.errMessage = data.message;
+            } else {
+              this.reload();
+              this.showErr1 = false;
+              this.closeOut = false;
+              sessionStorage.setItem('userInfo', JSON.stringify(data));
+              this.$message({
+                message:'登录成功',
+                type: 'success',
+                center: true
+              })
+            }
+          }, err => {
+          })
       },
-      backSingIn(){//返回登录
-        this.forget=false;
+      goSingIn() {//登录
+        this.closeOut = !this.closeOut;
+        this.getCode=false;
+      },
+      Close() {//关闭注册
+        this.closeOut = !this.closeOut;
+      },
+      backSingIn() {//返回登录
+        this.forget = false;
       },
       forgetPassword() {//忘记秘密
-        this.forget=true;
+        this.isShow=true;
+        this.forget = true;
+        this.upData=true;
+        this.loginForm.name1='';
       },
       singIn() {//已有账号
         this.getCode = false;
       },
-      showCode() {//注册
+      handleChange(value) {
+        this.cityData = value;
+      },
+      showCode() {
+        this.loginForm.checkcode='';
+        this.loginForm.registerPassword='';
+        this.value=[];
+        this.loginForm.name='';
         this.getCode = true;
-        let options=new FormData();
-        options.append('username',this.loginForm.name);
-        options.append('password',this.loginForm.password);
-        options.append('password',this.loginForm.password);
-        options.append('password',this.loginForm.password);
-        this.$store.dispatch('register',options)
-          .then(data=>{
-            if(Number(data.code)== 10106){
-              this.showErr=true;
-              this.errMessage=data.message;
-            }else{
-              this.showErr=false;
-              this.closeOut=false;
+      },
+      registerData() {//注册
+        let options = new FormData();
+        options.append('username', this.loginForm.name);
+        options.append('checkcode', this.loginForm.checkcode);
+        options.append('password', this.loginForm.registerPassword);
+        options.append('province_cn', this.cityData[0]);
+        options.append('city_cn', this.cityData[1]);
+        options.append('area_cn', this.cityData[2]);
+        this.$store.dispatch('register', options)
+          .then(data => {
+            if (Number(data.code) == 10106) {
+              this.showErr2 = true;
+              this.errMessage = data.message;
+            } else if (Number(data.code) == 10004) {
+              this.showErr2 = true;
+              this.errMessage = data.message;
+            } else if (Number(data.code) == 10104) {
+              this.showErr2 = true;
+              this.errMessage = data.message;
+            } else {
+              this.$message({
+                message:'注册成功',
+                type:'success',
+                center:true
+              })
+              this.showErr2 = false;
+              this.closeOut = false;
+              sessionStorage.setItem('userInfo', JSON.stringify(data));
+              setTimeout(()=>{
+                this.$message({
+                  message:'登录成功',
+                  type: 'success',
+                  center: true
+                })
+              },800)
             }
-
-          },err=>{
+          }, err => {
           })
 
       },
@@ -275,8 +459,8 @@
         let options = new FormData();
         this.$store.dispatch('getType', options)
           .then(data => {
-            var data=data.slice(1);
-            data[0].name='首页';
+            var data = data.slice(1);
+            data[0].name = '首页';
             this.type = data[0];
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
@@ -284,7 +468,7 @@
             this.navList = data;
           })
       },
-      searchFatiao(){
+      searchFatiao() {
         this.fatiao = true;
         this.indexData = 2;
       },
@@ -377,6 +561,7 @@
 
   .header {
     padding: 20px 0;
+    position:relative;
   }
 
   .headerLeft {
@@ -396,38 +581,96 @@
     vertical-align: middle;
   }
 
-  .headerCenter{
-    float:left;
-    margin-left:30px;
-    padding-top:5px;
+  .headerCenter {
+    float: left;
+    margin-left: 30px;
+    padding-top: 5px;
   }
-  .headerCenter input{
-    height:36px;
-    width:400px;
-    border:1px solid #ccc;
-    text-indent:1.5em;
+  .headerCenter input:focus{
+    border-color:red;
+  }
+  .headerCenter input {
+    height: 36px;
+    width: 400px;
+    border: 1px solid #ccc;
+    text-indent: 1.5em;
     vertical-align: middle;
   }
-  .headerCenter span{
-    width:80px;
-    height:36px;
-    display:inline-block;
+
+  .headerCenter span {
+    width: 80px;
+    height: 36px;
+    display: inline-block;
     background-color: #dd3b3d;
-    color:#fff;
-    text-align:center;
-    line-height:36px;
-    font-size:16px;
-    margin-left:10px;
-    cursor:pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 36px;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
     vertical-align: middle;
   }
+
   .headerCenter input::-webkit-input-placeholder {
     color: #9a9a9a;
     /* placeholder字体大小  */
     font-size: 16px;
     /* placeholder位置  */
   }
-
+  .userInfos{
+    display: flex;
+    margin-left:-15px;
+    cursor:pointer;
+    position:relative;
+  }
+  .userInfos:hover .Personal{
+    display: block;
+  }
+  .userInfos .Personal{
+    position: absolute;
+    top:43px;
+    left:0;
+    text-align:center;
+    width:100%;
+    background-color: #fff;
+    z-index: 9999;
+    padding:10px 0;
+    display: none;
+  }
+  .userInfos .Personal li{
+    line-height:30px;
+  }
+  .userInfos .Personal li:hover{
+    color:red;
+  }
+  .userInfos div{
+    padding-top:12px;
+  }
+  .userInfos h1{
+    width:40px;
+    height:40px;
+    border-radius: 25px;
+    overflow: hidden;
+    margin:3px 10px 0 0;
+  }
+  .userInfos img{
+    width:100%;
+    height:100%;
+    display: inline-block;
+  }
+  .userInfos strong{
+    float: left;
+    width:60px;
+    overflow: hidden;
+    margin-right:5px;
+  }
+  .userInfos i{
+    float: right;
+    display: inline-block;
+  }
+  .icon-xiala{
+    color:#727272;
+  }
   .headerRight {
     float: right;
     display: flex;
@@ -526,7 +769,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index:2;
+    z-index: 2;
   }
 
   .singInLogo {
@@ -562,34 +805,38 @@
     text-align: center;
   }
 
-  .singInFork input {
+  .singInFork div input {
     height: 40px;
     width: 320px;
     text-indent: 1em;
     border: 1px solid #ccc;
+    border-radius: 4px;
   }
 
-  .singInFork div {
+  .singInFork div div {
     height: 40px;
     width: 320px;
     margin: 10px auto;
     line-height: 40px;
   }
-  .singInFork .selectCity{
-    margin-bottom:30px;
+
+  .singInFork .selectCity {
+    margin-bottom: 25px;
   }
-  .singInFork .showErr{
+
+  .singInFork .showErr {
     height: 40px;
     width: 320px;
     text-indent: 1em;
     border: 1px solid red;
-    text-align:left;
-    background-color:#fff5f5;
+    text-align: left;
+    background-color: #fff5f5;
   }
 
-  .icon-msnui-forbid{
-    color:red;
+  .icon-msnui-forbid {
+    color: red;
   }
+
   input::-webkit-input-placeholder {
     color: #ccc;
     /* placeholder字体大小  */
@@ -646,12 +893,19 @@
   .sendCode span:hover {
     color: #363636;
   }
-  .singInFork .alignCenter{
-    text-align:center;
-  }
-  input:focus
-  {
-    border-color: #409eff;
+
+  .singInFork .alignCenter {
+    text-align: center;
   }
 
+  .singInFork input:focus {
+    border-color: #409eff;
+  }
+  .upData p{
+    text-align:center;
+    line-height:30px;
+    font-size:20px;
+    color:green;
+    padding-left:20px;
+  }
 </style>

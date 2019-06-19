@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<router-view></router-view>
+		<router-view v-if="isRouterAlive"></router-view>
 
     <!--预加载-->
 		<div id="loadingMask" v-show="isLoading">
@@ -12,15 +12,6 @@
 
 		</div>
 
-
-
-    <!--点赞-->
-    <!--<div id="FabulousMask" v-show="isZan">-->
-      <!--<div>-->
-        <!--<i></i>-->
-      <!--</div>-->
-    <!--</div>-->
-
 	</div>
 </template>
 
@@ -28,13 +19,18 @@
 	import {mapGetters} from 'vuex'
 	export default {
 		name: 'app',
+    provide (){
+      return {
+        reload:this.reload
+      }
+    },
 		computed:mapGetters([
 			'isLoading',
       // 'isZan'
 		]),
     data(){
 		  return{
-
+        isRouterAlive:true
       }
     },
     mounted() {
@@ -45,6 +41,14 @@
       // }
     },
     created(){
+    },
+    methods:{
+      reload (){
+        this.isRouterAlive = false;
+        this.$nextTick(function(){
+          this.isRouterAlive = true
+        })
+      }
     }
 
 	}

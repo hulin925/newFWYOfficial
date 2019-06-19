@@ -161,7 +161,7 @@
                   </div>
                   <!--//item.id,item.classify,item.isguanzhu-->
                   <div @click.stop="JumpDetail(item)">
-                    <i class="iconfont  icon-pinglun"></i>
+                    <i class="iconfont  icon-pinglun1"></i>
                     <span>评论</span>
                     <i>{{item.history_comment_count}}</i>
                   </div>

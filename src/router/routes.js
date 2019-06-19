@@ -3,6 +3,7 @@
 //pc
 import navPc from '@/components/navPc'//nav
 import LawyerFindRecommendPc from '@/views/threeApp/stylePc/LawyerFindRecommendPc'//发现页下的推荐
+import LawyerFindArticleDetailPc from '@/views/threeApp/stylePc/LawyerFindArticleDetailPc'//发现页下的文章详情
 import LawyerFindLawDetailsPc from '@/views/threeApp/stylePc/LawyerFindLawDetailsPc'//发现页下法条详情
 import LawyerFindFatiaoPc from '@/views/threeApp/stylePc/LawyerFindFatiaoPc'//发现页下法条
 
@@ -47,6 +48,12 @@ let routeList = [
     // component(resolve){
     //   require(['@/views/threeApp/LawyerFind/LawyerFindRecommend'],resolve)
     // }
+  },
+  //3.0律师发现页下的文章详情PC
+  {
+    path: '/LawyerFindArticleDetailPc',
+    name:'LawyerFindArticleDetailPc',
+    component: LawyerFindArticleDetailPc,
   },
   //3.0律师发现页下的推荐PC
   {

@@ -6,161 +6,161 @@
     </div>
 
     <section id="contain" ref="contain" v-else>
-        <ul class="list">
-          <li v-for="item,index in dataList">
-            <div v-if="item.pic">
-              <div class="title clearfix">
-                <div class="left">
-                  <img :src="item.pic[0]" alt>
-                </div>
-                <div class="center">
-                  <h2>{{item.advtitle}}</h2>
-                </div>
-                <div class="right">
-                  <span class="Advertisement">广 告</span>
-                </div>
-              </div>
-              <div class="AdvertisementContent" @click.stop="pictureJump(item)">
+      <ul class="list">
+        <li v-for="item,index in dataList">
+          <div v-if="item.pic">
+            <div class="title clearfix">
+              <div class="left">
                 <img :src="item.pic[0]" alt>
               </div>
+              <div class="center">
+                <h2>{{item.advtitle}}</h2>
+              </div>
+              <div class="right">
+                <span class="Advertisement">广 告</span>
+              </div>
             </div>
-            <div v-else>
-              <div class="title clearfix" @click.stop="PersonalTopics(item)">
-                <div class="left">
-                  <img :src="item.faces" alt>
-                </div>
+            <div class="AdvertisementContent" @click.stop="pictureJump(item)">
+              <img :src="item.pic[0]" alt>
+            </div>
+          </div>
+          <div v-else>
+            <div class="title clearfix" @click.stop="PersonalTopics(item)">
+              <div class="left">
+                <img :src="item.faces" alt>
+              </div>
 
-                <div class="Grade">
-                  <img
-                    src="../../../assets/img/lanV.png"
-                    alt
-                    v-if="item.cert_type!=1"
-                    class="GradeFirst"
-                  >
-                  <img src="../../../assets/img/level.png" alt v-else class="GradeTwo">
-                </div>
+              <div class="Grade">
+                <img
+                  src="../../../assets/img/lanV.png"
+                  alt
+                  v-if="item.cert_type!=1"
+                  class="GradeFirst"
+                >
+                <img src="../../../assets/img/level.png" alt v-else class="GradeTwo">
+              </div>
 
-                <div class="center">
-                  <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
-                  <p v-if="item.add_time!=0">{{item.add_time}}</p>
-                  <p v-else>{{item.company}}</p>
-                </div>
-                <div class="right" @click.stop="download">
-                  <span v-if="item.isguanzhu==0">+ 关注</span>
-                  <span v-else class="cancelFollow">
+              <div class="center">
+                <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
+                <p v-if="item.add_time!=0">{{item.add_time}}</p>
+                <p v-else>{{item.company}}</p>
+              </div>
+              <div class="right" @click.stop="Follows(item)">
+                <span v-if="item.isguanzhu==0">+ 关注</span>
+                <span v-else class="cancelFollow">
                       <i class="iconfont icon-gou"></i>
                       已关注
                     </span>
-                </div>
               </div>
-              <div class="topTitle" @click.stop="JumpDetail(item)">{{item.title}}</div>
-              <!--<div class="brief clearfix">-->
-              <!--<span>刑事</span>-->
-              <!--<span>治安</span>-->
-              <!--</div>-->
-              <div v-if="item.classify==2">
-                <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
-                  <div v-html="item.content"></div>
-                </div>
-                <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
-                  <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4">
-                    <div>
-                      <img v-lazy="v" alt>
-                    </div>
-                  </div>
-
-                  <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4">
-                    <div>
-                      <img v-lazy="v" alt>
-                    </div>
-                  </div>
-
-                  <div class="firstImg" v-if="item.num==1">
-                    <div>
-                      <img v-lazy="item.arr[0]" alt>
-                    </div>
-                  </div>
-                </div>
+            </div>
+            <div class="topTitle" @click.stop="JumpDetail(item)">{{item.title}}</div>
+            <!--<div class="brief clearfix">-->
+            <!--<span>刑事</span>-->
+            <!--<span>治安</span>-->
+            <!--</div>-->
+            <div v-if="item.classify==2">
+              <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
+                <div v-html="item.content"></div>
               </div>
-
-              <div v-if="item.classify==6">
-                <div class="content" @click.stop="JumpDetail(item)">
-                  <div v-html="item.content"></div>
-                </div>
-                <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
-                  <div
-                    class="ImgIcon"
-                    v-for="v,index in item.thumbnail"
-                    v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
-                  >
-                    <div>
-                      <img v-lazy="v" alt>
-                    </div>
-                  </div>
-
-                  <div
-                    class="ImgIcon"
-                    v-for="v,index in item.thumbnail"
-                    v-if="item.AndroidNumber==4"
-                  >
-                    <div>
-                      <img v-lazy="v" alt>
-                    </div>
-                  </div>
-
-                  <div class="firstImg" v-if="item.AndroidNumber==1">
-                    <div>
-                      <img v-lazy="item.thumbnail[0]" alt>
-                    </div>
+              <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
+                <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4">
+                  <div>
+                    <img v-lazy="v" alt>
                   </div>
                 </div>
-              </div>
-              <div class="Img clearfix" v-if="item.classify==3">
-                <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
-                  <video width="320" height="240" :poster="item.cover" controls="controls">
-                    <source :src="item.videos" type="video/mp4">
-                  </video>
-                </div>
-                <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
-                  <video width="320" height="240" :poster="item.cover" controls="controls">
-                    <source :src="item.path" type="video/mp4">
-                  </video>
-                </div>
-              </div>
 
-              <div class="bottom">
-                <div @click.stop="JumpDetail(item)">
-                  <i class="iconfont icon-yuedu"></i>
-                  <span>阅读</span>
-                  <i>{{item.click =''?'0':item.click?item.click:'0'}}</i>
+                <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4">
+                  <div>
+                    <img v-lazy="v" alt>
+                  </div>
                 </div>
-                <!--//item.id,item.classify,item.isguanzhu-->
-                <div @click.stop="JumpDetail(item)">
-                  <i class="iconfont icon-pinglun"></i>
-                  <span>评论</span>
-                  <i>{{item.history_comment_count}}</i>
-                </div>
-                <div @click.stop="download" :class="{color:item.iszan == 1}">
-                    <span>
-                      <i class="iconfont icon-zan" :class="{color:item.iszan == 1}"></i>
-                    </span>
-                  <span>点赞</span>
-                  <i>{{item.histort_reward_count}}</i>
+
+                <div class="firstImg" v-if="item.num==1">
+                  <div>
+                    <img v-lazy="item.arr[0]" alt>
+                  </div>
                 </div>
               </div>
             </div>
-          </li>
-        </ul>
-        <p v-show="isLoading && dataList.length && dataList.length < total" style="height: 100px;text-align:center">
-          <img
-            class="d2-home__loading"
-            src="https://hly.1000da.com.cn/assets/images/loading-spinner.svg"
-            alt="loading"
-          >加载中
-        </p>
-        <p v-show="!isLoading && dataList.length && dataList.length >= total" class="dataNone">没有更多数据了...</p>
-        <p v-show="!dataList.length" class="dataNone">暂无数据...</p>
-      </section>
+
+            <div v-if="item.classify==6">
+              <div class="content" @click.stop="JumpDetail(item)">
+                <div v-html="item.content"></div>
+              </div>
+              <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
+                <div
+                  class="ImgIcon"
+                  v-for="v,index in item.thumbnail"
+                  v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
+                >
+                  <div>
+                    <img v-lazy="v" alt>
+                  </div>
+                </div>
+
+                <div
+                  class="ImgIcon"
+                  v-for="v,index in item.thumbnail"
+                  v-if="item.AndroidNumber==4"
+                >
+                  <div>
+                    <img v-lazy="v" alt>
+                  </div>
+                </div>
+
+                <div class="firstImg" v-if="item.AndroidNumber==1">
+                  <div>
+                    <img v-lazy="item.thumbnail[0]" alt>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Img clearfix" v-if="item.classify==3">
+              <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
+                <video width="320" height="240" :poster="item.cover" controls="controls">
+                  <source :src="item.videos" type="video/mp4">
+                </video>
+              </div>
+              <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
+                <video width="320" height="240" :poster="item.cover" controls="controls">
+                  <source :src="item.path" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="bottom">
+              <div @click.stop="JumpDetail(item)">
+                <i class="iconfont icon-yuedu"></i>
+                <span>阅读</span>
+                <i>{{item.click =''?'0':item.click?item.click:'0'}}</i>
+              </div>
+              <!--//item.id,item.classify,item.isguanzhu-->
+              <div @click.stop="JumpDetail(item)">
+                <i class="iconfont icon-pinglun1"></i>
+                <span>评论</span>
+                <i>{{item.history_comment_count}}</i>
+              </div>
+              <div @click.stop="Fabulous(item)" :class="{color:item.iszan == 1}">
+                <span>
+                      <i class="iconfont icon-zan" :class="{color:item.iszan == 1}"></i>
+                    </span>
+                <span>点赞</span>
+                <i>{{item.histort_reward_count}}</i>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p v-show="isLoading && dataList.length && dataList.length < total" style="height: 100px;text-align:center">
+        <img
+          class="d2-home__loading"
+          src="https://hly.1000da.com.cn/assets/images/loading-spinner.svg"
+          alt="loading"
+        >加载中
+      </p>
+      <p v-show="!isLoading && dataList.length && dataList.length >= total" class="dataNone">没有更多数据了...</p>
+      <p v-show="!dataList.length" class="dataNone">暂无数据...</p>
+    </section>
 
     <div class="showStart">
       <toast v-model="showStart" type="text" :time="1000">
@@ -199,6 +199,7 @@
     },
     data() {
       return {
+        userInfo: {},
         fatiao: "",
         navId: "", //nav
         navType: "", //导航
@@ -209,7 +210,7 @@
         isLoading: false,
         noneData: false,
         lid: "",
-        isNewLoading:true,
+        isNewLoading: true,
         dataList: [],
         showTop: false,
         total: 0,
@@ -220,8 +221,8 @@
     watch: {
       val(val) {
         this.page = 1;
-        this.$nextTick(()=>{
-          if(this.$refs.contain){
+        this.$nextTick(() => {
+          if (this.$refs.contain) {
             this.$refs.contain.scrollTop = 0;
           }
         })
@@ -235,7 +236,7 @@
               } else {
                 this.noneData = false;
               }
-              if(data.total){
+              if (data.total) {
                 this.total = data.total;
               }
               var data = data.list;
@@ -342,6 +343,7 @@
       }
     },
     created() {
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
       this.Advertisement(); //广告接口
       this.initData()
         .then(
@@ -353,7 +355,7 @@
             } else {
               this.noneData = false;
             }
-            if(data.total){
+            if (data.total) {
               this.total = data.total;
             }
 
@@ -465,8 +467,8 @@
       var scrollTop;
       // this.$nextTick(() => {
       window.addEventListener("scroll", function () {
-        _this.$nextTick(()=>{
-          if(_this.$refs.contain){
+        _this.$nextTick(() => {
+          if (_this.$refs.contain) {
             contentH = _this.$refs.contain.clientHeight; //内容高度
           }
           viewH = document.documentElement.clientHeight; //可见高度
@@ -474,7 +476,7 @@
         })
 
         if (scrollTop / (contentH - viewH) >= 0.95) { //到达底部100px时,加载新内容
-          if (!_this.isLoading&&_this.isNewLoading) {
+          if (!_this.isLoading && _this.isNewLoading) {
             _this.isLoading = true;
             _this.page++;
             _this.initData()
@@ -488,7 +490,7 @@
                   }
 
                   // console.log(data)
-                  if(data.total){
+                  if (data.total) {
                     _this.total = data.total;
                   }
                   var data = data.list;
@@ -635,72 +637,65 @@
       },
       JumpDetail(obj) {
         //跳转律师详情页
-        sessionStorage.setItem("detailsId", JSON.stringify(obj));
-
-        if (this.$isMobile()) {
-          this.$router.push({name: "LawyerFindArticleDetail", query: {obj}});
-        } else {
-          let routeData = this.$router.resolve({
-            path: "/LawyerFindArticleDetail"
-          });
-          window.open(routeData.href, "_blank");
-        }
+        console.log(obj,this.val.tag)
+        let routeData = this.$router.resolve({
+          path: "/LawyerFindArticleDetailPc",
+          query:{id:obj.id,lid:obj.uid,classify:obj.classify,tag:this.val.tag}
+        });
+        window.open(routeData.href, "_blank");
       },
       // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
       initData() {
         //获取页面初始数据
         //   this.$store.commit("showLoading");
-          let options = new FormData();
-          options.append("id", this.val.id);
-          options.append("tag", this.val.tag);
-          options.append("page", this.page);
-          // options.append("uid", 1068);
-          return this.$store
-            .dispatch("LawyerFindRecommend", options)
+        let options = new FormData();
+        options.append('uid', this.userInfo.uid);
+        options.append('token', this.userInfo.token);
+        options.append("id", this.val.id);
+        options.append("tag", this.val.tag);
+        options.append("page", this.page);
+        // options.append("uid", 1068);
+        return this.$store
+          .dispatch("LawyerFindRecommend", options)
       },
       Fabulous(item) {
         //点赞接口
         let options = new FormData();
-        options.append("uid", "1006");
+        options.append('uid', this.userInfo.uid);
+        options.append('token', this.userInfo.token);
         options.append("lid", item.uid);
         options.append("fid", item.id); //文章id
         options.append("type", item.classify); //文章类型
-        options.append(
-          "token",
-          "6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15"
-        );
-        this.$store.dispatch("Fabulous", options).then(data => {
-          if (data.data.flag == 1) {
-            this.showStart = true;
-          }
-          this.dataList = this.dataList.map(obj => {
-            if (obj.id == item.id) {
-              obj.iszan = data.data.flag;
-              obj.histort_reward_count = data.data.zannum;
+        this.$store.dispatch('FabulousPc', options)
+          .then(data => {
+            if (data.flag == 1) {
+              this.showStart = true;
             }
-            return obj;
-          });
-        });
-      },
-      Follows(item) {
-        //关注接口
-        let options = new FormData();
-        options.append("uid", 1006); //1006
-        options.append("lid", item.uid); //1ba10ba7695a436779076e71af056d4f8fe18ff1  //1069
-        options.append(
-          "token",
-          "6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15"
-        ); //6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
-        this.$store.dispatch("follows", options).then(data => {
-          // this.mescroll.resetUpScroll()
-          this.dataList = this.dataList.map(obj => {
-            if (item.uid == obj.uid) {
-              obj.isguanzhu = data.data.flag;
+            this.dataList = this.dataList.map(obj => {
+              if (item.id == obj.id && item.classify == obj.classify) {
+                obj.iszan = data.flag;
+                obj.histort_reward_count = data.zannum;
+                return obj;
+              }
               return obj;
-            }
-            return obj;
-          });
-        });
+            })
+          })
+      },
+      Follows(item) {//关注接口
+        let options = new FormData();
+        options.append('uid', this.userInfo.uid);
+        options.append('token', this.userInfo.token);
+        options.append('lid', item.uid);
+        this.$store.dispatch('followPc', options)
+          .then(data => {
+            this.dataList = this.dataList.map(obj => {
+              if (item.uid == obj.uid) {
+                obj.isguanzhu = data.flag;
+                return obj;
+              }
+              return obj;
+            })
+          })
       }
     }
   };
@@ -777,7 +772,6 @@
   .list li {
     padding: 32 / @r 32 / @r 0;
     border-bottom: 20 / @r solid #eee;
-    cursor:pointer;
   }
 
   .list .title {
@@ -818,6 +812,7 @@
 
   .title .right {
     float: right;
+    cursor: pointer;
   }
 
   .title .right span {
@@ -925,6 +920,9 @@
     border-top: 1px solid #e9e9e9;
     display: flex;
     justify-content: space-between;
+  }
+  .bottom div{
+    cursor: pointer;
   }
 
   .bottom div:nth-child(2) {
@@ -1064,9 +1062,10 @@
     -moz-border-radius: 30 / @r;
     border-radius: 30 / @r;
   }
-  .dataNone{
-    text-align:center;
-    line-height:100px;
-    color:#aaa;
+
+  .dataNone {
+    text-align: center;
+    line-height: 100px;
+    color: #aaa;
   }
 </style>

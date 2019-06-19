@@ -342,7 +342,7 @@ export default {
         })
     })
   },
-  //登录
+  //PC登录
   logOn(store, data) {
     return new Promise((resolve, reject) => {
       axios.post(str + '/User/login', data)
@@ -358,12 +358,14 @@ export default {
         })
     })
   },
-  //获取验证码
+  //PC获取验证码
   sendCode(store, data) {
     return new Promise((resolve, reject) => {
-      axios.post(str + '/getcode', data)
+      axios.post(str + '/getcode', data,{headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf8'
+        }
+      })
         .then(data => {
-          console.log(data,66)
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
@@ -375,18 +377,72 @@ export default {
         })
     })
   },
-  //注册
-  register(store, data) {
+  //PC修改密码
+  changePassword(store, data) {
     return new Promise((resolve, reject) => {
-      axios.post(str + '/User/add', data)
+      axios.post(str + '/member/forget', data)
         .then(data => {
-          console.log(data,66)
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
           }else if(Number(res.code) == 10015){
             resolve(res);
           }else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC注册
+  register(store, data) {
+    return new Promise((resolve, reject) => {
+      axios({
+        url:str + '/User/add',
+        method:'post',
+        data,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf8'
+    }
+      })
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          }else if(Number(res.code) == 10015){
+            resolve(res);
+          }else if(Number(res.code) == 10004){
+            resolve(res);
+          }else if(Number(res.code) == 10104){
+            resolve(res);
+          }else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC关注
+  followPc(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/find/fans', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC点赞
+  FabulousPc(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/find/zan', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
             reject(res.message);
           }
         })
