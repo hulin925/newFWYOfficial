@@ -5,7 +5,7 @@
         <img :src="titleImg" alt="" class="headerImg">
         <!--<div><img src="../../../assets/img/Back.png" alt="" class="goBack" @click="goBack"></div>-->
         <img src="../../../assets/img/search.png" alt="" class="searchImg">
-        <input type="text" placeholder="输入关键之，支持全文检索" v-on:input="inputFunc()" v-model="keywords">
+        <input type="text" placeholder="输入关键之，支持全文检索" v-on:input="inputFunc()" v-model="keywords" @keyup.enter="inputFunc()">
       </div>
     </header>
     <div class="content">
@@ -32,7 +32,7 @@
         >加载中
       </p>
       <p v-show="!isLoading && dataList.length && dataList.length >= total" class="dataNone">没有更多数据了...</p>
-      <!--<p v-show="!dataList.length" class="dataNone">暂无数据...</p>-->
+      <p v-show="!dataList.length" class="dataNone">暂无数据...</p>
 
       <!--内容...-->
 

@@ -79,7 +79,7 @@
             </div>
             <div class="bottom">
               <div @click.stop="download">
-                <i class="iconfont  icon-favorite"></i>
+                <i class="iconfont  icon-shoucang"></i>
                 <span>收藏</span>
                 <i></i>
               </div>
@@ -96,6 +96,21 @@
             </div>
           </li>
         </ul>
+
+        <div class="newComment clearfix">
+          <div class="writeComment clearfix">
+            <div class="left">
+              <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+            </div>
+            <div class="right">
+              <textarea name="" id="" cols="30" rows="10" placeholder="发表你的精彩品论"></textarea>
+            </div>
+          </div>
+          <div class="Publish">
+            <span>发表</span>
+          </div>
+        </div>
+
         <ul class="userComment">
           <li class="clearfix" v-for="item,index in dataList" v-if="dataList.length">
             <div class="userHead">
@@ -372,7 +387,7 @@
 
   .list li {
     padding: 32/@r 32/@r 0;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
     overflow: hidden;
   }
 
@@ -509,8 +524,8 @@
     color: #878787;
   }
 
-  .icon-favorite {
-    font-size: 34/@r;
+  .icon-shoucang {
+    font-size: 36/@r;
     vertical-align: bottom;
   }
 
@@ -678,4 +693,47 @@
   .bottom div {
     cursor: pointer;
   }
+  .newComment{
+    padding:20px 0;
+    border-bottom:1px solid #ccc;
+  }
+  .writeComment .left{
+    float:left;
+    width:40px;
+    height:40px;
+    border-radius: 50%;
+    overflow:hidden;
+  }
+  .writeComment .left img{
+    width:100%;
+  }
+  .writeComment .right{
+    width:90%;
+    height:120px;
+    float:right;
+  }
+  .writeComment .right textarea{
+    width:100%;
+    height:100%;
+    padding:10px 20px;
+    border-color:#ddd;
+    font-size:14px;
+  }
+  .Publish{
+    width:80px;
+    height:30px;
+    background-color: #e71844;
+    color:#fff;
+    text-align:center;
+    line-height:30px;
+    border-radius:5px;
+    float:right;
+    margin-top:20px;
+    cursor: pointer;
+  }
+  .Publish:hover{
+    background-color: #c91138;
+  }
+
+
 </style>

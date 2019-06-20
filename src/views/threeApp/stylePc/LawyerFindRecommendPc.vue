@@ -637,10 +637,9 @@
       },
       JumpDetail(obj) {
         //跳转律师详情页
-        console.log(obj,this.val.tag)
         let routeData = this.$router.resolve({
           path: "/LawyerFindArticleDetailPc",
-          query:{id:obj.id,lid:obj.uid,classify:obj.classify,tag:this.val.tag}
+          query: {id: obj.id, lid: obj.uid, classify: obj.classify, tag: this.val.tag}
         });
         window.open(routeData.href, "_blank");
       },
@@ -649,8 +648,10 @@
         //获取页面初始数据
         //   this.$store.commit("showLoading");
         let options = new FormData();
-        options.append('uid', this.userInfo.uid);
-        options.append('token', this.userInfo.token);
+        if (this.userInfo) {
+          options.append('uid', this.userInfo.uid);
+          options.append('token', this.userInfo.token);
+        }
         options.append("id", this.val.id);
         options.append("tag", this.val.tag);
         options.append("page", this.page);
@@ -660,6 +661,14 @@
       },
       Fabulous(item) {
         //点赞接口
+        if(!this.userInfo){
+          this.$message({
+            message:'请先登录',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
         let options = new FormData();
         options.append('uid', this.userInfo.uid);
         options.append('token', this.userInfo.token);
@@ -682,6 +691,14 @@
           })
       },
       Follows(item) {//关注接口
+        if(!this.userInfo){
+          this.$message({
+            message:'请先登录',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
         let options = new FormData();
         options.append('uid', this.userInfo.uid);
         options.append('token', this.userInfo.token);
@@ -921,7 +938,8 @@
     display: flex;
     justify-content: space-between;
   }
-  .bottom div{
+
+  .bottom div {
     cursor: pointer;
   }
 

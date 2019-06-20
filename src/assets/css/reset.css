@@ -100,6 +100,22 @@ button,
 input{
   outline: none;
 }
+textarea{
+  outline: none;
+  resize:none;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+  color:    #ccc;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #ccc;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #ccc;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color:    #ccc;
+}
 
 img {
   vertical-align: top;

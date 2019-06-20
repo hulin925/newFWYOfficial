@@ -47,17 +47,31 @@
             <img src="https://web.3fgj.com/imgVue/lawyer.ico" alt="">
           </div>
 
-          <div v-for="item,index in navList" @click="changeShow(item,index)" :class="{active:item.isId==indexData}">
+          <div v-for="item,index in navList" @click="changeShow(item,index)" :class="{active:item.isId==indexData}" id="navs" class="everyDiv">
             <span>{{item.name}}</span>
           </div>
 
 
-          <div class="navDownload" v-if="fixed" @click.stop="download()">
+          <div class="navDownload"  @click.stop="download()" v-if="fixed">
             <span>下载APP</span>
           </div>
-          <div class="navSingIn" v-if="fixed" @click.stop="goSingIn()">
-            <span class="beforeNone">登录</span>
+          <!--<div class="navSingIn" @click.stop="goSingIn()"  v-if="!dataInfo">-->
+            <!--<span class="beforeNone">登录</span>-->
+          <!--</div>-->
+          <div class="userInfos navUser" v-if="dataInfo&&fixed">
+            <h1>
+              <img :src="face" alt="">
+            </h1>
+            <div class="clearfix">
+              <strong>{{dataInfo.nickname}}</strong>
+              <i class="iconfont icon-xiala"></i>
+            </div>
+            <ul class="Personal">
+              <li>个人中心</li>
+              <li @click="singOut()">退出</li>
+            </ul>
           </div>
+
 
         </div>
 
@@ -89,7 +103,7 @@
 
           <div v-if="!getCode">
             <div>
-              <input type="text" placeholder="请输入手机号" v-model="loginForm.name"
+              <input type="text" placeholder="请输入手机号" v-model="loginForm.name"  ref="input1"
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
             <div>
@@ -115,7 +129,7 @@
 
           <div v-else>
             <div>
-              <input type="text" placeholder="请输入手机号" v-model="loginForm.name" @keyup.enter="sendCode()"
+              <input type="text" placeholder="请输入手机号" v-model="loginForm.name" @keyup.enter="sendCode()" ref="input2"
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
             <div class="sendCode">
@@ -150,7 +164,7 @@
         <div class="singInFork" v-else>
           <div v-if="upData">
             <div>
-              <input type="text" placeholder="请输入手机号" v-model="loginForm.name1" @keyup.enter="sendCodes()"
+              <input type="text" placeholder="请输入手机号" v-model="loginForm.name1" @keyup.enter="sendCodes()" ref="input3"
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
             <div class="sendCode" v-show="!isShow">
@@ -173,14 +187,14 @@
             <div class="denglu" @click="changePassword()" v-else>
               <span>确认</span>
             </div>
-            <div class="Password alignCenter" @click.stop="forgetPassword()">
-              <span @click.stop="backSingIn">返回登录</span>
+            <div class="Password alignCenter" @click.stop="backSingIn">
+              <span>返回登录</span>
             </div>
           </div>
           <div v-else class="upData">
             <p>密码修改成功！</p>
-            <div class="Password alignCenter" @click.stop="forgetPassword()">
-              <span @click.stop="backSingIn">返回登录</span>
+            <div class="Password alignCenter" @click.stop="backSingIn">
+              <span>返回登录</span>
             </div>
           </div>
         </div>
@@ -369,21 +383,38 @@
       goSingIn() {//登录
         this.closeOut = !this.closeOut;
         this.getCode=false;
+        this.showErr1=false;
+        this.showErr2=false;
+        this.showErr3=false;
+        this.forget=false;
+
+        this.$nextTick(()=>{
+          this.$refs.input1.focus();
+        })
       },
       Close() {//关闭注册
         this.closeOut = !this.closeOut;
       },
       backSingIn() {//返回登录
         this.forget = false;
+        this.$nextTick(()=>{
+          this.$refs.input1.focus();
+        })
       },
       forgetPassword() {//忘记秘密
         this.isShow=true;
         this.forget = true;
         this.upData=true;
         this.loginForm.name1='';
+        this.$nextTick(()=>{
+          this.$refs.input3.focus();
+        })
       },
       singIn() {//已有账号
         this.getCode = false;
+        this.$nextTick(()=>{
+          this.$refs.input1.focus();
+        })
       },
       handleChange(value) {
         this.cityData = value;
@@ -394,6 +425,9 @@
         this.value=[];
         this.loginForm.name='';
         this.getCode = true;
+        this.$nextTick(()=>{
+          this.$refs.input2.focus();
+        })
       },
       registerData() {//注册
         let options = new FormData();
@@ -443,8 +477,12 @@
       },
       scrollTop() {
         let scrollTop = document.documentElement.scrollTop; //滚动条的高
+        var navs=document.querySelectorAll('#navs');
         if (scrollTop > 100) {
           this.fixed = true;
+          // navs.forEach((item)=>{
+          //   item.style.marginLeft=-10+'px';
+          // })
         } else {
           this.fixed = false;
         }
@@ -507,7 +545,22 @@
     background-color: #fff;
     border-bottom: 1px solid #dfdfdf;
   }
-
+  .navBorder .navUser{
+    padding:0;
+  }
+  .navBorder .navDownload{
+    margin-right:20px;
+    position:relative;
+  }
+  .navBorder .navDownload:before{
+    position:absolute;
+    content:'';
+    right:-12px;
+    top:30%;
+    width:1px;
+    height:20px;
+    background-color: #ccc;
+  }
   .navBorder .navDownload span, .navBorder .navSingIn span {
     color: #da3838;
     font-size: 16px;
@@ -742,7 +795,7 @@
     border-radius: 3px;
   }
 
-  .nav div:hover {
+  .nav .everyDiv:hover {
     cursor: pointer;
     color: #da3838;
   }
