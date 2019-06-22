@@ -6,6 +6,19 @@ import LawyerFindRecommendPc from '@/views/threeApp/stylePc/LawyerFindRecommendP
 import LawyerFindArticleDetailPc from '@/views/threeApp/stylePc/LawyerFindArticleDetailPc'//发现页下的文章详情
 import LawyerFindLawDetailsPc from '@/views/threeApp/stylePc/LawyerFindLawDetailsPc'//发现页下法条详情
 import LawyerFindFatiaoPc from '@/views/threeApp/stylePc/LawyerFindFatiaoPc'//发现页下法条
+import LawyerSpecialPc from '@/views/threeApp/LawyerSpecialPc'//律师专题页
+import myFansPc from '@/views/threeApp/LawyerSpecialRoutesPc/myFans'//我的粉丝
+import personalData from '@/views/threeApp/stylePc/personalData'//个人资料
+import informationPc from '@/views/threeApp/stylePc/personalData/information'//我的资料
+import PersonalCollectionPc from '@/views/threeApp/stylePc/personalData/PersonalCollection'//我的收藏
+import PersonalGzPc from '@/views/threeApp/stylePc/personalData/PersonalGz'//我的关注
+//LawyerSpecialPc下的子路由
+import LawyerSpecialNavPc from '@/views/threeApp/LawyerSpecialRoutesPc/LawyerSpecialNav'//律师专题页nav
+import homePc from '@/views/threeApp/LawyerSpecialRoutesPc/home'
+import viewpointPc from '@/views/threeApp/LawyerSpecialRoutesPc/viewpoint'
+import videoPc from '@/views/threeApp/LawyerSpecialRoutesPc/video'
+import servicePc from '@/views/threeApp/LawyerSpecialRoutesPc/service'
+import consultationPc from '@/views/threeApp/LawyerSpecialRoutesPc/consultation'
 
 //mobile
 import LawyerFindRecommend from '@/views/threeApp/LawyerFind/LawyerFindRecommend'//发现页下的推荐
@@ -45,9 +58,6 @@ let routeList = [
     path: '/',
     name:'LawyerFindRecommend',
     component: LawyerFindRecommend,
-    // component(resolve){
-    //   require(['@/views/threeApp/LawyerFind/LawyerFindRecommend'],resolve)
-    // }
   },
   //3.0律师发现页下的文章详情PC
   {
@@ -73,23 +83,95 @@ let routeList = [
     name:'LawyerFindLawDetailsPc',
     component: LawyerFindLawDetailsPc,
   },
+  //3.0律师发现页下的法条详情PC
+  {
+    path: '/personalData',
+    name:'personalData',
+    component: personalData,
+    redirect:'personalData/PersonalCollectionPc',
+    children:[
+      //我的收藏
+      {
+        path:'PersonalCollectionPc',
+        name:'PersonalCollectionPc',
+        component:PersonalCollectionPc
+      },
+      //我的关注
+      {
+        path:'PersonalGzPc',
+        name:'PersonalGzPc',
+        component:PersonalGzPc
+      },
+      //我的资料
+      {
+        path:'informationPc',
+        name:'informationPc',
+        component:informationPc
+      },
+    ]
+  },
+  //3.0律师专题页NavPc
+  {
+    path: '/LawyerSpecialNavPc',
+    name:'LawyerSpecialNavPc',
+    component: LawyerSpecialNavPc
+  },
+  //3.0律师专题页PC
+  {
+    path:'/LawyerSpecialPc',
+    name:'LawyerSpecialPc',
+    component:LawyerSpecialPc,
+    redirect:'LawyerSpecialPc/homePc',
+    children:[
+      //主页
+      {
+        path: 'homePc',
+        name:'homePc',
+        component: homePc
+      },
+      //观点
+      {
+        path: 'viewpointPc',
+        name:'viewpointPc',
+        component: viewpointPc
+      },
+      //视频
+      {
+        path: 'videoPc',
+        name:'videoPc',
+        component: videoPc
+      },
+      //文书服务
+      {
+        path: 'servicePc',
+        name:'servicePc',
+        component: servicePc
+      },
+      //图文咨询
+      {
+        path: 'consultationPc',
+        name:'consultationPc',
+        component: consultationPc
+      }
+    ]
+  },
+  //我的粉丝
+  {
+    path:'/myFansPc',
+    name:'myFansPc',
+    component:myFansPc
+  },
   //3.0律师发现页下的法条
   {
     path: '/LawyerFindFatiao',
     name:'LawyerFindFatiao',
     component: LawyerFindFatiao,
-    // component(resolve){
-    //   require(['@/views/threeApp/LawyerFind/LawyerFindFatiao'],resolve)
-    // }
   },
   //3.0律师发现页下的法条详情列表
   {
     path: '/LawyerFindLawDetails',
     name:'LawyerFindLawDetails',
     component: LawyerFindLawDetails,
-    // component(resolve){
-    //   require(['@/views/threeApp/LawyerFind/LawyerFindLawDetails'],resolve)
-    // }
   },
   //3.0律师发现页下的文章详情
   {
@@ -102,18 +184,12 @@ let routeList = [
     path: '/LawyerSpecialNav',
     name:'LawyerSpecialNav',
     component: LawyerSpecialNav
-    // component(resolve){
-    //   require(['@/views/threeApp/LawyerSpecialRoutes/LawyerSpecialNav'],resolve)
-    // }
   },
   //3.0律师专题页
   {
     path:'/LawyerSpecial',
     name:'LawyerSpecial',
     component:LawyerSpecial,
-    // component(resolve){
-    //   require(['@/views/threeApp/LawyerSpecial'],resolve)
-    // },
     redirect:'LawyerSpecial/home',
     children:[
       //主页

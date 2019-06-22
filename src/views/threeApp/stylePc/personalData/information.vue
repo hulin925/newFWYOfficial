@@ -4,12 +4,10 @@
 
 <script>
     export default {
-        name: "navWrap"
+        name: "information"
     }
 </script>
 
-<style scoped lang="less" type="text/less">
-  @r:30rem;
-
+<style scoped>
 
 </style>

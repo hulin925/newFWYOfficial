@@ -1,7 +1,6 @@
 <template>
   <div>
-    <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" :class="this.$isMobile()?'':'isPc'">
-      <section>
+      <section class="isPc">
         <ul class="list">
           <li>
             <div class="title clearfix" @click.stop="PersonalTopics(data)">
@@ -38,10 +37,6 @@
               <div v-html="data.content"></div>
             </div>
             <div class="content" v-if="data.classify==3">
-              <!--<video width="320" height="240" controls="controls" :poster="data.cover">-->
-              <!--<source :src="data.videos" type="video/mp4">-->
-              <!--</video>-->
-
               <div v-if="data.local==0">
                 <video
                   width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
@@ -71,27 +66,17 @@
               <div class="statement">
                 <p>免责声明：本文来自芯汇法务云客户端自媒体，不代表芯汇法务云的观点和立场。</p>
               </div>
-              <!--<div class="clearfix" v-else>-->
-              <!--<div class="firstImg">-->
-              <!--<img :src="item.thumbnail[0]" alt="">-->
-              <!--</div>-->
-              <!--</div>-->
             </div>
-            <div class="bottom">
-              <div @click.stop="download">
-                <i class="iconfont  icon-shoucang"></i>
-                <span>收藏</span>
-                <i></i>
-              </div>
-              <div @click.stop="download">
-                <i class="iconfont  icon-pinglun1"></i>
-                <span>评论</span>
-                <i>{{data.history_comment_count}}</i>
-              </div>
+            <div class="bottom clearfix">
               <div @click.stop="Fabulous(data)" :class="{color:data.iszan == 1}">
                 <span><i class="iconfont  icon-zan" :class="{color:data.iszan == 1}"></i></span>
                 <span>点赞</span>
                 <i>{{data.histort_reward_count}}</i>
+              </div>
+              <div @click.stop="download">
+                <i class="iconfont  icon-shoucang"></i>
+                <span>收藏</span>
+                <i></i>
               </div>
             </div>
           </li>
@@ -103,10 +88,11 @@
               <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
             </div>
             <div class="right">
-              <textarea name="" id="" cols="30" rows="10" placeholder="发表你的精彩品论"></textarea>
+              <textarea name="" id="" cols="30" rows="10" placeholder="发表你的精彩品论" v-model="commentData"></textarea>
+              <span></span>
             </div>
           </div>
-          <div class="Publish">
+          <div class="Publish" @click.stop="CommentPass(data)">
             <span>发表</span>
           </div>
         </div>
@@ -128,7 +114,6 @@
         </ul>
       </section>
 
-    </mescroll-vue>
 
     <div class="showStart">
       <toast v-model="showStart" type="text" :time="1000">
@@ -160,6 +145,7 @@
     },
     data() {
       return {
+        commentData:'',//评论数据
         userInfo: {},
         id: '',//文章id
         lid: '',//律师
@@ -170,31 +156,6 @@
         data: {},//初始数据
         lidImg: '',
         list: [],
-        mescroll: null, // mescroll实例对象
-        mescrollDown: {}, //下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
-        mescrollUp: { // 上拉加载的配置.
-          callback: this.upCallback, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
-          //以下是一些常用的配置,当然不写也可以的.
-          page: {
-            num: 0, //当前页 默认0,回调之前会加1; 即callback(page)会从1开始
-            size: 9 //每页数据条数,默认10
-          },
-          htmlNodata: '<p class="upwarp-nodata">亲,没有更多数据了~</p>',
-          noMoreSize: 5, //如果列表已无数据,可设置列表的总数量要大于5才显示无更多数据;
-          // 避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
-          // 这就是为什么无更多数据有时候不显示的原因
-          // toTop: {
-          //   //回到顶部按钮
-          //   src: "../../../static/mes.png", //图片路径,默认null,支持网络图
-          //   offset: 1000 //列表滚动1000px才显示回到顶部按钮
-          // },
-          empty: {
-            //列表第一页无任何数据时,显示的空提示布局; 需配置warpId才显示
-            // warpId: "xxid", //父布局的id (1.3.5版本支持传入dom元素)
-            icon: "../../../static/mescroll/mescroll-empty.png", //图标,默认null,支持网络图
-            tip: "暂无相关数据~" //提示
-          }
-        },
         dataList: [] // 列表数据
       }
     },
@@ -206,34 +167,38 @@
       this.classify = this.$route.query.classify;
       this.tag = this.$route.query.tag;
       this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+      this.initFind();
     },
     methods: {
-      CommentPass(obj) {//评论接口，ios传递数据
-        let now = JSON.parse(obj);
+      CommentPass(now) {//评论接口，
+        if(!this.userInfo){
+          this.$message({
+            message:'请先登录',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
+        if(!this.commentData){
+          this.$message({
+            message:'请填写内容',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
         let options = new FormData();
-        options.append('uid', now.uid);//1068有评论
-        options.append('token', now.token);//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d
-        options.append('type', now.type);
-        options.append('toid', now.toid);
-        options.append('content', now.content);
+        if(this.userInfo){
+          options.append('uid', this.userInfo.uid);//1068有评论
+          options.append('token', this.userInfo.token);
+        }
+        options.append('type', now.classify);
+        options.append('toid', now.id);
+        options.append('content', this.commentData);
         this.$store.dispatch('LawyerFindArticleComment', options)
           .then(data => {
-            this.mescroll.resetUpScroll()
+            this.initFind()
           })
-      },
-      Comment(item) {//评论，ios传递数据
-        this.obj.type = item.classify;
-        this.obj.toid = item.id;
-        // Comment(this.obj);//ios 传递参数
-        // window.htmlToAndroid.Comment(JSON.stringify(this.obj));//android 传递参数
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          Comment(this.obj);//ios 传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.Comment(JSON.stringify(this.obj));//android 传递参数
-        }
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
@@ -252,11 +217,13 @@
       initFind(page, mescroll) { //获取页面初始数据
         // this.$store.commit("showLoading");
         let options = new FormData();
-        options.append('uid', this.userInfo.uid);
+        if(this.userInfo){
+          options.append('uid', this.userInfo.uid);
+        }
         options.append('id', this.id);
         options.append('tag', this.tag);
         options.append('classify', this.classify);
-        options.append('page', page.num);
+        options.append('page', 1);
         this.$store.dispatch('LawyerFindArticleDetail', options)
           .then(data => {
             data.videos = data.weburl + data.path;//拼接后的video
@@ -264,14 +231,7 @@
             this.weburl = data.weburl;
             this.data = data;//初始数据
             this.lidImg = data.weburl + data.face;//拼接的头像
-            this.list = data.list;
-            // 如果是第一页需手动制空列表
-            if (page.num === 1) this.dataList = [];
-            // 把请求到的数据添加到列表
-            this.dataList = this.dataList.concat(this.list);
-            this.$nextTick(() => {
-              mescroll.endSuccess(this.list.length)
-            })
+            this.dataList = data.list;
             if (data.classify == 6) { //获取app端图片
               let arr = JSON.parse(data.thumbnail);
               arr = arr.map(v => {
@@ -298,17 +258,19 @@
             }
             // this.$store.commit("hidenLoading");
           }, err => {
-            mescroll.endErr()
           }).catch((e) => {
           // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
-          mescroll.endErr()
         })
       },
-      // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
-      upCallback(page, mescroll) {
-        this.initFind(page, mescroll)
-      },
       Follows(item) {//关注接口
+        if(!this.userInfo){
+          this.$message({
+            message:'请先登录',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
         let options = new FormData();
         options.append('uid', this.userInfo.uid);
         options.append('token', this.userInfo.token);
@@ -317,15 +279,21 @@
           .then(data => {
             if (item.uid == this.data.uid) {
               this.data.isguanzhu = data.flag;
-              console.log(data.flag)
               return this.data;
             }
             return this.data;
           })
-
       },
       Fabulous(item) { //点赞接口
         //点赞接口
+        if(!this.userInfo){
+          this.$message({
+            message:'请先登录',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
         let options = new FormData();
         options.append('uid', this.userInfo.uid);
         options.append('token', this.userInfo.token);
@@ -368,17 +336,16 @@
   }
 
   video {
-    width: 100%;
-    height: 400/@r;
+    margin:0 auto;
+    width:60%;
     display: block;
-    border-radius: 3px !important;
   }
 
   .topTitle {
     font-size: 36/@r;
     color: #000;
     line-height: 48/@r;
-    padding: 10/@r 0;
+    padding-bottom:15px;
   }
 
   section {
@@ -387,7 +354,6 @@
 
   .list li {
     padding: 32/@r 32/@r 0;
-    /*border-bottom: 1px solid #ddd;*/
     overflow: hidden;
   }
 
@@ -508,8 +474,20 @@
 
   .bottom {
     margin-top: 30/@r;
-    display: flex;
-    justify-content: space-between;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+  }
+
+  .bottom .color {
+    color: #FF8200;
+  }
+
+  .bottom div {
+    line-height: 88/@r;
+    color: #666666;
+    position: relative;
+    float:right;
+    margin-left:60px;
   }
 
   .bottom div:nth-child(2) {
@@ -539,16 +517,6 @@
     display: inline-block;
     vertical-align: bottom;
     font-size: 40/@r;
-  }
-
-  .bottom .color {
-    color: #FF8200;
-  }
-
-  .bottom div {
-    line-height: 88/@r;
-    color: #666666;
-    position: relative;
   }
 
   .userComment {
@@ -711,6 +679,7 @@
     width:90%;
     height:120px;
     float:right;
+    margin-right:5px;
   }
   .writeComment .right textarea{
     width:100%;

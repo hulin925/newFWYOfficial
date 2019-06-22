@@ -58,8 +58,8 @@
             <!--<span>刑事</span>-->
             <!--<span>治安</span>-->
             <!--</div>-->
-            <div v-if="item.classify==2">
-              <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
+            <div v-if="item.classify==2" @click.stop="JumpDetail(item)">
+              <div class="content" ref="contentss">
                 <div v-html="item.content"></div>
               </div>
               <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
@@ -83,8 +83,8 @@
               </div>
             </div>
 
-            <div v-if="item.classify==6">
-              <div class="content" @click.stop="JumpDetail(item)">
+            <div v-if="item.classify==6" @click.stop="JumpDetail(item)">
+              <div class="content">
                 <div v-html="item.content"></div>
               </div>
               <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
@@ -116,12 +116,12 @@
               </div>
             </div>
             <div class="Img clearfix" v-if="item.classify==3">
-              <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
+              <div v-if="item.local==0">
                 <video width="320" height="240" :poster="item.cover" controls="controls">
                   <source :src="item.videos" type="video/mp4">
                 </video>
               </div>
-              <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
+              <div v-else-if="item.local==1">
                 <video width="320" height="240" :poster="item.cover" controls="controls">
                   <source :src="item.path" type="video/mp4">
                 </video>
@@ -631,7 +631,12 @@
       },
       PersonalTopics(item) {
         //跳转个人律师专题页
-        this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}});
+        // this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}})
+        let routeData=this.$router.resolve({
+          name:'LawyerSpecialPc',
+          query:{lid:item.uid}
+        })
+        window.open(routeData.href,"_blank");
 
         sessionStorage.setItem("LawyerId", item.uid);
       },
@@ -662,6 +667,7 @@
       Fabulous(item) {
         //点赞接口
         if(!this.userInfo){
+          this.$store.commit('showCloseOutPc');
           this.$message({
             message:'请先登录',
             type: 'warning',
@@ -692,6 +698,7 @@
       },
       Follows(item) {//关注接口
         if(!this.userInfo){
+          this.$store.commit('showCloseOutPc');
           this.$message({
             message:'请先登录',
             type: 'warning',
@@ -794,6 +801,7 @@
   .list .title {
     height: 88 / @r;
     position: relative;
+    cursor: pointer;
   }
 
   .title .left {
@@ -903,9 +911,7 @@
 
   .Img video {
     width: 100%;
-    height: 400 / @r;
     display: block;
-    border-radius: 3px !important;
     margin-bottom: 20 / @r;
   }
 

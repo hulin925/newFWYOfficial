@@ -14,6 +14,12 @@ export default {
   hidenZan(state) {
     state.isZan = false;
   },
+  hidenCloseOutPc(state){//pc登录窗口
+	  state.closeOutPc=false;
+  },
+  showCloseOutPc(state){
+	  state.closeOutPc=true;
+  },
 	setLawyerNav(state, id) { //改变state数据
 		state.WrapNavList = state.WrapNavList.map((item, index) => {
 			if (index == id) {
@@ -25,6 +31,17 @@ export default {
 			}
 		})
 	},
+  setLawyerNavPc(state, id) { //改变state数据
+    state.WrapNavListPc = state.WrapNavListPc.map((item, index) => {
+      if (index == id) {
+        item.active = true;
+        return item
+      } else {
+        item.active = false;
+        return item
+      }
+    })
+  },
   isSetLayerNav(state,id){//判断是否是援助
 	  state.isWrapNavList=state.isWrapNavList.map((item,index)=>{
 	    if(index==id){
@@ -46,6 +63,18 @@ export default {
         return item
       }
     })
+  },
+  personalDataPc(state,id){
+	  state.personalDataPc=state.personalDataPc.map((item,index)=>{
+	    if(index == id){
+	      item.active = true;
+	      return item;
+      }else{
+	      item.active = false;
+	      return item;
+      }
+    })
+
   },
 	initArrImg(state, data) { //查看图片
 		state.arrImg = data;

@@ -34,7 +34,7 @@
               <i class="iconfont icon-xiala"></i>
             </div>
             <ul class="Personal">
-              <li>个人中心</li>
+              <li @click="PersonalCenter()">个人中心</li>
               <li @click="singOut()">退出</li>
             </ul>
           </div>
@@ -88,7 +88,7 @@
     </div>
 
 
-    <div class="warpSingIn" v-show="closeOut">
+    <div class="warpSingIn" v-show="closeOutPc">
       <div class="singInFrame">
         <div class="fork clearfix">
           <span @click.stop="Close()">×</span>
@@ -211,12 +211,15 @@
 <script>
   import LawyerFindRecommendPc from '../views/threeApp/stylePc/LawyerFindRecommendPc.vue'
   import LawyerFindFatiaoPc from '../views/threeApp/stylePc/LawyerFindFatiaoPc.vue'
-
   import pcProvinceData from '@/assets/pcProvinceData.js'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: "navPc",
     inject:['reload'],
+    computed:mapGetters([
+      'closeOutPc'
+    ]),
     data() {
       return {
         dataInfo:{},
@@ -241,7 +244,6 @@
         fatiao: false,
         getCode: false,
         forget: false,
-        closeOut: false,//窗口
         loginForm: {
           name: '',
           name1: '',
@@ -267,6 +269,12 @@
       }
     },
     methods: {
+      PersonalCenter(){//个人中心
+        let routerData=this.$router.resolve({
+          name:'personalData'
+        })
+        window.open(routerData.href,"_blank");
+      },
       singOut(){//退出
         sessionStorage.removeItem('userInfo');
         this.reload();
@@ -369,7 +377,8 @@
             } else {
               this.reload();
               this.showErr1 = false;
-              this.closeOut = false;
+              // this.closeOutPc = false;
+              this.$store.commit('hidenCloseOutPc');
               sessionStorage.setItem('userInfo', JSON.stringify(data));
               this.$message({
                 message:'登录成功',
@@ -381,7 +390,8 @@
           })
       },
       goSingIn() {//登录
-        this.closeOut = !this.closeOut;
+        this.$store.commit('showCloseOutPc');
+        // this.closeOutPc = !this.closeOut;
         this.getCode=false;
         this.showErr1=false;
         this.showErr2=false;
@@ -393,7 +403,8 @@
         })
       },
       Close() {//关闭注册
-        this.closeOut = !this.closeOut;
+        this.$store.commit('hidenCloseOutPc');
+        // this.closeOutPc = !this.closeOut;
       },
       backSingIn() {//返回登录
         this.forget = false;
@@ -455,7 +466,8 @@
                 center:true
               })
               this.showErr2 = false;
-              this.closeOut = false;
+              this.$store.commit('hidenCloseOutPc');
+              // this.closeOutPc = false;
               sessionStorage.setItem('userInfo', JSON.stringify(data));
               setTimeout(()=>{
                 this.$message({

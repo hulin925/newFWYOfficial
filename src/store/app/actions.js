@@ -448,6 +448,48 @@ export default {
         })
     })
   },
+  //PC评论
+  commentPc(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/comment/comment', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC我的关注
+  PersonalGz(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/member/getguanzhu', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC我的收藏
+  PersonalCollection(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/member/getcollection', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
 
 
 
