@@ -67,7 +67,7 @@
               <i class="iconfont icon-xiala"></i>
             </div>
             <ul class="Personal">
-              <li>个人中心</li>
+              <li @click="PersonalCenter()">个人中心</li>
               <li @click="singOut()">退出</li>
             </ul>
           </div>

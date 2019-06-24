@@ -36,10 +36,13 @@
     },
     created(){
       this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));
-      console.log(this.dataInfo)
+      for (let i = 0; i < this.personalDataPc.length; i++) {
+        if (this.personalDataPc[i].pushName == this.$route.name) {
+          this.$store.commit('personalDataPc', i);
+        }
+      }
       if(this.dataInfo){
         this.face=this.dataInfo.weburl+this.dataInfo.face;
-        console.log(this.face)
       }
     },
     methods: {
@@ -65,10 +68,8 @@
   }
 
   .left h1 {
-    width: 100px;
-    height: 100px;
-    padding:5px;
-    border: 1px solid #ddd;
+    width: 80px;
+    height:80px;
     margin: 0 auto;
     border-radius: 50%;
     background-image: url("../../../assets/img/headerIcon.png");
@@ -77,6 +78,7 @@
   }
   h1 img{
     width:100%;
+    height:100%;
   }
 
   .left p {
@@ -86,6 +88,9 @@
 
   .left .bottom {
     margin-top: 120px;
+  }
+  li:hover{
+    color:red;
   }
 
   .left .bottom li {

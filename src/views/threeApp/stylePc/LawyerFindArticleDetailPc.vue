@@ -1,118 +1,117 @@
 <template>
   <div>
-      <section class="isPc">
-        <ul class="list">
-          <li>
-            <div class="title clearfix" @click.stop="PersonalTopics(data)">
-              <div class="left">
-                <img :src="lidImg" alt="">
-              </div>
+    <section class="isPc">
+      <ul class="list">
+        <li>
+          <div class="title clearfix" @click.stop="PersonalTopics(data)">
+            <div class="left">
+              <img :src="lidImg" alt="">
+            </div>
 
-              <div class="Grade">
-                <img src="../../../assets/img/lanV.png" alt="" v-if="data.cert_type!=1" class="GradeFirst">
-                <img src="../../../assets/img/level.png" alt="" v-else class="GradeTwo">
-              </div>
+            <div class="Grade">
+              <img src="../../../assets/img/lanV.png" alt="" v-if="data.cert_type!=1" class="GradeFirst">
+              <img src="../../../assets/img/level.png" alt="" v-else class="GradeTwo">
+            </div>
 
-              <div class="center">
-                <h2 :class="{GradeColor:data.cert_type != 1}">{{data.username}}</h2>
-                <p v-if="data.add_time!=0">{{data.add_time}}</p>
-                <p v-else>{{data.company}}</p>
-              </div>
-              <div class="right" @click.stop="Follows(data)">
-                <span v-if="data.isguanzhu==0">+ 关注 </span>
-                <span v-else class="cancelFollow">
+            <div class="center">
+              <h2 :class="{GradeColor:data.cert_type != 1}">{{data.username}}</h2>
+              <p v-if="data.add_time!=0">{{data.add_time}}</p>
+              <p v-else>{{data.company}}</p>
+            </div>
+            <div class="right" @click.stop="Follows(data)">
+              <span v-if="data.isguanzhu==0">+ 关注 </span>
+              <span v-else class="cancelFollow">
                     <i class="iconfont  icon-gou"></i>
                     已关注
                 </span>
-              </div>
-            </div>
-            <div class="brief clearfix">
-              <!--<span>刑事</span>-->
-              <!--<span>治安</span>-->
-              <i>阅读 {{data.click}}</i>
-              <i class="iconfont  icon-yuedu"></i>
-            </div>
-            <div class="topTitle">{{data.title}}</div>
-            <div class="content" v-if="data.classify==2">
-              <div v-html="data.content"></div>
-            </div>
-            <div class="content" v-if="data.classify==3">
-              <div v-if="data.local==0">
-                <video
-                  width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
-                  x5-video-player-type="h5" x5-video-player-fullscreen="true"
-                >
-                  <source :src="data.videos" type="video/mp4">
-                </video>
-              </div>
-              <div v-else-if="data.local==1">
-                <video
-                  width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
-                  x5-video-player-type="h5"
-                >
-                  <source :src="data.path" type="video/mp4">
-                </video>
-              </div>
-
-
-            </div>
-            <div class="content Article" v-if="data.classify==6">
-              <div>{{data.content}}</div>
-              <div class="clearfix">
-                <div class="ImgIcon" v-for="v in data.thumbnail">
-                  <img v-lazy="v" alt="">
-                </div>
-              </div>
-              <div class="statement">
-                <p>免责声明：本文来自芯汇法务云客户端自媒体，不代表芯汇法务云的观点和立场。</p>
-              </div>
-            </div>
-            <div class="bottom clearfix">
-              <div @click.stop="Fabulous(data)" :class="{color:data.iszan == 1}">
-                <span><i class="iconfont  icon-zan" :class="{color:data.iszan == 1}"></i></span>
-                <span>点赞</span>
-                <i>{{data.histort_reward_count}}</i>
-              </div>
-              <div @click.stop="download">
-                <i class="iconfont  icon-shoucang"></i>
-                <span>收藏</span>
-                <i></i>
-              </div>
-            </div>
-          </li>
-        </ul>
-
-        <div class="newComment clearfix">
-          <div class="writeComment clearfix">
-            <div class="left">
-              <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
-            </div>
-            <div class="right">
-              <textarea name="" id="" cols="30" rows="10" placeholder="发表你的精彩品论" v-model="commentData"></textarea>
-              <span></span>
             </div>
           </div>
-          <div class="Publish" @click.stop="CommentPass(data)">
-            <span>发表</span>
+          <div class="brief clearfix">
+            <!--<span>刑事</span>-->
+            <!--<span>治安</span>-->
+            <i>阅读 {{data.click}}</i>
+            <i class="iconfont  icon-yuedu"></i>
+          </div>
+          <div class="topTitle">{{data.title}}</div>
+          <div class="content" v-if="data.classify==2">
+            <div v-html="data.content"></div>
+          </div>
+          <div class="content" v-if="data.classify==3">
+            <div v-if="data.local==0">
+              <video
+                width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
+                x5-video-player-type="h5" x5-video-player-fullscreen="true"
+              >
+                <source :src="data.videos" type="video/mp4">
+              </video>
+            </div>
+            <div v-else-if="data.local==1">
+              <video
+                width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
+                x5-video-player-type="h5"
+              >
+                <source :src="data.path" type="video/mp4">
+              </video>
+            </div>
+
+
+          </div>
+          <div class="content Article" v-if="data.classify==6">
+            <div>{{data.content}}</div>
+            <div class="clearfix">
+              <div class="ImgIcon" v-for="v in data.thumbnail">
+                <img v-lazy="v" alt="">
+              </div>
+            </div>
+            <div class="statement">
+              <p>免责声明：本文来自芯汇法务云客户端自媒体，不代表芯汇法务云的观点和立场。</p>
+            </div>
+          </div>
+          <div class="bottom clearfix">
+            <div @click.stop="Fabulous(data)" :class="{color:data.iszan == 1}">
+              <span><i class="iconfont  icon-zan" :class="{color:data.iszan == 1}"></i></span>
+              <span>点赞</span>
+              <i>{{data.histort_reward_count}}</i>
+            </div>
+            <div @click.stop="Collection(data)" :class="{color:data.iscollection == 1}">
+              <span><i class="iconfont  icon-shoucang"></i></span>
+              <span>收藏</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="newComment clearfix">
+        <div class="writeComment clearfix">
+          <div class="left">
+            <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+          </div>
+          <div class="right">
+            <textarea name="" id="" cols="30" rows="10" placeholder="发表你的精彩品论" v-model="commentData"></textarea>
+            <span></span>
           </div>
         </div>
+        <div class="Publish" @click.stop="CommentPass(data)">
+          <span>发表</span>
+        </div>
+      </div>
 
-        <ul class="userComment">
-          <li class="clearfix" v-for="item,index in dataList" v-if="dataList.length">
-            <div class="userHead">
-              <img :src="weburl+item.face" alt="">
-            </div>
-            <div class="userInfo">
-              <p>{{item.nickname}}</p>
-              <p>{{item.content}}</p>
-              <p>{{item.add_time*1000 | getAddTime}}</p>
-            </div>
-          </li>
-          <li class="Product">
-            <p>~ 亲 暂无更多评论~</p>
-          </li>
-        </ul>
-      </section>
+      <ul class="userComment">
+        <li class="clearfix" v-for="item,index in dataList" v-if="dataList.length">
+          <div class="userHead">
+            <img :src="weburl+item.face" alt="">
+          </div>
+          <div class="userInfo">
+            <p>{{item.nickname}}</p>
+            <p>{{item.content}}</p>
+            <p>{{item.add_time*1000 | getAddTime}}</p>
+          </div>
+        </li>
+        <li class="Product">
+          <p>~ 亲 暂无更多评论~</p>
+        </li>
+      </ul>
+    </section>
 
 
     <div class="showStart">
@@ -121,10 +120,6 @@
           <i></i>
         </div>
       </toast>
-    </div>
-
-    <div class="openApp" @click.stop="download" v-if="this.$isMobile()">
-      <span>打开APP查看更多详情</span>
     </div>
 
   </div>
@@ -145,7 +140,7 @@
     },
     data() {
       return {
-        commentData:'',//评论数据
+        commentData: '',//评论数据
         userInfo: {},
         id: '',//文章id
         lid: '',//律师
@@ -170,25 +165,48 @@
       this.initFind();
     },
     methods: {
-      CommentPass(now) {//评论接口，
-        if(!this.userInfo){
+      Collection(item) {//收藏接口
+        if (!this.userInfo) {
           this.$message({
-            message:'请先登录',
-            type: 'warning',
-            center: true
-          })
-          return;
-        }
-        if(!this.commentData){
-          this.$message({
-            message:'请填写内容',
+            message: '请先登录',
             type: 'warning',
             center: true
           })
           return;
         }
         let options = new FormData();
-        if(this.userInfo){
+        options.append('uid', this.userInfo.uid);
+        options.append('token', this.userInfo.token);
+        options.append('type', this.classify);
+        options.append('id', item.id);
+        this.$store.dispatch('Collection', options)
+          .then(data => {
+            if (item.id == this.data.id && item.classify == this.data.classify) {
+              this.data.iscollection = data.info;
+              return this.data;
+            }
+            return this.data;
+          })
+      },
+      CommentPass(now) {//评论接口，
+        if (!this.userInfo) {
+          this.$message({
+            message: '请先登录',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
+        if (!this.commentData) {
+          this.$message({
+            message: '请填写内容',
+            type: 'warning',
+            center: true
+          })
+          return;
+        }
+        let options = new FormData();
+        if (this.userInfo) {
           options.append('uid', this.userInfo.uid);//1068有评论
           options.append('token', this.userInfo.token);
         }
@@ -217,7 +235,7 @@
       initFind(page, mescroll) { //获取页面初始数据
         // this.$store.commit("showLoading");
         let options = new FormData();
-        if(this.userInfo){
+        if (this.userInfo) {
           options.append('uid', this.userInfo.uid);
         }
         options.append('id', this.id);
@@ -226,6 +244,7 @@
         options.append('page', 1);
         this.$store.dispatch('LawyerFindArticleDetail', options)
           .then(data => {
+            console.log(data, 9999);
             data.videos = data.weburl + data.path;//拼接后的video
             data.cover = data.weburl + data.thumbnail;//拼接后的封面
             this.weburl = data.weburl;
@@ -263,9 +282,9 @@
         })
       },
       Follows(item) {//关注接口
-        if(!this.userInfo){
+        if (!this.userInfo) {
           this.$message({
-            message:'请先登录',
+            message: '请先登录',
             type: 'warning',
             center: true
           })
@@ -286,9 +305,9 @@
       },
       Fabulous(item) { //点赞接口
         //点赞接口
-        if(!this.userInfo){
+        if (!this.userInfo) {
           this.$message({
-            message:'请先登录',
+            message: '请先登录',
             type: 'warning',
             center: true
           })
@@ -324,7 +343,7 @@
 
   .isPc {
     width: 700px;
-    margin:0 auto;
+    margin: 0 auto;
   }
 
   /*通过fixed固定mescroll的高度*/
@@ -336,8 +355,8 @@
   }
 
   video {
-    margin:0 auto;
-    width:60%;
+    margin: 0 auto;
+    width: 60%;
     display: block;
   }
 
@@ -345,7 +364,7 @@
     font-size: 36/@r;
     color: #000;
     line-height: 48/@r;
-    padding-bottom:15px;
+    padding-bottom: 15px;
   }
 
   section {
@@ -486,13 +505,11 @@
     line-height: 88/@r;
     color: #666666;
     position: relative;
-    float:right;
-    margin-left:60px;
+    float: right;
+    margin-left: 60px;
+
   }
 
-  .bottom div:nth-child(2) {
-    margin-left: -38/@r;
-  }
 
   .icon-zan {
     position: absolute;
@@ -661,46 +678,53 @@
   .bottom div {
     cursor: pointer;
   }
-  .newComment{
-    padding:20px 0;
-    border-bottom:1px solid #ccc;
+
+  .newComment {
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
   }
-  .writeComment .left{
-    float:left;
-    width:40px;
-    height:40px;
+
+  .writeComment .left {
+    float: left;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    overflow:hidden;
+    overflow: hidden;
   }
-  .writeComment .left img{
-    width:100%;
+
+  .writeComment .left img {
+    width: 100%;
   }
-  .writeComment .right{
-    width:90%;
-    height:120px;
-    float:right;
-    margin-right:5px;
+
+  .writeComment .right {
+    width: 90%;
+    height: 120px;
+    float: right;
+    margin-right: 5px;
   }
-  .writeComment .right textarea{
-    width:100%;
-    height:100%;
-    padding:10px 20px;
-    border-color:#ddd;
-    font-size:14px;
+
+  .writeComment .right textarea {
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+    border-color: #ddd;
+    font-size: 14px;
   }
-  .Publish{
-    width:80px;
-    height:30px;
+
+  .Publish {
+    width: 80px;
+    height: 30px;
     background-color: #e71844;
-    color:#fff;
-    text-align:center;
-    line-height:30px;
-    border-radius:5px;
-    float:right;
-    margin-top:20px;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 5px;
+    float: right;
+    margin-top: 20px;
     cursor: pointer;
   }
-  .Publish:hover{
+
+  .Publish:hover {
     background-color: #c91138;
   }
 

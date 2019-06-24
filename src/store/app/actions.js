@@ -91,7 +91,6 @@ export default {
           if (Number(res.code) == 10000) {
             resolve(res.data)
           } else if (Number(res.code) == 10001) {
-            console.log(res)
             resolve(res)
           } else {
             reject(res.data)
@@ -232,7 +231,6 @@ export default {
     return new Promise((resolve, reject) => {
       axios.post(str + '/special/getbyflag', data)
         .then(data => {
-          console.log(data)
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data)
@@ -470,6 +468,8 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
+          }else if(Number(res.code)==10001){
+            resolve(res)
           } else {
             reject(res.message);
           }
@@ -480,6 +480,50 @@ export default {
   PersonalCollection(store, data) {
     return new Promise((resolve, reject) => {
       axios.post(str + '/member/getcollection', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          }else if(Number(res.code) == 10001){
+            resolve(res);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC点击收藏
+  Collection(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/find/collection', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC点击取消收藏
+  cancellCollection(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/member/delcollect', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else {
+            reject(res.message);
+          }
+        })
+    })
+  },
+  //PC个人资料
+  PersonalData(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/member/index', data)
         .then(data => {
           let res = data.data;
           if (Number(res.code) == 10000) {

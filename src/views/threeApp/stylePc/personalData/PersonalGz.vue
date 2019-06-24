@@ -1,8 +1,14 @@
 <template>
   <div>
-    <ul class="list">
-      <li class="clearfix" v-for="item,index in data">
-        <div class="title clearfix" @click.stop="PersonalTopics(item)">
+    <ul v-if="noData">
+      <li class="nodata">
+        <img src="../../../../assets/img/noDataPc.png" alt="">
+        <span>您暂未关注任何律师！</span>
+      </li>
+    </ul>
+    <ul class="list" v-else>
+      <li class="clearfix" v-for="item,index in data" @click.stop="JumpPersonal(item)">
+        <div class="title clearfix">
           <div class="left">
             <img :src="item.faces" alt>
           </div>
@@ -25,8 +31,8 @@
           <div class="right" @click.stop="Follows(item)">
             <span v-if="item.isguanzhu==0">+ 关注</span>
             <span v-else class="cancelFollow">
-                      <i class="iconfont icon-gou"></i>
-                      已关注
+                      <!--<i class="iconfont icon-gou"></i>-->
+                      取消关注
                     </span>
           </div>
         </div>
@@ -42,6 +48,7 @@
       return {
         userInfo: {},
         data: [],
+        noData:false,
       }
     },
     created() {
@@ -58,13 +65,55 @@
         options.append('token', this.userInfo.token);
         this.$store.dispatch('PersonalGz', options)
           .then(data => {
-            console.log(data)
+            if(data.code==10001){
+              this.noData=true;
+              return;
+            }
             data.forEach(item=>{
               item.faces=item.weburl+item.face;
             })
             this.data = data;
           })
-      }
+      },
+      JumpPersonal(item){
+        console.log(item)
+        //跳转个人律师专题页
+        // this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}})
+        let routeData=this.$router.resolve({
+          name:'LawyerSpecialPc',
+          query:{lid:item.lid}
+        })
+        window.open(routeData.href,"_blank");
+
+        sessionStorage.setItem("LawyerId", item.lid);
+      },
+      Follows(item) {//关注接口
+        console.log(item,66)
+        if(!this.userInfo){
+          this.$message({
+            message:'请先登录',
+            type: 'warning',
+            center: true
+          });
+          return;
+        }
+        let options = new FormData();
+        options.append('uid', this.userInfo.uid);
+        options.append('token', this.userInfo.token);
+        options.append('lid', item.uid);
+        this.$store.dispatch('followPc', options)
+          .then(data => {
+            console.log(data)
+            this.data = this.data.map(obj => {
+              if (item.lid == obj.lid) {
+                obj.isguanzhu = data.flag;
+                return obj;
+              }
+              return obj;
+            })
+          })
+      },
+
     }
 
 
@@ -154,6 +203,18 @@
 
   .list .GradeColor {
     color: #ff8200;
+  }
+
+  .nodata img{
+    display:block;
+    margin:0 auto;
+    width:60%;
+  }
+  .nodata{
+    font-size:18px;
+    text-align:center;
+    line-height:80px;
+    color:#a2a2a2;
   }
 
 
