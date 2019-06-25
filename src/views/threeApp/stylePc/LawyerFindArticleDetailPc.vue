@@ -507,14 +507,14 @@
     position: relative;
     float: right;
     margin-left: 60px;
-
+    padding:10px 0;
   }
 
 
   .icon-zan {
     position: absolute;
     left: -55/@r;
-    top: -2/@r;
+    top: 10px;
     font-size: 60/@r;
     color: #878787;
   }

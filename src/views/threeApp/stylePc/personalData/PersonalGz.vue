@@ -88,7 +88,7 @@
         sessionStorage.setItem("LawyerId", item.lid);
       },
       Follows(item) {//关注接口
-        console.log(item,66)
+        console.log(item,66);
         if(!this.userInfo){
           this.$message({
             message:'请先登录',
@@ -100,17 +100,17 @@
         let options = new FormData();
         options.append('uid', this.userInfo.uid);
         options.append('token', this.userInfo.token);
-        options.append('lid', item.uid);
-        this.$store.dispatch('followPc', options)
+        options.append('lid', item.lid);
+        this.$store.dispatch('follows', options)
           .then(data => {
             console.log(data)
-            this.data = this.data.map(obj => {
-              if (item.lid == obj.lid) {
-                obj.isguanzhu = data.flag;
-                return obj;
-              }
-              return obj;
-            })
+            // this.data = this.data.map(obj => {
+            //   if (item.lid == obj.lid) {
+            //     obj.isguanzhu = data.flag;
+            //     return obj;
+            //   }
+            //   return obj;
+            // })
           })
       },
 

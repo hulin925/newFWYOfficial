@@ -534,6 +534,20 @@ export default {
         })
     })
   },
+  //PC个人资料
+  indexImg(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/home/indexTopAdv', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+    })
+  },
 
 
 

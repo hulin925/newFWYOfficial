@@ -7,6 +7,7 @@
       </li>
     </ul>
     <ul v-else>
+      <!--长文章-->
       <li class="clearfix" v-for="item,index in longArticle" @click.stop="JumpDetails(item)">
         <div class="left">
           <img :src="item.srcData" alt="">
@@ -19,8 +20,9 @@
             <span>发布于 {{item.add_time*1000 | getAddTime}}</span>
           </p>
         </div>
-        <div class="close" @click.stop="cancellCollection(item)">×</div>
+        <div class="close" @click.stop="cancellCollection(item,'content_id')">×</div>
       </li>
+      <!--短文章-->
       <li class="clearfix" v-for="item,index in shortArticle" @click.stop="JumpDetail(item)">
         <div class="left">
           <img :src="item.shortImg" alt="">
@@ -33,7 +35,24 @@
             <span>发布于 {{item.add_time*1000 | getAddTime}}</span>
           </p>
         </div>
-        <div class="close" @click.stop="cancellCollection(item)">×</div>
+        <div class="close" @click.stop="cancellCollection(item,'article_id')">×</div>
+      </li>
+      <!--视频-->
+      <li class="clearfix" v-for="item,index in video" @click.stop="JumpDetailV(item)">
+        <div class="left">
+          <video controls="controls">
+            <source :src="item.videos" type="video/mp4">
+          </video>
+        </div>
+        <div class="right">
+          <h1>{{item.title}}</h1>
+          <p>
+            <span>评论 {{item.history_comment_count}}</span>
+            <span>阅读 {{item.histort_reward_count}}</span>
+            <span>发布于 {{item.add_time*1000 | getAddTime}}</span>
+          </p>
+        </div>
+        <div class="close" @click.stop="cancellCollection(item,'video_id')">×</div>
       </li>
     </ul>
   </div>
@@ -49,6 +68,7 @@
         longArticle:[],
         shortArticle:[],
         noData:false,
+        video:[],
       }
     },
     created(){
@@ -56,6 +76,13 @@
       this.initData();
     },
     methods:{
+      JumpDetailV(item){//跳转详情3
+        let routeData = this.$router.resolve({
+          path: "/LawyerFindArticleDetailPc",
+          query: {id: item.id, lid: item.uid, classify:3}
+        });
+        window.open(routeData.href, "_blank");
+      },
       JumpDetails(item){//跳转详情2
         let routeData = this.$router.resolve({
           path: "/LawyerFindArticleDetailPc",
@@ -83,6 +110,10 @@
               this.noData=true;
               return;
             }
+            data.video.forEach(item=>{
+              item.videos=item.weburl+item.path;
+            })
+            this.video=data.video;
             data.long_article.forEach(item=>{
               var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
               if(item.content.match(srcReg)){
@@ -94,9 +125,11 @@
               item.shortImg=item.weburl+item.thumbnail;
             })
             this.shortArticle = data.short_article;
+            console.log(data.long_article,8888)
+
           })
       },
-      cancellCollection(item) {//收藏接口
+      cancellCollection(item,type) {//删除长文章收藏
         if (!this.userInfo) {
           this.$message({
             message: '请先登录',
@@ -108,18 +141,20 @@
         let options = new FormData();
         options.append('uid', this.userInfo.uid);
         options.append('token', this.userInfo.token);
-        options.append('content_id', item.id);
+        if(type=='content_id'){
+          options.append('content_id', item.id);
+        }else if(type=='article_id'){
+          options.append('article_id', item.id);
+        }else if(type=='video_id'){
+          options.append('video_id', item.id);
+        }
         this.$store.dispatch('cancellCollection', options)
           .then(data => {
             this.initData();
-            console.log(data,123)
-            // if (item.id == this.data.id && item.classify == this.data.classify) {
-            //   this.data.iscollection = data.info;
-            //   return this.data;
-            // }
-            // return this.data;
           })
       },
+
+
     }
 
   }
@@ -139,10 +174,11 @@
     font-size:30px;
     padding:0 20px;
     cursor:pointer;
+    color:#ccc;
   }
   .left{
-    width:140px;
-    height:100px;
+    width:200px;
+    height:120px;
     float:left;
     margin-right:0px;
     border:1px solid #ddd;
@@ -150,12 +186,16 @@
     background-size: cover;
     overflow: hidden;
   }
+  .left video{
+    width:100%;
+    height:100%;
+  }
   .left img{
     width:100%;
     height:100%;
   }
   .right{
-    width:540px;
+    width:500px;
     float:right;
   }
   h1{

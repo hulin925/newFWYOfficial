@@ -334,6 +334,7 @@
                   }
                 }
               }
+              console.log(this.dataList,9999)
             },
             err => {
             }
@@ -620,6 +621,7 @@
         options.append("flag", "find");
         this.$store.dispatch("Advertisement", options).then(data => {
           this.AdvertisingData = data;
+          console.log(data,999)
         });
       },
       GetQueryString(name) {
