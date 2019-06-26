@@ -239,7 +239,7 @@
           options.append('uid', this.userInfo.uid);
         }
         options.append('id', this.id);
-        options.append('tag', this.tag);
+        // options.append('tag', this.tag);
         options.append('classify', this.classify);
         options.append('page', 1);
         this.$store.dispatch('LawyerFindArticleDetail', options)

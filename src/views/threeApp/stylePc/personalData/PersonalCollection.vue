@@ -54,6 +54,15 @@
         </div>
         <div class="close" @click.stop="cancellCollection(item,'video_id')">×</div>
       </li>
+      <!--法条-->
+      <li v-for="item,index in law" @click.stop="JumpDetailLawyer(item)">
+        <h1>{{item.title}}</h1>
+        <p>
+          <span>{{item.section}}</span>
+          <span>发布于 {{item.add_time*1000 | getAddTime}}</span>
+        </p>
+        <div class="close" @click.stop="cancellCollection(item,'law_id')">×</div>
+      </li>
     </ul>
   </div>
 </template>
@@ -67,6 +76,7 @@
         data: [],
         longArticle:[],
         shortArticle:[],
+        law:[],
         noData:false,
         video:[],
       }
@@ -76,6 +86,13 @@
       this.initData();
     },
     methods:{
+      JumpDetailLawyer(item){
+        let routeData = this.$router.resolve({
+          path: "/LawyerFindLawDetailsPc",
+          query: {id: item.id}
+        });
+        window.open(routeData.href, "_blank");
+      },
       JumpDetailV(item){//跳转详情3
         let routeData = this.$router.resolve({
           path: "/LawyerFindArticleDetailPc",
@@ -125,7 +142,7 @@
               item.shortImg=item.weburl+item.thumbnail;
             })
             this.shortArticle = data.short_article;
-            console.log(data.long_article,8888)
+            this.law = data.law;
 
           })
       },
@@ -147,6 +164,8 @@
           options.append('article_id', item.id);
         }else if(type=='video_id'){
           options.append('video_id', item.id);
+        }else if(type=='law_id'){
+          options.append('law_id', item.id);
         }
         this.$store.dispatch('cancellCollection', options)
           .then(data => {
@@ -224,6 +243,10 @@
     font-size:18px;
     text-align:center;
     line-height:80px;
+  }
+  h2{
+    line-height:40px;
+    font-size:20px;
   }
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="this.$isMobile()?'':'isPc'">
+  <div class="isPc">
     <div class="noneData" v-if="noneData">
       <img src="../../../assets/img/follow.png" alt>
       <p>暂无关注律师！</p>
@@ -171,9 +171,6 @@
     </div>
     <!--<oneImg :value="isOff" :data="arrImg" @setShow="isOff=false"></oneImg>-->
 
-    <div class="openApp" @click.stop="download" v-if="this.$isMobile()">
-      <span>打开APP查看更多详情</span>
-    </div>
     <div class="goTop" v-show="showTop" @click.stop="goTop">
       <svg-icon icon-class="goTop"></svg-icon>
     </div>
@@ -219,6 +216,19 @@
     },
     computed: Object.assign(mapGetters(["arrImg"]), {}),
     watch: {
+      page(){
+        let randomData = Math.floor(10 * Math.random());
+        for (let i = 0; i < this.AdvertisingData.length; i++) {
+          if (this.page == i + 1) {
+            let AdvertisingData = this.AdvertisingData[i];
+            if (this.page == 1 && randomData + (i * 9) == 0) {
+              this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
+            } else {
+              this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
+            }
+          }
+        }
+      },
       val(val) {
         this.page = 1;
         this.$nextTick(() => {
@@ -320,21 +330,6 @@
               });
               this.dataList = data;
 
-              // this.$store.commit("hidenLoading");
-              //广告处理
-              // this.$nextTick(()=>{
-              let randomData = Math.floor(10 * Math.random());
-              for (let i = 0; i < this.AdvertisingData.length; i++) {
-                if (page.num == i + 1) {
-                  let AdvertisingData = this.AdvertisingData[i];
-                  if (page.num == 1 && randomData + (i * 9) == 0) {
-                    this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
-                  } else {
-                    this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
-                  }
-                }
-              }
-              console.log(this.dataList,9999)
             },
             err => {
             }
@@ -440,20 +435,7 @@
             });
             this.dataList = data;
 
-            // this.$store.commit("hidenLoading");
-            //广告处理
-            // this.$nextTick(()=>{
-            let randomData = Math.floor(10 * Math.random());
-            for (let i = 0; i < this.AdvertisingData.length; i++) {
-              if (page.num == i + 1) {
-                let AdvertisingData = this.AdvertisingData[i];
-                if (page.num == 1 && randomData + (i * 9) == 0) {
-                  this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
-                } else {
-                  this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
-                }
-              }
-            }
+
           },
           err => {
           }
@@ -575,20 +557,6 @@
                     _this.isLoading = false;
                   })
 
-                  // this.$store.commit("hidenLoading");
-                  //广告处理
-                  // this.$nextTick(()=>{
-                  let randomData = Math.floor(10 * Math.random());
-                  for (let i = 0; i < this.AdvertisingData.length; i++) {
-                    if (page.num == i + 1) {
-                      let AdvertisingData = this.AdvertisingData[i];
-                      if (page.num == 1 && randomData + (i * 9) == 0) {
-                        this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
-                      } else {
-                        this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
-                      }
-                    }
-                  }
                 },
                 err => {
                   _this.isLoading = false;
@@ -1073,23 +1041,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-
-  .openApp {
-    position: fixed;
-    z-index: 99999;
-    bottom: 20 / @r;
-    left: 2%;
-    background-color: #8c94ff;
-    color: #fff;
-    width: 96%;
-    line-height: 80 / @r;
-    font-size: 32 / @r;
-    text-align: center;
-    -webkit-border-radius: 30 / @r;
-    -moz-border-radius: 30 / @r;
-    border-radius: 30 / @r;
-  }
-
   .dataNone {
     text-align: center;
     line-height: 100px;

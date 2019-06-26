@@ -44,8 +44,23 @@
       if(this.dataInfo){
         this.face=this.dataInfo.weburl+this.dataInfo.face;
       }
+
+
     },
     methods: {
+      // data(){
+      //   let options=new FormData();
+      //   // var data={travelAgencyId:1};
+      //   options.append('travelAgencyId',1)
+      //   axios.post('/api/listActivitys.html', options,{
+      //     headers:{
+      //              'Content-type': 'application/x-www-form-urlencoded'
+      //           }
+      //   })
+      //     .then(data => {
+      //       console.log(data,99999)
+      //     })
+      // },
       change(item,index) {
         this.$store.commit('personalDataPc',index);
         this.$router.push({name:item.pushName})

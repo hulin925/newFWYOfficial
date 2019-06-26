@@ -336,7 +336,6 @@
       },
       JumpDetail(obj) { //跳转律师详情页
         sessionStorage.setItem('detailsId',JSON.stringify(obj));
-
         if(this.$isMobile()){
           this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
         }else{

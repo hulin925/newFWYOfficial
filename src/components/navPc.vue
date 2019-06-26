@@ -2,6 +2,10 @@
   <div class="app">
     <div class="headerWrap">
       <div class="top">
+        <div class="city">
+          <i>{{obj.city}}</i>
+          <img src="../assets/img/address.png" alt="">
+        </div>
         <div class="wrap">
           <span>开发者平台</span>
           <span>品牌介绍</span>
@@ -92,9 +96,11 @@
       </div>
       <div class="contentBoxRight">
         <div class="block">
-          <el-carousel trigger="click" height="180px">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <h3 class="small">{{ item }}</h3>
+          <el-carousel trigger="click" height="160px">
+            <el-carousel-item v-for="item,index in images" :key="index">
+              <h3 class="small"  @click.stop="JumpAdvertisement(item)">
+                <img :src="item.pic[0]" alt="">
+              </h3>
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -258,6 +264,7 @@
         fatiao: false,
         getCode: false,
         forget: false,
+        images:[],
         loginForm: {
           name: '',
           name1: '',
@@ -287,7 +294,41 @@
 
     },
     methods: {
-      getCity(name){
+      JumpAdvertisement(item){//跳转广告
+        if(item.tag=='fwy_lawyer_content'){//跳转律师文章
+          //跳转律师详情页
+          let routeData = this.$router.resolve({
+            path: "/LawyerFindArticleDetailPc",
+            query: {id: item.inner_link,classify:2}
+          });
+          window.open(routeData.href, "_blank");
+        }else if(item.tag=='fwy_content'){//跳转法条
+          let routeData = this.$router.resolve({
+            name: "LawyerFindLawDetails",
+            query: {id: item.inner_link}
+          });
+          window.open(routeData.href, '_blank');
+        }else if(item.tag=='fwy_lawyer_video'){//跳转视频
+          let routeData = this.$router.resolve({
+            path: "/LawyerFindArticleDetailPc",
+            query: {id: item.inner_link,classify:3}
+          });
+        }else if(item.tag=='reg'){//跳转注册
+          this.forget=true;
+        }else if(item.tag=='fwy_lawyer'){//跳转律师
+          let routeData=this.$router.resolve({
+            name:'LawyerSpecialPc',
+            query:{lid:item.uid}
+          })
+          window.open(routeData.href,"_blank");
+
+          sessionStorage.setItem("LawyerId", item.uid);
+
+        }else if(item.outside_link){//跳转外网
+          window.open(item.outside_link,'_blank');
+        }
+      },
+      getCity(name){//获取省市
         if(name.includes('省')){
           return {
             province:name.substring(0,name.indexOf('省')+1),
@@ -300,12 +341,14 @@
           };
         }
       },
-      indexImg(){
+      indexImg(){//获取广告
         let options=new FormData();
         options.append('flag','index_banner');
+        options.append('pro',this.obj.province);
+        options.append('city',this.obj.city);
         this.$store.dispatch('indexImg',options)
           .then(data=>{
-            console.log(data,88888)
+            this.images=data.data;
           })
       },
       PersonalCenter(){//个人中心
@@ -587,7 +630,7 @@
   }
 
   .wrap {
-    width: 1080px;
+    width: 1200px;
     margin: 0 auto;
   }
 
@@ -635,6 +678,16 @@
     height: 36px;
     border-bottom: 1px solid #dfdfdf;
     color: #999;
+    position:relative;
+  }
+  .top .city{
+    position:absolute;
+    left:220px;
+    line-height:36px;
+  }
+  .top .city img{
+    width:20px;
+    vertical-align: middle;
   }
 
   .top span {
@@ -1014,7 +1067,8 @@
   }
 
   .contentBox{
-    margin:0 260px;
+    width:1100px;
+    margin:0 auto;
   }
   .contentBoxLeft{
     float:left;
@@ -1022,7 +1076,12 @@
   }
   .contentBoxRight{
     float:left;
-    width:320px;
+    padding-top:30px;
+    width:340px;
+  }
+  .contentBoxRight img{
+    width:100%;
+    height:100%;
   }
   .el-carousel__item h3 {
     color: #475669;
@@ -1041,5 +1100,8 @@
   }
   #geoPage body{
     background-color: #fff;
+  }
+  .small{
+    cursor:pointer;
   }
 </style>

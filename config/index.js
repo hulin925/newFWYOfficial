@@ -15,6 +15,7 @@ module.exports = {
         // target: 'https://fy.sanhedao.com.cn/index.php/Uapi/index/index/do',
         //  target: 'http://cs.xhfwy.com/public/index.php/uapi/v3',
          target: 'https://xhfwy3.sanhedao.com.cn/public/index.php/help/v3',
+        //  target: '192.168.1.27/ak-sw-yanxue',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
@@ -61,11 +62,11 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../../dist/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
+    assetsRoot: path.resolve(__dirname, '../../dist'),
+    assetsSubDirectory: '../dist/static',
     assetsPublicPath: './',
 
     /**

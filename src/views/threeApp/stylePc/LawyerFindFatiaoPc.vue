@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="this.$isMobile()?'':'isPc'" id="contain" ref="contain">
+  <div class="app isPc" id="contain" ref="contain">
     <header>
       <div class="search">
         <img :src="titleImg" alt="" class="headerImg">
@@ -128,15 +128,11 @@
     },
     methods: {
       goDetails(item) {//点击跳转详情
-        if (this.$isMobile()) {
-          this.$router.push({name: 'LawyerFindLawDetails', query: {id: item.id}})
-        } else {
-          let routeData = this.$router.resolve({
-            name: "LawyerFindLawDetails",
-            query: {id: item.id}
-          });
-          window.open(routeData.href, '_blank');
-        }
+        let routeData = this.$router.resolve({
+          name: "LawyerFindLawDetailsPc",
+          query: {id: item.id}
+        });
+        window.open(routeData.href, '_blank');
       },
       inputFunc() {
         this.initSearch();

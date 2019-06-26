@@ -1,9 +1,9 @@
 <template>
-  <div class="Details" :class="this.$isMobile()?'':'isPc'">
-		<div class="content">
-			<h1>{{data.title}}</h1>
+  <div class="Details isPc">
+    <div class="content">
+      <h1>{{data.title}}</h1>
 			<ul class="release">
-				<li>发布机关：{{data.section}}</li>
+        <li>发布机关：{{data.section}}</li>
 				<li>发布日期：{{data.release_time}}</li>
 				<li>发文字号：{{data.code}}</li>
 				<li>生效日期：{{data.release_time}}</li>
@@ -14,11 +14,11 @@
 			</ul>
 			<div v-html="data.content" style="font-size:1rem; margin-top:20px; text-align: left !important;">
 			</div>
+      <div class="bottom"  @click.stop="Collection(data)" :class="{color:data.iscollection == 1}">
+        <span><i class="iconfont  icon-shoucang"></i></span>
+        <span>收藏</span>
+      </div>
 		</div>
-
-    <div class="openApp" @click.stop="download" v-if="this.$isMobile()">
-      <span>打开APP查看更多法条</span>
-    </div>
   </div>
 </template>
 
@@ -32,18 +32,43 @@ export default {
       lid:'',
       collection:{},//收藏数据
 			data:{},
+      userInfo:{},
     }
   },
 	created(){
-    console.log(this.$route)
+    this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
     this.id=this.$route.query.id;
 		this.initData();
 	},
 	methods:{
+    Collection(item) {//收藏接口
+      console.log(item,666)
+      if (!this.userInfo) {
+        this.$message({
+          message: '请先登录',
+          type: 'warning',
+          center: true
+        })
+        return;
+      }
+      let options = new FormData();
+      options.append('uid', this.userInfo.uid);
+      options.append('token', this.userInfo.token);
+      options.append('type', item.classify);
+      options.append('id', item.id);
+      this.$store.dispatch('Collection', options)
+        .then(data => {
+          if (item.id == this.data.id && item.classify == this.data.classify) {
+            this.data.iscollection = data.info;
+            return this.data;
+          }
+          return this.data;
+        })
+    },
 		initData(){
 			let options=new FormData();
 			options.append('id',this.id);//510
-			// options.append('uid',this.lid);//510
+			options.append('uid',this.userInfo.uid);//510
       options.append('classify','5');//5
 			// options.append('tag','fatiao');//fatiao
 			this.$store.dispatch('LawyerFindFatiaoDetails',options)
@@ -77,6 +102,7 @@ export default {
 		padding:20/@r;
 		font-size:36/@r;
 		line-height:64/@r;
+    margin-bottom:50px;
 	}
 	.release{
 		font-size:34/@r;
@@ -90,21 +116,20 @@ export default {
 	}
 	.footer a{
 		color:red !important;
-
 	}
-  .openApp{
-    position:fixed;
-    bottom:20/@r;
-    left:2%;
-    background-color:#8c94ff;
-    color:#fff;
-    width:96%;
-    line-height:80/@r;
-    font-size:32/@r;
-    text-align:center;
-    -webkit-border-radius: 30/@r;
-    -moz-border-radius: 30/@r;
-    border-radius: 30/@r;
+  .bottom{
+    padding-right:20px;
+    text-align:right;
+    color: #666666;
+    cursor: pointer;
+    font-size:16px;
   }
-
+  .icon-shoucang {
+    font-size: 36/@r;
+    vertical-align: bottom;
+    margin-right:10px;
+  }
+  .color {
+    color: #FF8200;
+  }
 </style>
