@@ -128,8 +128,7 @@
   .right {
     float: right;
     width: 800px;
-    border: 1px solid #ddd;
-    padding: 40px;
+    padding: 20px 0;
   }
 
 

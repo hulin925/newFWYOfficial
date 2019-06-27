@@ -114,5 +114,10 @@ export default {
       pushName: 'informationPc',
       active:false
     },
+    {
+      name: '修改密码',
+      pushName: 'changePassword',
+      active:false
+    },
   ],
 }

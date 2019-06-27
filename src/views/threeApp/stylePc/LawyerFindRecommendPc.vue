@@ -581,7 +581,8 @@
       },
       pictureJump(item) {
         //广告跳转对接
-        window.location.href = item.outside_link;
+        window.open(item.outside_link,'_blank');
+        // window.location.href = item.outside_link;
       },
       Advertisement() {
         //广告接口
@@ -589,7 +590,6 @@
         options.append("flag", "find");
         this.$store.dispatch("Advertisement", options).then(data => {
           this.AdvertisingData = data;
-          console.log(data,999)
         });
       },
       GetQueryString(name) {

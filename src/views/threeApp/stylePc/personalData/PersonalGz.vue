@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul v-if="noData">
+    <ul v-if="noData" class="list">
       <li class="nodata">
         <img src="../../../../assets/img/noDataPc.png" alt="">
         <span>您暂未关注任何律师！</span>
@@ -58,6 +58,7 @@
     methods: {
       initData() {
         if (!this.userInfo) {
+          this.noData=true;
           return;
         }
         let options = new FormData();
@@ -65,8 +66,17 @@
         options.append('token', this.userInfo.token);
         this.$store.dispatch('PersonalGz', options)
           .then(data => {
+            console.log(data)
             if(data.code==10001){
               this.noData=true;
+              return;
+            }else if(data.code==10101){
+              this.noData=true;
+              this.$message({
+                message:'请重新登录，登录过期',
+                type:'warning',
+                center:true
+              })
               return;
             }
             data.forEach(item=>{
@@ -76,7 +86,6 @@
           })
       },
       JumpPersonal(item){
-        console.log(item)
         //跳转个人律师专题页
         // this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}})
         let routeData=this.$router.resolve({
@@ -88,7 +97,6 @@
         sessionStorage.setItem("LawyerId", item.lid);
       },
       Follows(item) {//关注接口
-        console.log(item,66);
         if(!this.userInfo){
           this.$message({
             message:'请先登录',
@@ -126,6 +134,8 @@
 
   .list li{
     margin-bottom:30px;
+    border-bottom:1px solid #ddd;
+    padding-bottom:20px;
   }
   .list .title {
     height: 88 / @r;
@@ -135,8 +145,8 @@
 
   .title .left {
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-image: url("../../../../assets/img/headerIcon.png");
     background-size: cover;
     border-radius: 50%;
@@ -188,9 +198,9 @@
   }
   .Grade {
     position: absolute;
-    left: 50px;
-    top: 56px;
-    width: 24px;
+    left: 35px;
+    top: 40px;
+    width: 20px;
   }
 
   .Grade .GradeFirst {
@@ -215,6 +225,9 @@
     text-align:center;
     line-height:80px;
     color:#a2a2a2;
+  }
+  .list .nodata{
+    border:0;
   }
 
 

@@ -382,8 +382,10 @@ export default {
         .then(data => {
           let res = data.data;
           if (Number(res.code) == 10000) {
-            resolve(res.data);
-          }else if(Number(res.code) == 10015){
+            resolve(res);
+          }else if(Number(res.code) == 10010){
+            resolve(res);
+          }else if(Number(res.code) == 10104){
             resolve(res);
           }else {
             reject(res.message);
@@ -470,6 +472,8 @@ export default {
             resolve(res.data);
           }else if(Number(res.code)==10001){
             resolve(res)
+          }else if(Number(res.code)==10101){
+            resolve(res)
           } else {
             reject(res.message);
           }
@@ -486,6 +490,8 @@ export default {
             resolve(res.data);
           }else if(Number(res.code) == 10001){
             resolve(res);
+          } else if(Number(res.code)==10101){
+            resolve(res)
           } else {
             reject(res.message);
           }

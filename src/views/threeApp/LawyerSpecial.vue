@@ -6,7 +6,7 @@
     </section>
 
     <!--关注-->
-    <div class="mainFooter" @click.stop="download" v-if="this.$isMobile()">
+    <div class="mainFooter" @click.stop="download">
       <span v-if="followObj.isguanzhu==0">+ 关注</span>
       <span v-else>取消关注</span>
     </div>

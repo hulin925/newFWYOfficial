@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="this.$isMobile()?'':'isPc'">
+  <div class="app">
     <div class="title">
       <img src="../../../assets/img/goback.png" alt="" @click.stop="$router.go(-1)">
       <span>我的粉丝</span>

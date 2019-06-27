@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" :class="this.$isMobile()?'':'isPc'">
+    <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
       <section>
         <ul class="list">
           <li>

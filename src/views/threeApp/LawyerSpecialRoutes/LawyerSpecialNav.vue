@@ -1,5 +1,5 @@
 <template>
-  <div :class="this.$isMobile()?'':'isPc'">
+  <div>
     <header>
       <div class="goBack" @click="specialBack()">
         <img src="../../../assets/img/goback.png" alt="">

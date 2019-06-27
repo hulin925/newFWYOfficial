@@ -229,7 +229,7 @@
         fatiao: '',
         judgeId: '',
         navTag: 'tuijian',//跳转页面
-        navId: 1,//nav
+        navId: 0,//nav
         navType: '',//导航
         AdvertisingData: [],//广告
         showStart: false,//点赞
@@ -305,7 +305,9 @@
                 tag:'AboutPc'
               }
             ]
-            data.push(...AddType);
+            console.log(data,data.length)
+             data=data.slice(1,data.length);
+            // data.push(...AddType);
 
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
@@ -366,8 +368,6 @@
             } else {
               this.noneData = false;
             }
-            console.log(this.noneData,data);
-
             data=data.list;
 
             this.$nextTick(() => {
@@ -516,7 +516,6 @@
         options.append('token', '6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');
         this.$store.dispatch('Fabulous', options)
           .then(data => {
-            console.log(data)
             if (data.data.flag == 1) {
               this.showStart = true;
             }
@@ -536,7 +535,6 @@
         options.append('token', '6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
         this.$store.dispatch('follows', options)
           .then(data => {
-            console.log(data)
             // this.mescroll.resetUpScroll()
             this.dataList = this.dataList.map(obj => {
               if (item.uid == obj.uid) {
@@ -591,7 +589,7 @@
     font-size: 34/@r;
     text-align: center;
     float: left;
-    width: 160/@r;
+    width: 120/@r;
     line-height: 80/@r;
     height: 80/@r;
     position: relative;

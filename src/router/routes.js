@@ -12,6 +12,7 @@ import personalData from '@/views/threeApp/stylePc/personalData'//个人资料
 import informationPc from '@/views/threeApp/stylePc/personalData/information'//我的资料
 import PersonalCollectionPc from '@/views/threeApp/stylePc/personalData/PersonalCollection'//我的收藏
 import PersonalGzPc from '@/views/threeApp/stylePc/personalData/PersonalGz'//我的关注
+import changePassword from '@/views/threeApp/stylePc/personalData/changePassword'//修改密码
 //LawyerSpecialPc下的子路由
 import LawyerSpecialNavPc from '@/views/threeApp/LawyerSpecialRoutesPc/LawyerSpecialNav'//律师专题页nav
 import homePc from '@/views/threeApp/LawyerSpecialRoutesPc/home'
@@ -107,6 +108,12 @@ let routeList = [
         path:'informationPc',
         name:'informationPc',
         component:informationPc
+      },
+      //修改密码
+      {
+        path:'changePassword',
+        name:'changePassword',
+        component:changePassword
       },
     ]
   },

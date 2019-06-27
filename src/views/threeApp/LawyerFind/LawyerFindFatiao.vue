@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" :class="this.$isMobile()?'':'isPc'">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
       <header>
         <div class="search">
           <img :src="titleImg" alt="" class="headerImg">
@@ -183,14 +183,10 @@
   /*以fixed的方式固定mescroll的高度*/
   .mescroll {
     position: fixed;
-    top: 0;
+    top: 80/@r;
     bottom: 0;
     height: auto;
   }
-  .isPc{
-    top:320/@r;
-  }
-
   .app {
     font-weight: bold;
   }

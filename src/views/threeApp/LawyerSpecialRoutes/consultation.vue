@@ -1,7 +1,7 @@
 <template>
   <div>
     <LawyerSpecialNav></LawyerSpecialNav>
-    <div class="wrap"  :class="this.$isMobile()?'':'isPc'">
+    <div class="wrap">
 
       <dl>
         <dt>请选择咨询类型</dt>
@@ -16,12 +16,12 @@
       </div>
     </div>
 
-    <div class="footerButton">
-      <div @click.stop="follow(data.uid)">
+    <div class="footerButton" @click.stop="download">
+      <div>
         <span v-if="followObj.isguanzhu==0">+ 关注</span>
         <span v-else>取消关注</span>
       </div>
-      <div @click.stop="Consultation()">
+      <div>
         <span>立即咨询</span>
       </div>
 

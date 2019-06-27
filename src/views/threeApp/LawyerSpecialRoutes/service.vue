@@ -1,7 +1,7 @@
 <template>
   <div>
     <LawyerSpecialNav></LawyerSpecialNav>
-    <div class="app"  :class="this.$isMobile()?'':'isPc'">
+    <div class="app">
       <group>
         <popup-picker
           v-if="!switch6"
@@ -36,12 +36,12 @@
         <div class="explain" v-html="data.detail">
         </div>
       </div>
-      <div class="footerButton">
-        <div @click.stop="follow(dataList.uid)">
+      <div class="footerButton" @click.stop="download">
+        <div>
           <span v-if="followObj.isguanzhu==0">+ 关注</span>
           <span v-else>取消关注</span>
         </div>
-        <div @click="Consultation()">
+        <div>
           <span>立即咨询</span>
         </div>
       </div>

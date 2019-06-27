@@ -1,5 +1,5 @@
 <template>
-  <div class="Details" :class="this.$isMobile()?'':'isPc'">
+  <div class="Details">
 		<div class="content">
 			<h1>{{data.title}}</h1>
 			<ul class="release">

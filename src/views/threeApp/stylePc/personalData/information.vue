@@ -60,7 +60,6 @@
               .then(data=>{
                 this.data=data;
                 data.faces=data.weburl+data.face;
-                console.log(data)
               })
           },
       }

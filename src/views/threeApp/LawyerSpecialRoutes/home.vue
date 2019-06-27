@@ -1,7 +1,7 @@
 +<template>
   <!--mescroll滚动区域的基本结构-->
   <div>
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit"  :class="this.$isMobile()?'':'isPc'">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
       <LawyerSpecialNav></LawyerSpecialNav>
       <div class="app">
 

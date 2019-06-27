@@ -94,7 +94,7 @@
           <LawyerFindRecommendPc :val="type"></LawyerFindRecommendPc>
         </div>
       </div>
-      <div class="contentBoxRight">
+      <div class="contentBoxRight" ref="contentBoxRight">
         <div class="block">
           <el-carousel trigger="click" height="160px">
             <el-carousel-item v-for="item,index in images" :key="index">
@@ -574,18 +574,11 @@
         var navs=document.querySelectorAll('#navs');
         if (scrollTop > 100) {
           this.fixed = true;
-          // navs.forEach((item)=>{
-          //   item.style.marginLeft=-10+'px';
-          // })
+          this.$refs.contentBoxRight.style.top="60px";
         } else {
           this.fixed = false;
+          this.$refs.contentBoxRight.style.top="180px";
         }
-        // let documentTop = document.body.scrollHeight       //全部内容的高
-        // let screenHeight = window.screen.availHeight       //当前屏幕的高
-        // if (scrollTop + screenHeight >= documentTop) {
-        //   //干你想干的事儿
-        //   console.log(2)
-        // }
       },
       getType() {//获取分类
         let options = new FormData();
@@ -597,7 +590,7 @@
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
             }
-            this.navList = data;
+              this.navList = data;
           })
       },
       searchFatiao() {
@@ -914,7 +907,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: 999999999;
     background-color: rgba(0, 0, 0, .2);
   }
 
@@ -1067,17 +1060,49 @@
   }
 
   .contentBox{
-    width:1100px;
-    margin:0 auto;
+    width:800px;
+    margin-left:17%;
+  }
+  @media (max-width: 1000px) {
+    .contentBox{
+      margin-left:5%;
+    }
+  }
+  @media (max-width: 1300px) {
+    .contentBox{
+      margin-left:4%;
+    }
+  }
+  @media (max-width: 1200px) {
+    .contentBox{
+      margin-left:1%;
+    }
   }
   .contentBoxLeft{
     float:left;
-    margin-right:40px;
+    /*margin-right:40px;*/
   }
+  /*.contentBoxRight{*/
+    /*float:left;*/
+    /*padding-top:30px;*/
+    /*width:340px;*/
+  /*}*/
   .contentBoxRight{
-    float:left;
-    padding-top:30px;
+    position:fixed;
+    right:16%;
+    top:180px;
+    z-index:999;
     width:340px;
+  }
+  @media (max-width: 1360px) {
+    .contentBoxRight{
+      right:1%;
+    }
+  }
+  @media (max-width: 1080px) {
+    .contentBoxRight{
+      display: none;
+    }
   }
   .contentBoxRight img{
     width:100%;

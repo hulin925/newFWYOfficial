@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul v-if="noData">
+    <ul v-if="noData" class="list">
       <li class="nodata">
         <img src="../../../../assets/img/noDataPc.png" alt="">
         <span>您暂未收藏相关文章！</span>
@@ -116,6 +116,7 @@
       },
       initData() {
         if (!this.userInfo) {
+          this.noData=true;
           return;
         }
         let options = new FormData();
@@ -125,6 +126,14 @@
           .then(data => {
             if(data.code==10001){
               this.noData=true;
+              return;
+            }else if(data.code==10101){
+              this.noData=true;
+              this.$message({
+                message:'请重新登录，登录过期',
+                type:'warning',
+                center:true
+              })
               return;
             }
             data.video.forEach(item=>{
@@ -185,6 +194,8 @@
     margin-bottom:30px;
     position:relative;
     cursor: pointer;
+    padding-bottom:20px;
+    border-bottom:1px solid #ddd;
   }
   .close{
     position:absolute;
@@ -201,7 +212,7 @@
     float:left;
     margin-right:0px;
     border:1px solid #ddd;
-    background-image: url("../../../../assets/img/headerIcon.png");
+    background-image: url("../../../../assets/img/noDataImg.png");
     background-size: cover;
     overflow: hidden;
   }
@@ -247,6 +258,9 @@
   h2{
     line-height:40px;
     font-size:20px;
+  }
+  .list .nodata{
+    border:0;
   }
 
 
