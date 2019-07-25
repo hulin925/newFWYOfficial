@@ -6,7 +6,12 @@
     </div>
 
     <section id="contain" ref="contain" v-else>
-      <ul class="list">
+      <ul class="list"
+          v-loading="isElLoading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="transparent"
+          style="min-height:800px;">
         <li v-for="item,index in dataList">
           <div v-if="item.pic">
             <div class="title clearfix">
@@ -211,7 +216,8 @@
         dataList: [],
         showTop: false,
         total: 0,
-        page: 1
+        page: 1,
+        isElLoading:false
       };
     },
     computed: Object.assign(mapGetters(["arrImg"]), {}),
@@ -329,9 +335,10 @@
                 }
               });
               this.dataList = data;
-
+              this.isElLoading = false;
             },
             err => {
+              this.isElLoading = false;
             }
           )
           .catch(e => {
@@ -434,10 +441,10 @@
               }
             });
             this.dataList = data;
-
-
+            this.isElLoading = false;
           },
           err => {
+            this.isElLoading = false;
           }
         )
         .catch(e => {
@@ -556,11 +563,12 @@
                   _this.$nextTick(() => {
                     _this.isLoading = false;
                   })
-
+                  _this.isElLoading = false;
                 },
                 err => {
                   _this.isLoading = false;
                   _this.isNewLoading = false;
+                  _this.isElLoading = false;
                 }
               )
               .catch(e => {
@@ -620,6 +628,8 @@
       },
       // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
       initData() {
+        this.dataList = [];
+        this.isElLoading = true;
         //获取页面初始数据
         //   this.$store.commit("showLoading");
         let options = new FormData();

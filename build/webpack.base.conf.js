@@ -16,12 +16,12 @@ let webpackConfig = {
   },
   externals:{
      'vue':'Vue',
-     'axios':'axios',
+    'axios':'axios',
     'vue-router':'VueRouter',
-  //   'vue-resource':'VueResource',
-  //   'vux':'vux',
-  //   'mescroll':'mescroll',
-     'element-ui': 'ELEMENT',
+    //   'vue-resource':'VueResource',
+    //   'vux':'vux',
+    //   'mescroll':'mescroll',
+    'element-ui': 'ELEMENT',
   },
   output: {
     path: config.build.assetsRoot,

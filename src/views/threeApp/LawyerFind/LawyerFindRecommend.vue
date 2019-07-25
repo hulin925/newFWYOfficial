@@ -313,6 +313,23 @@
               data[i].isId = i;
             }
             this.navType = data;
+            this.$nextTick(() => {
+              //nav
+              var totalWidth = this.$refs.totalWidth;
+              var lists = totalWidth.children;
+              var w = 0;
+              for (let i = 0; i < lists.length; i++) {
+                w += lists[i].getBoundingClientRect().width;
+              }
+              totalWidth.style.width = w + 'rem';
+              let scrolls = new BScroll('nav', {
+                startX: 0,
+                click: true,
+                scrollX: true,
+                scrollY: false,
+                eventPassthrough: 'vertical'
+              });
+            });
           })
       },
       pictureJump(item) {//广告跳转对接
@@ -354,7 +371,7 @@
       },
       // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
       initData(page, mescroll) { //获取页面初始数据
-        // this.$store.commit("showLoading");
+        this.$store.commit("showLoading");
         let options = new FormData();
         options.append('id', this.judgeId);
         options.append('tag', this.navTag);
@@ -370,23 +387,7 @@
             }
             data=data.list;
 
-            this.$nextTick(() => {
-              //nav
-              var totalWidth = this.$refs.totalWidth;
-              var lists = totalWidth.children;
-              var w = 0;
-              for (let i = 0; i < lists.length; i++) {
-                w += lists[i].getBoundingClientRect().width;
-              }
-              totalWidth.style.width = w + 'rem';
-              let scrolls = new BScroll('nav', {
-                startX: 0,
-                click: true,
-                scrollX: true,
-                scrollY: false,
-                eventPassthrough: 'vertical'
-              });
-            });
+
             // 请求的列表数据
             let arr = data;
             // 如果是第一页需手动制空列表
@@ -480,7 +481,7 @@
                 }
               }
             })
-            // this.$store.commit("hidenLoading");
+            this.$store.commit("hidenLoading");
             //广告处理
             // this.$nextTick(()=>{
             let randomData = Math.floor(10 * Math.random());
