@@ -3,7 +3,7 @@
     <div class="headerWrap">
       <div class="top">
         <div class="city">
-          <i>{{obj.city}}</i>
+          <i>{{obj.city?obj.city:'泸州市'}}</i>
           <img src="../assets/img/address.png" alt="">
         </div>
         <div class="wrap">
@@ -30,7 +30,7 @@
             <span class="beforeNone">登录</span>
           </div>
           <div class="userInfos" v-else>
-            <h1>
+            <h1 @click.stop="PersonalCenter()">
               <img :src="face" alt="">
             </h1>
             <div class="clearfix">
@@ -63,7 +63,7 @@
             <!--<span class="beforeNone">登录</span>-->
           <!--</div>-->
           <div class="userInfos navUser" v-if="dataInfo&&fixed">
-            <h1>
+            <h1  @click.stop="PersonalCenter()">
               <img :src="face" alt="">
             </h1>
             <div class="clearfix">
@@ -71,8 +71,8 @@
               <i class="iconfont icon-xiala"></i>
             </div>
             <ul class="Personal">
-              <li @click="PersonalCenter()">个人中心</li>
-              <li @click="singOut()">退出</li>
+              <li @click.stop="PersonalCenter()">个人中心</li>
+              <li @click.stop="singOut()">退出</li>
             </ul>
           </div>
 
@@ -96,13 +96,20 @@
       </div>
       <div class="contentBoxRight" ref="contentBoxRight">
         <div class="block">
-          <el-carousel trigger="click" height="160px">
+          <el-carousel indicator-position="outside" trigger="click" height="160px">
             <el-carousel-item v-for="item,index in images" :key="index">
               <h3 class="small"  @click.stop="JumpAdvertisement(item)">
                 <img :src="item.pic[0]" alt="">
               </h3>
             </el-carousel-item>
           </el-carousel>
+          <!--<el-carousel trigger="click" height="160px">-->
+            <!--<el-carousel-item v-for="item,index in images" :key="index">-->
+              <!--<h3 class="small"  @click.stop="JumpAdvertisement(item)">-->
+                <!--<img :src="item.pic[0]" alt="">-->
+              <!--</h3>-->
+            <!--</el-carousel-item>-->
+          <!--</el-carousel>-->
         </div>
       </div>
     </div>
@@ -286,7 +293,7 @@
     created() {
       this.obj = this.getCity(returnCitySN.cname);
       this.getType();
-      this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));
+      this.dataInfo=JSON.parse(localStorage.getItem('userInfo'));
       if(this.dataInfo){
         this.face=this.dataInfo.weburl+this.dataInfo.face;
       }
@@ -322,7 +329,7 @@
           })
           window.open(routeData.href,"_blank");
 
-          sessionStorage.setItem("LawyerId", item.uid);
+          localStorage.setItem("LawyerId", item.uid);
 
         }else if(item.outside_link){//跳转外网
           window.open(item.outside_link,'_blank');
@@ -358,7 +365,7 @@
         window.open(routerData.href,"_blank");
       },
       singOut(){//退出
-        sessionStorage.removeItem('userInfo');
+        localStorage.removeItem('userInfo');
         this.reload();
       },
       changePassword(){//修改密码
@@ -461,7 +468,7 @@
               this.showErr1 = false;
               // this.closeOutPc = false;
               this.$store.commit('hidenCloseOutPc');
-              sessionStorage.setItem('userInfo', JSON.stringify(data));
+              localStorage.setItem('userInfo', JSON.stringify(data));
               this.$message({
                 message:'登录成功',
                 type: 'success',
@@ -550,7 +557,7 @@
               this.showErr2 = false;
               this.$store.commit('hidenCloseOutPc');
               // this.closeOutPc = false;
-              sessionStorage.setItem('userInfo', JSON.stringify(data));
+              localStorage.setItem('userInfo', JSON.stringify(data));
               setTimeout(()=>{
                 this.$message({
                   message:'登录成功',
@@ -783,7 +790,7 @@
     text-align:center;
     width:100%;
     background-color: #fff;
-    z-index: 9999;
+    z-index: 99999999;
     padding:10px 0;
     display: none;
   }
@@ -1091,7 +1098,7 @@
     position:fixed;
     right:16%;
     top:180px;
-    z-index:999;
+    z-index:1;
     width:340px;
   }
   @media (max-width: 1360px) {

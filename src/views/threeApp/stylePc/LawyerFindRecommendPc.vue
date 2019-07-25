@@ -339,7 +339,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
       this.Advertisement(); //广告接口
       this.initData()
         .then(
@@ -608,7 +608,7 @@
         })
         window.open(routeData.href,"_blank");
 
-        sessionStorage.setItem("LawyerId", item.uid);
+        localStorage.setItem("LawyerId", item.uid);
       },
       JumpDetail(obj) {
         //跳转律师详情页

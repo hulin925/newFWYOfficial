@@ -36,7 +36,7 @@ export default {
     }
   },
 	created(){
-    this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     this.id=this.$route.query.id;
 		this.initData();
 	},

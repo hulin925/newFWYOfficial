@@ -10,4 +10,5 @@ export default {
   isWrapNavList:state=>state.isWrapNavList,//专题页判断是否是援助
   isPcNavList:state=>state.isPcNavList,//专题页判断是否是pc端
   personalDataPc:state=>state.personalDataPc,//个人中心pc
+  navBar:state=>state.NavBar,//导航条PC
 }

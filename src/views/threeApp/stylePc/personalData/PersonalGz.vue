@@ -52,7 +52,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
       this.initData();
     },
     methods: {
@@ -94,7 +94,7 @@
         })
         window.open(routeData.href,"_blank");
 
-        sessionStorage.setItem("LawyerId", item.lid);
+        localStorage.setItem("LawyerId", item.lid);
       },
       Follows(item) {//关注接口
         if(!this.userInfo){
@@ -112,6 +112,7 @@
         this.$store.dispatch('follows', options)
           .then(data => {
             console.log(data)
+            this.initData();
             // this.data = this.data.map(obj => {
             //   if (item.lid == obj.lid) {
             //     obj.isguanzhu = data.flag;
@@ -162,6 +163,9 @@
     float: left;
     color: #939393;
     margin-left: 20px;
+  }
+  .center p{
+    line-height:24px;
   }
 
   .center h2 {

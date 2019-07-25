@@ -74,7 +74,17 @@ export default {
 	      return item;
       }
     })
-
+  },
+  NavBar(state,id){
+	  state.navBar = state.navBar.map((item,index)=>{
+	    if(index == id){
+	      item.active=true;
+	      return item;
+      }else{
+	      item.active = false;
+	      return item;
+      }
+    })
   },
 	initArrImg(state, data) { //查看图片
 		state.arrImg = data;

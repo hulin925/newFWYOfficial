@@ -120,4 +120,21 @@ export default {
       active:false
     },
   ],
+  navBar:[
+    {
+      name:'首页',
+      routerName:'IndexPc',
+      active:true
+    },
+    {
+      name:'关于我们',
+      routerName:'AboutPc',
+      active:false
+    },
+    {
+      name:'法家号',
+      routerName:'navPc',
+      active:false
+    }
+  ]
 }

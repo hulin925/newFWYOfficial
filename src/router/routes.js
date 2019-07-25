@@ -37,6 +37,7 @@ import service from '@/views/threeApp/LawyerSpecialRoutes/service'
 import consultation from '@/views/threeApp/LawyerSpecialRoutes/consultation'
 
 //官网PC项目
+import navBar from '@/views/threeApp/Pc/navBar'//导航
 import AboutPc from '@/views/threeApp/Pc/AboutPc'//首页
 import DownloadPc from '@/views/threeApp/Pc/DownloadPc'//法条
 import IndexPc from '@/views/threeApp/Pc/IndexPc'//快速咨询
@@ -162,7 +163,7 @@ let routeList = [
       }
     ]
   },
-  //我的粉丝
+  //我的粉丝Pc
   {
     path:'/myFansPc',
     name:'myFansPc',
@@ -231,36 +232,46 @@ let routeList = [
       }
     ]
   },
-  //我的粉丝
+  //PC官网导航条
   {
-    path:'/myFans',
-    name:'myFans',
-    component:myFans
+    path:'/navBar',
+    name:'navBar',
+    component:navBar,
+    redirect:'navBar/IndexPc',
+    children:[
+      //我的粉丝
+      {
+        path:'myFans',
+        name:'myFans',
+        component:myFans
+      },
+      //首页pc
+      {
+        path:'IndexPc',
+        name:'IndexPc',
+        component:IndexPc
+      },
+      //法条pc
+      {
+        path:'LawPc',
+        name:'LawPc',
+        component:LawPc
+      },
+      //快速咨询pc
+      {
+        path:'DownloadPc',
+        name:'DownloadPc',
+        component:DownloadPc
+      },
+      //关于我们pc
+      {
+        path:'AboutPc',
+        name:'AboutPc',
+        component:AboutPc
+      },
+    ]
   },
-  //首页pc
-  {
-    path:'/IndexPc',
-    name:'IndexPc',
-    component:IndexPc
-  },
-  //法条pc
-  {
-    path:'/LawPc',
-    name:'LawPc',
-    component:LawPc
-  },
-  //快速咨询pc
-  {
-    path:'/DownloadPc',
-    name:'DownloadPc',
-    component:DownloadPc
-  },
-  //关于我们pc
-  {
-    path:'/AboutPc',
-    name:'AboutPc',
-    component:AboutPc
-  },
+
 
 ]
 if(get()){

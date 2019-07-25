@@ -167,8 +167,8 @@
       // window.FabulousPassVideo = this.FabulousPassVideo;//点赞
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId
