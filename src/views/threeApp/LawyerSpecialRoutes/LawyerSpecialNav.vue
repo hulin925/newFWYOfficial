@@ -67,9 +67,9 @@
       'isPcNavList',//判断是否是pc端
     ]),
     created(){
-      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
 
-      // this.lid = JSON.parse(localStorage.getItem('specialInfo')).lid;
+      // this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
       for (let i = 0; i < this.WrapNavList.length; i++) {
         if (this.WrapNavList[i].routerName == this.$route.name) {
           this.$store.commit('setLawyerNav', i);

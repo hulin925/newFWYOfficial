@@ -202,8 +202,8 @@
     mounted() {
     },
     created() {
-      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId

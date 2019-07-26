@@ -351,10 +351,10 @@
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
-        localStorage.setItem('LawyerId',item.uid);
+        sessionStorage.setItem('LawyerId',item.uid);
       },
       JumpDetail(obj) { //跳转律师详情页
-        localStorage.setItem('detailsId',JSON.stringify(obj));
+        sessionStorage.setItem('detailsId',JSON.stringify(obj));
         if(this.$isMobile()){
           this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
         }else{

@@ -66,7 +66,7 @@
 			'followObj',
     ]),
     created(){
-      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
       for (let i = 0; i < this.WrapNavListPc.length; i++) {
         if (this.WrapNavListPc[i].routerName == this.$route.name) {
           this.$store.commit('setLawyerNavPc', i);

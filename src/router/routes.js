@@ -52,9 +52,48 @@ function get(){
 let routeList = [
   //3.0律师发现页下的推荐
   {
-    path: '/',
+    path: '/navPc',
     name:'navPc',
     component: navPc,
+  },
+  //PC官网导航条
+  {
+    path:'/',
+    name:'navBar',
+    component:navBar,
+    redirect:'IndexPc',
+    children:[
+      //我的粉丝
+      // {
+      //   path:'myFans',
+      //   name:'myFans',
+      //   component:myFans
+      // },
+      //首页pc
+      {
+        path:'IndexPc',
+        name:'IndexPc',
+        component:IndexPc
+      },
+      //法条pc
+      {
+        path:'LawPc',
+        name:'LawPc',
+        component:LawPc
+      },
+      //快速咨询pc
+      {
+        path:'DownloadPc',
+        name:'DownloadPc',
+        component:DownloadPc
+      },
+      //关于我们pc
+      {
+        path:'AboutPc',
+        name:'AboutPc',
+        component:AboutPc
+      },
+    ]
   },
   {
     path: '/',
@@ -232,51 +271,13 @@ let routeList = [
       }
     ]
   },
-  //PC官网导航条
-  {
-    path:'/navBar',
-    name:'navBar',
-    component:navBar,
-    redirect:'navBar/IndexPc',
-    children:[
-      //我的粉丝
-      {
-        path:'myFans',
-        name:'myFans',
-        component:myFans
-      },
-      //首页pc
-      {
-        path:'IndexPc',
-        name:'IndexPc',
-        component:IndexPc
-      },
-      //法条pc
-      {
-        path:'LawPc',
-        name:'LawPc',
-        component:LawPc
-      },
-      //快速咨询pc
-      {
-        path:'DownloadPc',
-        name:'DownloadPc',
-        component:DownloadPc
-      },
-      //关于我们pc
-      {
-        path:'AboutPc',
-        name:'AboutPc',
-        component:AboutPc
-      },
-    ]
-  },
+
 
 
 ]
 if(get()){
   routeList = routeList.filter(item=>{
-    if(item.name=='navPc'){
+    if(item.name=='navBar'){
       return false
     }
     return true

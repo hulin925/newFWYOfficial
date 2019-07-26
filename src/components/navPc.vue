@@ -3,7 +3,7 @@
     <div class="headerWrap">
       <div class="top">
         <div class="city">
-          <i>{{obj.city?obj.city:'泸州市'}}</i>
+          <i>{{obj.city?obj.city:obj.province}}</i>
           <img src="../assets/img/address.png" alt="">
         </div>
         <div class="wrap">
@@ -293,7 +293,8 @@
     created() {
       this.obj = this.getCity(returnCitySN.cname);
       this.getType();
-      this.dataInfo=JSON.parse(localStorage.getItem('userInfo'));
+      this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));
+
       if(this.dataInfo){
         this.face=this.dataInfo.weburl+this.dataInfo.face;
       }
@@ -329,7 +330,7 @@
           })
           window.open(routeData.href,"_blank");
 
-          localStorage.setItem("LawyerId", item.uid);
+          sessionStorage.setItem("LawyerId", item.uid);
 
         }else if(item.outside_link){//跳转外网
           window.open(item.outside_link,'_blank');
@@ -365,7 +366,7 @@
         window.open(routerData.href,"_blank");
       },
       singOut(){//退出
-        localStorage.removeItem('userInfo');
+        sessionStorage.removeItem('userInfo');
         this.reload();
       },
       changePassword(){//修改密码
@@ -468,7 +469,7 @@
               this.showErr1 = false;
               // this.closeOutPc = false;
               this.$store.commit('hidenCloseOutPc');
-              localStorage.setItem('userInfo', JSON.stringify(data));
+              sessionStorage.setItem('userInfo', JSON.stringify(data));
               this.$message({
                 message:'登录成功',
                 type: 'success',
@@ -557,7 +558,7 @@
               this.showErr2 = false;
               this.$store.commit('hidenCloseOutPc');
               // this.closeOutPc = false;
-              localStorage.setItem('userInfo', JSON.stringify(data));
+              sessionStorage.setItem('userInfo', JSON.stringify(data));
               setTimeout(()=>{
                 this.$message({
                   message:'登录成功',
@@ -572,14 +573,14 @@
       },
       download() {
         let routeData = this.$router.resolve({
-          path: '/DownloadPc'
+          name: 'DownloadPc'
         })
         window.open(routeData.href, '_blank');
       },
       scrollTop() {
         let scrollTop = document.documentElement.scrollTop; //滚动条的高
         var navs=document.querySelectorAll('#navs');
-        if (scrollTop > 100) {
+        if (scrollTop > 50) {
           this.fixed = true;
           this.$refs.contentBoxRight.style.top="60px";
         } else {
@@ -605,7 +606,7 @@
         this.indexData = 2;
       },
       changeShow(item, index) {
-
+        console.log(item)
         if (index == 1) {
           this.fatiao = true;
         } else {

@@ -169,7 +169,7 @@
     },
     created() {
       this.videoData=this.GetQueryString('video');
-      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId
@@ -180,7 +180,7 @@
       },
       JumpDetails(obj) {//跳转律师详情页
         this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
-        localStorage.setItem('detailsId',JSON.stringify(obj));
+        sessionStorage.setItem('detailsId',JSON.stringify(obj));
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {

@@ -1,18 +1,18 @@
 <template>
   <section class="main">
-
-    <div :class="this.$isMobile()?'':'isPc'" v-if="!this.$isMobile()">
-      <div class="wrap clearfix">
-        <div class="logo">
-          <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
-          <span>芯汇法务云</span>
-        </div>
-        <div class="right">
-          <span @click.stop="pushIndex()">首页</span>
-          <span @click.stop="pushAbout()">关于我们</span>
-        </div>
-      </div>
-    </div>
+    <!--<div :class="this.$isMobile()?'':'isPc'" v-if="!this.$isMobile()">-->
+      <!--<div class="wrap clearfix">-->
+        <!--<div class="logo">-->
+          <!--<img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">-->
+          <!--<span>芯汇法务云</span>-->
+        <!--</div>-->
+        <!--<div class="right">-->
+          <!--<span @click.stop="pushIndex()">首页</span>-->
+          <!--<span @click.stop="pushAbout()">关于我们</span>-->
+          <!--<span @click.stop="pushAbout()">app下载</span>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
     <section class="main-1">
       <div class="handphone"><img src="../../../assets/img/handphone.png"/></div>
@@ -103,6 +103,9 @@
       },
       pushAbout(){
         this.$router.push({name:'AboutPc'})
+      },
+      pushDownload(){
+        this.$router.push({name:'DownloadPc'})
       }
     }
   };

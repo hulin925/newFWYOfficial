@@ -90,7 +90,7 @@
       this.dataList;
     },
     created() {
-      this.lid = JSON.parse(localStorage.getItem('LawyerId'));
+      this.lid = JSON.parse(sessionStorage.getItem('LawyerId'));
       this.initDataService();
       this.LawyerServiceContract()
         .then(data => {

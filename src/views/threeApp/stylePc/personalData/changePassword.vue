@@ -49,7 +49,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
       console.log(this.userInfo,999)
     },
     methods: {

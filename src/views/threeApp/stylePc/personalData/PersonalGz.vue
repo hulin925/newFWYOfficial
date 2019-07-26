@@ -52,7 +52,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
       this.initData();
     },
     methods: {
@@ -94,7 +94,7 @@
         })
         window.open(routeData.href,"_blank");
 
-        localStorage.setItem("LawyerId", item.lid);
+        sessionStorage.setItem("LawyerId", item.lid);
       },
       Follows(item) {//关注接口
         if(!this.userInfo){

@@ -8,17 +8,60 @@
           <span>芯汇法务云</span>
         </div>
         <div class="right">
-          <span @click.stop="pushIndex()">首页</span>
-          <span @click.stop="pushAbout()">关于我们</span>
+          <span v-for="item,index in navList" @click.stop="pushIndex(item,index)" :class="{active:index==nowIndex}">
+            {{item.name}}
+          </span>
         </div>
       </div>
     </div>
+
+    <router-view></router-view>
+
+
   </div>
 </template>
 
 <script>
     export default {
-        name: "navBar"
+        name: "navBar",
+      data(){
+          return{
+            nowIndex:0,
+            navList:[
+              {
+                name:'首页',
+                routerName:'IndexPc',
+                id:0
+              },
+              {
+                name:'法家号',
+                routerName:'navPc',
+              },
+              {
+                name:'关于我们',
+                routerName:'AboutPc',
+              },
+              {
+                name:'app下载',
+                routerName:'DownloadPc',
+              }
+            ]
+          }
+      },
+      methods:{
+        pushIndex(item,index){
+          this.nowIndex=index;
+          if(index==1){
+            let routeData=this.$router.resolve({
+              name:item.routerName
+            })
+            window.open(routeData.href,'_blank');
+            // this.$router.push({name:item.routerName})
+          }else{
+            this.$router.push({name:item.routerName})
+          }
+        }
+      }
     }
 </script>
 
@@ -54,13 +97,27 @@
   .right span{
     color:#fff;
     line-height:40px;
-    padding:0 20px;
+    /*padding:0 20px;*/
+    text-align:center;
     display:inline-block;
     letter-spacing:2px;
     cursor:pointer;
+    position:relative;
+    width:100px;
+  }
+  .right span.active:before{
+    position:absolute;
+    content:'';
+    left:50%;
+    bottom:0;
+    width:60%;
+    transform:translateX(-50%);
+    height:2px;
+    background-color: #5d74ff;
+    color:#5d74ff;
   }
   .right span:hover{
-    color:#5d74ff;
+    color:#b998d0;
   }
 
   .wrap {

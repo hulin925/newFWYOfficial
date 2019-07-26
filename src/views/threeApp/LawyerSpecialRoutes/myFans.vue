@@ -65,7 +65,7 @@
       }
     },
     created() {
-      this.lid = JSON.parse(localStorage.getItem('specialInfo')).uid;
+      this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).uid;
     },
     methods: {
       // mescroll组件初始化的回调,可获取到mescroll对象

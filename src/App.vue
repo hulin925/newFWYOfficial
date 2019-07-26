@@ -3,7 +3,7 @@
 		<router-view v-if="isRouterAlive"></router-view>
 
     <!--预加载-->
-		<div id="loadingMask" v-show="isLoading">
+		<div :class="isMobile?'loadingMask':'loadingMask1'" v-show="isLoading">
 
 			<div>
 				<i></i>
@@ -30,7 +30,8 @@
 		]),
     data(){
 		  return{
-        isRouterAlive:true
+        isRouterAlive:true,
+        isMobile:false
       }
     },
     mounted() {
@@ -41,6 +42,7 @@
       // }
     },
     created(){
+		  this.isMobile=this.$isMobile();
     },
     methods:{
       reload (){
@@ -94,17 +96,51 @@
     }
   }
 
-	#loadingMask {
+	.loadingMask {
 		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: rgba(0, 0, 0, .6);
+		background-color: rgba(0, 0, 0, .4);
 		color: #fff;
 	}
+  .loadingMask1 {
+    position: fixed;
+    top: 170px;
+    left: 200px;
+    right: 600px;
+    bottom: 0;
+    /*background-color: rgba(0, 0, 0, .2);*/
+    color: #555;
+  }
+  .loadingMask1 div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
 
-	#loadingMask div {
+  .loadingMask1 i {
+    display: inline-block;
+    width: 80/@r;
+    height: 80/@r;
+    background: url("./assets/img/isLoading .png") no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    animation: isRotate .5s linear infinite;
+  }
+
+  .loadingMask1 span {
+    display: block;
+    text-align: center;
+    font-size: 30/@r;
+    line-height: 2;
+    font-family: "微软雅黑";
+  }
+
+	.loadingMask div {
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -112,7 +148,7 @@
 		text-align: center;
 	}
 
-	#loadingMask i {
+	.loadingMask i {
 		display: inline-block;
 		width: 80/@r;
 		height: 80/@r;
@@ -122,7 +158,7 @@
 		animation: isRotate .5s linear infinite;
 	}
 
-	#loadingMask span {
+	.loadingMask span {
 		display: block;
 		text-align: center;
 		font-size: 30/@r;

@@ -57,7 +57,7 @@
       window.FollowsPassV=this.FollowsPassV;
     },
     created() {
-      this.lid = JSON.parse(localStorage.getItem('LawyerId'));
+      this.lid = JSON.parse(sessionStorage.getItem('LawyerId'));
       this.$nextTick(() => {
         this.initData();
       })

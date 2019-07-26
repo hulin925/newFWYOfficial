@@ -2,16 +2,15 @@
   <div class="isPc">
     <div class="noneData" v-if="noneData">
       <img src="../../../assets/img/follow.png" alt>
-      <p>暂无关注律师！</p>
+      <p>暂无相关数据！</p>
     </div>
 
     <section id="contain" ref="contain" v-else>
-      <ul class="list"
-          v-loading="isElLoading"
-          element-loading-text="拼命加载中"
-          element-loading-spinner="el-icon-loading"
-          element-loading-background="transparent"
-          style="min-height:800px;">
+      <ul class="list">
+        <!--v-loading="isElLoading" element-loading-text="拼命加载中"-->
+        <!--element-loading-spinner="el-icon-loading"-->
+        <!--element-loading-background="transparent"-->
+        <!--style="min-height:800px;"-->
         <li v-for="item,index in dataList">
           <div v-if="item.pic">
             <div class="title clearfix">
@@ -217,7 +216,7 @@
         showTop: false,
         total: 0,
         page: 1,
-        isElLoading:false
+        // isElLoading:false
       };
     },
     computed: Object.assign(mapGetters(["arrImg"]), {}),
@@ -335,10 +334,11 @@
                 }
               });
               this.dataList = data;
-              this.isElLoading = false;
+              // this.isElLoading = false;
+              this.$store.commit("hidenLoading");
             },
             err => {
-              this.isElLoading = false;
+              // this.isElLoading = false;
             }
           )
           .catch(e => {
@@ -346,7 +346,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
       this.Advertisement(); //广告接口
       this.initData()
         .then(
@@ -441,10 +441,11 @@
               }
             });
             this.dataList = data;
-            this.isElLoading = false;
+            // this.isElLoading = false;
+            this.$store.commit("hidenLoading");
           },
           err => {
-            this.isElLoading = false;
+            // this.isElLoading = false;
           }
         )
         .catch(e => {
@@ -563,12 +564,13 @@
                   _this.$nextTick(() => {
                     _this.isLoading = false;
                   })
-                  _this.isElLoading = false;
+                  // _this.isElLoading = false;
+                  this.$store.commit("hidenLoading");
                 },
                 err => {
                   _this.isLoading = false;
                   _this.isNewLoading = false;
-                  _this.isElLoading = false;
+                  // _this.isElLoading = false;
                 }
               )
               .catch(e => {
@@ -616,7 +618,7 @@
         })
         window.open(routeData.href,"_blank");
 
-        localStorage.setItem("LawyerId", item.uid);
+        sessionStorage.setItem("LawyerId", item.uid);
       },
       JumpDetail(obj) {
         //跳转律师详情页
@@ -628,10 +630,10 @@
       },
       // 上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
       initData() {
-        this.dataList = [];
-        this.isElLoading = true;
+        // this.dataList = [];
+        // this.isElLoading = true;
         //获取页面初始数据
-        //   this.$store.commit("showLoading");
+          this.$store.commit("showLoading");
         let options = new FormData();
         if (this.userInfo) {
           options.append('uid', this.userInfo.uid);
@@ -677,6 +679,7 @@
           })
       },
       Follows(item) {//关注接口
+        console.log(3333)
         if(!this.userInfo){
           this.$store.commit('showCloseOutPc');
           this.$message({
@@ -692,6 +695,7 @@
         options.append('lid', item.uid);
         this.$store.dispatch('followPc', options)
           .then(data => {
+            console.log(data,66666666)
             this.dataList = this.dataList.map(obj => {
               if (item.uid == obj.uid) {
                 obj.isguanzhu = data.flag;
@@ -1045,11 +1049,12 @@
   }
 
   .AdvertisementContent img {
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100%;
+
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
   }
   .dataNone {
     text-align: center;

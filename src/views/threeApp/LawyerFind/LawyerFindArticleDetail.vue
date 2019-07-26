@@ -184,7 +184,7 @@
     mounted() {
     },
     created() {
-      var a =JSON.parse(localStorage.getItem('detailsId'));
+      var a =JSON.parse(sessionStorage.getItem('detailsId'));
       this.lid = a.uid;
       this.id = a.id;
       this.classify = a.classify;
@@ -220,7 +220,7 @@
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
-        localStorage.setItem('LawyerId',item.uid);
+        sessionStorage.setItem('LawyerId',item.uid);
       },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

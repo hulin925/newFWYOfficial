@@ -203,8 +203,8 @@
 
     },
     created() {
-      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
-      // this.lid = JSON.parse(localStorage.getItem('specialInfo')).lid;
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      // this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId
@@ -214,7 +214,7 @@
         return null;
       },
       JumpDetails(obj) {//跳转律师详情页
-        localStorage.setItem('detailsId',JSON.stringify(obj));
+        sessionStorage.setItem('detailsId',JSON.stringify(obj));
 
         if(this.$isMobile()){
           this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});

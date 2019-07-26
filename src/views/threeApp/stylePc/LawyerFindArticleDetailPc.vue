@@ -161,7 +161,7 @@
       this.id = this.$route.query.id;
       this.classify = this.$route.query.classify;
       this.tag = this.$route.query.tag;
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
       this.initFind();
     },
     methods: {
@@ -219,8 +219,8 @@
           })
       },
       PersonalTopics(item) {//跳转个人律师专题页
-        this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
-        localStorage.setItem('LawyerId', item.uid);
+        this.$router.push({name: 'LawyerSpecialPc', query: {lid: item.uid}});
+        sessionStorage.setItem('LawyerId', item.uid);
       },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

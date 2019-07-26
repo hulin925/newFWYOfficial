@@ -32,7 +32,7 @@
       }
     },
     created() {
-      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
       // this.lid=this.$route.query.lid;
       this.WrapInitData();
     },
@@ -55,7 +55,7 @@
           .then(data => {
             data.faces=data.weburl+data.face;
             this.WrapSpecialInfo.lid=data.uid;
-            localStorage.setItem('specialInfo',JSON.stringify(data));
+            sessionStorage.setItem('specialInfo',JSON.stringify(data));
             this.WrapData = data;
             // this.$store.commit('hidenLoading')
           })
