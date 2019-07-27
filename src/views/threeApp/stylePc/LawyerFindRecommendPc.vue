@@ -633,7 +633,7 @@
         // this.dataList = [];
         // this.isElLoading = true;
         //获取页面初始数据
-          this.$store.commit("showLoading");
+        //   this.$store.commit("showLoading");
         let options = new FormData();
         if (this.userInfo) {
           options.append('uid', this.userInfo.uid);

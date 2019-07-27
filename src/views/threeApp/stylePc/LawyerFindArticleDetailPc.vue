@@ -155,6 +155,11 @@
       }
     },
     mounted() {
+      this.$nextTick(()=>{
+        console.log(this.data)
+      })
+      document.title=this.data.title;
+
     },
     created() {
       this.lid = this.$route.query.lid;
@@ -163,6 +168,7 @@
       this.tag = this.$route.query.tag;
       this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
       this.initFind();
+
     },
     methods: {
       Collection(item) {//收藏接口
@@ -217,6 +223,8 @@
           .then(data => {
             this.initFind()
           })
+
+
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.$router.push({name: 'LawyerSpecialPc', query: {lid: item.uid}});
@@ -244,7 +252,6 @@
         options.append('page', 1);
         this.$store.dispatch('LawyerFindArticleDetail', options)
           .then(data => {
-            console.log(data, 9999);
             data.videos = data.weburl + data.path;//拼接后的video
             data.cover = data.weburl + data.thumbnail;//拼接后的封面
             this.weburl = data.weburl;

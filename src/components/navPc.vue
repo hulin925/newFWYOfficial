@@ -93,6 +93,7 @@
         <div v-else>
           <LawyerFindRecommendPc :val="type"></LawyerFindRecommendPc>
         </div>
+
       </div>
       <div class="contentBoxRight" ref="contentBoxRight">
         <div class="block">
@@ -593,7 +594,7 @@
         this.$store.dispatch('getType', options)
           .then(data => {
             var data = data.slice(1);
-            data[0].name = '首页';
+            data[0].name = '推荐';
             this.type = data[0];
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;

@@ -117,7 +117,7 @@
     color:#5d74ff;
   }
   .right span:hover{
-    color:#b998d0;
+    color:#ccc;
   }
 
   .wrap {
