@@ -7,8 +7,9 @@
           <img src="../assets/img/address.png" alt="">
         </div>
         <div class="wrap">
+          <span @click.stop="pushIndex">官网首页</span>
           <span>开发者平台</span>
-          <span>品牌介绍</span>
+          <!--<span>品牌介绍</span>-->
           <span>侵权投诉</span>
           <span>代理合作</span>
         </div>
@@ -303,6 +304,12 @@
 
     },
     methods: {
+      pushIndex(){
+        let routeData = this.$router.resolve({
+          name: "navBar",
+        });
+        window.open(routeData.href, "_blank");
+      },
       JumpAdvertisement(item){//跳转广告
         if(item.tag=='fwy_lawyer_content'){//跳转律师文章
           //跳转律师详情页
