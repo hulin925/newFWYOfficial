@@ -158,8 +158,6 @@
       this.$nextTick(()=>{
         console.log(this.data)
       })
-      document.title=this.data.title;
-
     },
     created() {
       this.lid = this.$route.query.lid;
@@ -252,6 +250,8 @@
         options.append('page', 1);
         this.$store.dispatch('LawyerFindArticleDetail', options)
           .then(data => {
+            document.title=data.title;
+
             data.videos = data.weburl + data.path;//拼接后的video
             data.cover = data.weburl + data.thumbnail;//拼接后的封面
             this.weburl = data.weburl;
