@@ -31,7 +31,7 @@
           <span>我的地址</span>
         </div>
         <div class="right">
-          <span></span>
+          <span>{{data.detail}}</span>
         </div>
       </li>
     </ul>
@@ -76,10 +76,12 @@
     padding:15px 0;
   }
   .left{
+    width:20%;
     float:left;
-    margin-right:150px;
+    overflow: hidden;
   }
   .right{
+    width:80%;
     float:left;
   }
   .right img{

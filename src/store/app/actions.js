@@ -428,6 +428,8 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
+          }else if(Number(res.code) == 10101){
+            resolve(res);
           } else {
             reject(res.message);
           }
@@ -442,6 +444,8 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);
+          } else if(Number(res.code) == 10101){
+            resolve(res);
           } else {
             reject(res.message);
           }
@@ -503,6 +507,7 @@ export default {
     return new Promise((resolve, reject) => {
       axios.post(str + '/find/collection', data)
         .then(data => {
+          console.log(data)
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data);

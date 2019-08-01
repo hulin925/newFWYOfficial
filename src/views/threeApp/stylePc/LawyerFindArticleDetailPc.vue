@@ -303,6 +303,17 @@
         options.append('lid', item.uid);
         this.$store.dispatch('followPc', options)
           .then(data => {
+            if(Number(data.code)==10101){
+              sessionStorage.removeItem('userInfo');
+              this.$message({
+                message:'登录过期，请重新登录',
+                type: 'warning',
+                center: true
+              })
+              this.$router.push({name:"navPc"});
+              this.reload();
+              return;
+            }
             if (item.uid == this.data.uid) {
               this.data.isguanzhu = data.flag;
               return this.data;
@@ -328,6 +339,17 @@
         options.append("type", item.classify); //文章类型
         this.$store.dispatch('FabulousPc', options)
           .then(data => {
+            if(Number(data.code)==10101){
+              sessionStorage.removeItem('userInfo');
+              this.$message({
+                message:'登录过期，请重新登录',
+                type: 'warning',
+                center: true
+              })
+              this.$router.push({name:"navPc"});
+              this.reload();
+              return;
+            }
             if (data.flag == 1) {
               this.showStart = true;
             }

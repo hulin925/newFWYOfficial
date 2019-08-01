@@ -293,10 +293,6 @@
       window.addEventListener('scroll', this.scrollTop);
     },
     created() {
-      // let again=this.$route.query.again;
-      // if(again==1){
-      //   this.$store.commit('showCloseOutPc');
-      // }
       this.obj = this.getCity(returnCitySN.cname);
       this.getType();
       this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));

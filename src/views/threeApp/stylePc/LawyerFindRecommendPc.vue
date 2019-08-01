@@ -187,6 +187,7 @@
   import svgIcon from "@/components/SvgIcon";
   // import oneImg from '@/components/Img.vue'
   export default {
+    inject:['reload'],
     props: {
       val: ""
     },
@@ -665,6 +666,18 @@
         options.append("type", item.classify); //文章类型
         this.$store.dispatch('FabulousPc', options)
           .then(data => {
+            // this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}})
+            if(Number(data.code)==10101){
+              sessionStorage.removeItem('userInfo');
+              this.$message({
+                message:'登录过期，请重新登录',
+                type: 'warning',
+                center: true
+              })
+              this.$router.push({name:"navPc"});
+              this.reload();
+              return;
+            }
             if (data.flag == 1) {
               this.showStart = true;
             }
@@ -679,7 +692,6 @@
           })
       },
       Follows(item) {//关注接口
-        console.log(3333)
         if(!this.userInfo){
           this.$store.commit('showCloseOutPc');
           this.$message({
@@ -695,7 +707,17 @@
         options.append('lid', item.uid);
         this.$store.dispatch('followPc', options)
           .then(data => {
-            console.log(data,66666666)
+            if(Number(data.code)==10101){
+              this.$router.push({name:"navPc"});
+              sessionStorage.removeItem('userInfo');
+              this.$message({
+                message:'登录过期，请重新登录',
+                type: 'warning',
+                center: true
+              })
+              this.reload();
+              return;
+            }
             this.dataList = this.dataList.map(obj => {
               if (item.uid == obj.uid) {
                 obj.isguanzhu = data.flag;
