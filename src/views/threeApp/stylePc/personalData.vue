@@ -35,7 +35,7 @@
       }
     },
     created(){
-      this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));
+      this.dataInfo=JSON.parse(localStorage.getItem('userInfo'));
       for (let i = 0; i < this.personalDataPc.length; i++) {
         if (this.personalDataPc[i].pushName == this.$route.name) {
           this.$store.commit('personalDataPc', i);

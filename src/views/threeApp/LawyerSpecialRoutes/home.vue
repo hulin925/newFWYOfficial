@@ -113,7 +113,7 @@
       }
     },
     created() {
-      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
     },
 		mounted(){
 		},

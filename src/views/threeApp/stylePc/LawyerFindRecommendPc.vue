@@ -347,7 +347,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
       this.Advertisement(); //广告接口
       this.initData()
         .then(
@@ -619,7 +619,7 @@
         })
         window.open(routeData.href,"_blank");
 
-        sessionStorage.setItem("LawyerId", item.uid);
+        localStorage.setItem("LawyerId", item.uid);
       },
       JumpDetail(obj) {
         //跳转律师详情页
@@ -650,7 +650,7 @@
       Fabulous(item) {
         //点赞接口
         if(!this.userInfo){
-          this.$store.commit('showCloseOutPc');
+          this.$store.commit('showCloseOutPcBox');
           this.$message({
             message:'请先登录',
             type: 'warning',
@@ -668,14 +668,15 @@
           .then(data => {
             // this.$router.push({name: "LawyerSpecial", query: {lid: item.uid}})
             if(Number(data.code)==10101){
-              sessionStorage.removeItem('userInfo');
+              localStorage.removeItem('userInfo');
               this.$message({
                 message:'登录过期，请重新登录',
                 type: 'warning',
                 center: true
               })
-              this.$router.push({name:"navPc"});
+              // this.$router.push({name:"navPc"});
               this.reload();
+              this.$store.commit('showCloseOutPcBox');
               return;
             }
             if (data.flag == 1) {
@@ -693,7 +694,8 @@
       },
       Follows(item) {//关注接口
         if(!this.userInfo){
-          this.$store.commit('showCloseOutPc');
+          this.$store.commit('showCloseOutPcBox');
+          // this.$store.commit('showCloseOutPc');
           this.$message({
             message:'请先登录',
             type: 'warning',
@@ -708,14 +710,15 @@
         this.$store.dispatch('followPc', options)
           .then(data => {
             if(Number(data.code)==10101){
-              this.$router.push({name:"navPc"});
-              sessionStorage.removeItem('userInfo');
+              // this.$router.push({name:"navPc"});
+              localStorage.removeItem('userInfo');
               this.$message({
                 message:'登录过期，请重新登录',
                 type: 'warning',
                 center: true
               })
               this.reload();
+              this.$store.commit('showCloseOutPcBox');
               return;
             }
             this.dataList = this.dataList.map(obj => {
@@ -897,6 +900,9 @@
     display: -webkit-box;
     line-height: 48 / @r;
     color: #333;
+  }
+  .content:hover{
+    cursor:pointer;
   }
 
   .content div {

@@ -106,6 +106,7 @@
   } from '@/assets/public.js'
 
   export default {
+    inject:['reload'],
     name: "viewpoint",
     components: {
       MescrollVue, // 注册mescroll组件
@@ -167,8 +168,8 @@
       // window.FabulousPassVideo = this.FabulousPassVideo;//点赞
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.lid=JSON.parse(localStorage.getItem('LawyerId'));
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId
@@ -251,6 +252,7 @@
       Fabulous(item) { //点赞接口
         if(!this.userInfo){
           // this.$store.commit('showCloseOutPc');
+          this.$store.commit('showCloseOutPcBox');
           this.$message({
             message:'请先登录',
             type: 'warning',
@@ -266,6 +268,18 @@
         options.append("type", item.classify); //文章类型
         this.$store.dispatch('FabulousPc', options)
           .then(data => {
+            if(Number(data.code)==10101){
+              localStorage.removeItem('userInfo');
+              this.$message({
+                message:'登录过期，请重新登录',
+                type: 'warning',
+                center: true
+              })
+              // this.$router.push({name:"navPc"});
+              this.reload();
+              this.$store.commit('showCloseOutPcBox');
+              return;
+            }
             if (data.flag == 1) {
               this.showStart = true;
             }

@@ -2,6 +2,7 @@
 //3.0数据
 //pc
 import navPc from '@/components/navPc'//nav
+
 import LawyerFindRecommendPc from '@/views/threeApp/stylePc/LawyerFindRecommendPc'//发现页下的推荐
 import LawyerFindArticleDetailPc from '@/views/threeApp/stylePc/LawyerFindArticleDetailPc'//发现页下的文章详情
 import LawyerFindLawDetailsPc from '@/views/threeApp/stylePc/LawyerFindLawDetailsPc'//发现页下法条详情
@@ -63,12 +64,6 @@ let routeList = [
     component:navBar,
     redirect:'IndexPc',
     children:[
-      //我的粉丝
-      // {
-      //   path:'myFans',
-      //   name:'myFans',
-      //   component:myFans
-      // },
       //首页pc
       {
         path:'IndexPc',
@@ -96,7 +91,7 @@ let routeList = [
     ]
   },
   {
-    path: '/',
+    path: '/LawyerFindRecommend',
     name:'LawyerFindRecommend',
     component: LawyerFindRecommend,
   },
@@ -275,13 +270,13 @@ let routeList = [
 
 
 ]
-if(get()){
-  routeList = routeList.filter(item=>{
-    if(item.name=='navBar'){
-      return false
-    }
-    return true
-  })
-}
+// if(get()){
+//   routeList = routeList.filter(item=>{
+//     if(item.name=='navBar'){
+//       return false
+//     }
+//     return true
+//   })
+// }
 
 export default routeList

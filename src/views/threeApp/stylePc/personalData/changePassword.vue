@@ -49,8 +49,19 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-      console.log(this.userInfo,999)
+      this.userInfos = JSON.parse(localStorage.getItem('userInfo'));
+      if (!this.userInfos) {
+        this.noData=true;
+        this.$store.commit('showCloseOutPcBox');
+        this.noData=true;
+        this.$message({
+          message:'请重新登录，登录过期',
+          type:'warning',
+          center:true
+        })
+        return;
+      }
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     },
     methods: {
       submit(){

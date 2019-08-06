@@ -82,8 +82,8 @@
       }
     },
     created(){
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-      console.log(this.userInfo,9999)
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
       this.initData();
     },
     methods:{
@@ -118,6 +118,13 @@
       initData() {
         if (!this.userInfo) {
           this.noData=true;
+          this.$store.commit('showCloseOutPcBox');
+          this.noData=true;
+          this.$message({
+            message:'请重新登录，登录过期',
+            type:'warning',
+            center:true
+          })
           return;
         }
         let options = new FormData();
@@ -129,6 +136,7 @@
               this.noData=true;
               return;
             }else if(data.code==10101){
+              this.$store.commit('showCloseOutPcBox');
               this.noData=true;
               this.$message({
                 message:'请重新登录，登录过期',

@@ -122,6 +122,8 @@
       </toast>
     </div>
 
+    <div class=""></div>
+
   </div>
 </template>
 
@@ -132,6 +134,7 @@
 
   export default {
     name: "lawyerFind",
+    inject:['reload'],
     components: {
       MescrollVue,// 注册mescroll组件
       PopupPicker,//vux
@@ -155,22 +158,22 @@
       }
     },
     mounted() {
-      this.$nextTick(()=>{
-        console.log(this.data)
-      })
+
     },
     created() {
       this.lid = this.$route.query.lid;
       this.id = this.$route.query.id;
       this.classify = this.$route.query.classify;
       this.tag = this.$route.query.tag;
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
       this.initFind();
 
     },
     methods: {
       Collection(item) {//收藏接口
         if (!this.userInfo) {
+          this.$store.commit('showCloseOutPcBox');
           this.$message({
             message: '请先登录',
             type: 'warning',
@@ -194,6 +197,7 @@
       },
       CommentPass(now) {//评论接口，
         if (!this.userInfo) {
+          this.$store.commit('showCloseOutPcBox');
           this.$message({
             message: '请先登录',
             type: 'warning',
@@ -206,7 +210,7 @@
             message: '请填写内容',
             type: 'warning',
             center: true
-          })
+          });
           return;
         }
         let options = new FormData();
@@ -219,14 +223,33 @@
         options.append('content', this.commentData);
         this.$store.dispatch('LawyerFindArticleComment', options)
           .then(data => {
-            this.initFind()
+            if(Number(data.code)==10101){
+              // this.$router.push({name:"navPc"});
+              localStorage.removeItem('userInfo');
+              this.$message({
+                message:'登录过期，请重新登录',
+                type: 'warning',
+                center: true
+              })
+              this.reload();
+              this.$store.commit('showCloseOutPcBox');
+              return;
+            }
+
+            this.initFind();
+            this.commentData='';
           })
 
 
       },
       PersonalTopics(item) {//跳转个人律师专题页
-        this.$router.push({name: 'LawyerSpecialPc', query: {lid: item.uid}});
-        sessionStorage.setItem('LawyerId', item.uid);
+        // this.$router.push({name: 'LawyerSpecialPc', query: {lid: item.uid}});
+        let routeData=this.$router.resolve({
+          name:'LawyerSpecialPc',
+          query:{lid:item.uid}
+        })
+        window.open(routeData.href,"_blank");
+        localStorage.setItem('LawyerId', item.uid);
       },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -290,6 +313,7 @@
       },
       Follows(item) {//关注接口
         if (!this.userInfo) {
+          this.$store.commit('showCloseOutPcBox');
           this.$message({
             message: '请先登录',
             type: 'warning',
@@ -304,14 +328,15 @@
         this.$store.dispatch('followPc', options)
           .then(data => {
             if(Number(data.code)==10101){
-              sessionStorage.removeItem('userInfo');
+              localStorage.removeItem('userInfo');
               this.$message({
                 message:'登录过期，请重新登录',
                 type: 'warning',
                 center: true
               })
-              this.$router.push({name:"navPc"});
+              // this.$router.push({name:"navPc"});
               this.reload();
+              this.$store.commit('showCloseOutPcBox');
               return;
             }
             if (item.uid == this.data.uid) {
@@ -324,6 +349,7 @@
       Fabulous(item) { //点赞接口
         //点赞接口
         if (!this.userInfo) {
+          this.$store.commit('showCloseOutPcBox');
           this.$message({
             message: '请先登录',
             type: 'warning',
@@ -340,14 +366,15 @@
         this.$store.dispatch('FabulousPc', options)
           .then(data => {
             if(Number(data.code)==10101){
-              sessionStorage.removeItem('userInfo');
+              localStorage.removeItem('userInfo');
               this.$message({
                 message:'登录过期，请重新登录',
                 type: 'warning',
                 center: true
               })
-              this.$router.push({name:"navPc"});
+              // this.$router.push({name:"navPc"});
               this.reload();
+              this.$store.commit('showCloseOutPcBox');
               return;
             }
             if (data.flag == 1) {

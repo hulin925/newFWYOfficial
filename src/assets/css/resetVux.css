@@ -15,3 +15,41 @@
 .el-carousel__indicators--outside button{
   background-color:#8b8b8b;
 }
+
+.selectCityInfo .el-input__inner{
+  border:none;
+}
+.selectCityInfo .el-input__icon{
+  color:#606266;
+  font-weight:bold;
+}
+.selectCityInfo .el-select .el-input .el-select__caret{
+  font-size:18px;
+  color:#606266;
+}
+.selectCityInfo .el-cascader .el-input .el-icon-arrow-down{
+  font-size:18px;
+}
+.selectCityInfo :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #606266;
+  font-size:18px;
+}
+
+.selectCityInfo ::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #606266;
+  font-size:18px;
+}
+
+.selectCityInfo input:-ms-input-placeholder{
+  color: #606266;
+  font-size:18px;
+}
+
+.selectCityInfo input::-webkit-input-placeholder{
+  color: #606266;
+  font-size:18px;
+}
+.selectCityInfo input{
+  font-size:18px;
+}
+

@@ -20,6 +20,47 @@ export default {
   showCloseOutPc(state){
 	  state.closeOutPc=true;
   },
+  hidenCloseOutPcBox(state){//pc登录窗口
+    state.closeOutPcBox=false;
+  },
+  showCloseOutPcBox(state){//pc登录窗口总
+    state.closeOutPcBox=true;
+    state.getCode=false;//点击登录框取消样式
+    state.showErr1=false;
+    state.showErr2=false;
+    state.showErr3=false;
+    state.forget=false;
+  },
+  showgetCode(state){
+    state.getCode=true;
+  },
+  showshowErr1(state){
+    state.showErr1=true;
+  },
+  showshowErr2(state){
+    state.showErr2=true;
+  },
+  showshowErr3(state){
+    state.showErr3=true;
+  },
+  showforget(state){
+    state.forget=true;
+  },
+  hidengetCode(state){
+    state.getCode=false;
+  },
+  hidenshowErr1(state){
+    state.showErr1=false;
+  },
+  hidenshowErr2(state){
+    state.showErr2=false;
+  },
+  hidenshowErr3(state){
+    state.showErr3=false;
+  },
+  hidenforget(state){
+    state.forget=false;
+  },
 	setLawyerNav(state, id) { //改变state数据
 		state.WrapNavList = state.WrapNavList.map((item, index) => {
 			if (index == id) {

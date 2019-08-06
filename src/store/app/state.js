@@ -3,6 +3,12 @@ export default {
   isLoading: false,
   isZan: false,
   closeOutPc:false,
+  closeOutPcBox:false,
+  getCode:false,//点击登录框取消样式
+  showErr1:false,
+  showErr2:false,
+  showErr3:false,
+  forget:false,
   arrImg:[],//图片存储
   WrapNavList: [//律师专题页导航
     {

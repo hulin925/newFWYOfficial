@@ -52,13 +52,20 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
       this.initData();
     },
     methods: {
       initData() {
         if (!this.userInfo) {
           this.noData=true;
+          this.$store.commit('showCloseOutPcBox');
+          this.noData=true;
+          this.$message({
+            message:'请重新登录，登录过期',
+            type:'warning',
+            center:true
+          })
           return;
         }
         let options = new FormData();
@@ -71,6 +78,7 @@
               this.noData=true;
               return;
             }else if(data.code==10101){
+              this.$store.commit('showCloseOutPcBox');
               this.noData=true;
               this.$message({
                 message:'请重新登录，登录过期',
@@ -94,7 +102,7 @@
         })
         window.open(routeData.href,"_blank");
 
-        sessionStorage.setItem("LawyerId", item.lid);
+        localStorage.setItem("LawyerId", item.lid);
       },
       Follows(item) {//关注接口
         if(!this.userInfo){

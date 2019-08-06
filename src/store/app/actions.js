@@ -2,7 +2,7 @@
 
 // const str = 'https://xhfwy3.sanhedao.com.cn/public/index.php/client/v3';
 
-const str = 'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v3';
+const str = 'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4';
 
 //案源库
 const strFour = 'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4/';
@@ -162,7 +162,9 @@ export default {
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res.data)
-          } else {
+          } else if(Number(res.code) == 10101){
+            resolve(res);
+          }else {
             reject(data.message)
           }
         })
@@ -502,6 +504,24 @@ export default {
         })
     })
   },
+  //PC个人资料
+  PersonalData(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/member/index', data)
+        .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res.data);
+          } else if(Number(res.code) == 10001){
+            resolve(res);
+          } else if(Number(res.code)==10101){
+            resolve(res)
+          }else {
+            reject(res.message);
+          }
+        })
+    })
+  },
   //PC点击收藏
   Collection(store, data) {
     return new Promise((resolve, reject) => {
@@ -532,24 +552,25 @@ export default {
     })
   },
   //PC个人资料
-  PersonalData(store, data) {
-    return new Promise((resolve, reject) => {
-      axios.post(str + '/member/index', data)
-        .then(data => {
-          let res = data.data;
-          if (Number(res.code) == 10000) {
-            resolve(res.data);
-          } else {
-            reject(res.message);
-          }
-        })
-    })
-  },
-  //PC个人资料
   indexImg(store, data) {
     return new Promise((resolve, reject) => {
       axios.post(str + '/home/indexTopAdv', data)
         .then(data => {
+          let res = data.data;
+          if (Number(res.code) == 10000) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+    })
+  },
+  //PC修改资料
+  modifyData(store, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(str + '/member/edit', data)
+        .then(data => {
+          console.log(data,888)
           let res = data.data;
           if (Number(res.code) == 10000) {
             resolve(res);

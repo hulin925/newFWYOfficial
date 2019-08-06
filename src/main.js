@@ -5,9 +5,12 @@ import FastClick from 'fastclick'
 import router from './router'
 import App from './App'
 import store from './store'
-
 import VueLazyLoad from 'vue-lazyload'
 import * as filters from './filters'
+
+import VueQrcode from '@xkeshi/vue-qrcode';
+Vue.component(VueQrcode.name, VueQrcode);
+
 Vue.use(VueLazyLoad,{
     error:'https://hly.1000da.com.cn/assets/img/error.jpg',
   loading:'https://web.3fgj.com/imgVue/bgcolor.png'//http://hly.1000da.com.cn/assets/img/loading.gif

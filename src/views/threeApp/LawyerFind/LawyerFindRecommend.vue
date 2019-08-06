@@ -229,7 +229,7 @@
         fatiao: '',
         judgeId: '',
         navTag: 'tuijian',//跳转页面
-        navId: 0,//nav
+        navId: 1,//nav
         navType: '',//导航
         AdvertisingData: [],//广告
         showStart: false,//点赞
@@ -279,6 +279,10 @@
     },
     methods: {
       changeNav(item, index) {//nav跳转
+        if(index==0){
+          this.$router.push({name:item.tag});
+          return;
+        }
         this.navId = index;
         this.navTag = item.tag;
         this.judgeId = item.id;
@@ -305,9 +309,14 @@
                 tag:'AboutPc'
               }
             ]
+            let mobileIndex={
+              name:'首页',
+              tag:'IndexPc'
+            }
             console.log(data,data.length)
              data=data.slice(1,data.length);
             // data.push(...AddType);
+            data.unshift(mobileIndex);
 
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
@@ -351,10 +360,10 @@
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
-        sessionStorage.setItem('LawyerId',item.uid);
+        localStorage.setItem('LawyerId',item.uid);
       },
       JumpDetail(obj) { //跳转律师详情页
-        sessionStorage.setItem('detailsId',JSON.stringify(obj));
+        localStorage.setItem('detailsId',JSON.stringify(obj));
         if(this.$isMobile()){
           this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
         }else{

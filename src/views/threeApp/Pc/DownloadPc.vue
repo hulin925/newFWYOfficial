@@ -1,19 +1,5 @@
 <template>
   <section class="main">
-    <!--<div :class="this.$isMobile()?'':'isPc'" v-if="!this.$isMobile()">-->
-      <!--<div class="wrap clearfix">-->
-        <!--<div class="logo">-->
-          <!--<img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">-->
-          <!--<span>芯汇法务云</span>-->
-        <!--</div>-->
-        <!--<div class="right">-->
-          <!--<span @click.stop="pushIndex()">首页</span>-->
-          <!--<span @click.stop="pushAbout()">关于我们</span>-->
-          <!--<span @click.stop="pushAbout()">app下载</span>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
     <section class="main-1">
       <div class="handphone"><img src="../../../assets/img/handphone.png"/></div>
       <div class="main-1-block">
@@ -24,10 +10,10 @@
             <div class="ios" @click.stop="$downloadIos"><img src="../../../assets/img/apple.png"/></div>
             <div class="android" @click.stop="$downloadAndroid"><img src="../../../assets/img/android.png"/></div>
           </div>
-          <!--<div class="QR">-->
-          <!--<div class="yhd"><qrcode class="qrcode" :value="android" :options="{ size:120,padding:2 }"></qrcode><p>法务云用户端</p></div>-->
-          <!--<div class="lsd"><qrcode class="qrcode" :value="fwylsd" :options="{ size:120,padding:2 }"></qrcode><p>法务云律师端</p></div>-->
-          <!--</div>-->
+          <div class="QR">
+            <div class="yhd"><qrcode class="qrcode" :value="android" :options="{ size:140,padding:4 }"></qrcode><p>法务云用户端</p></div>
+            <div class="lsd"><qrcode class="qrcode" :value="fwylsd" :options="{ size:140,padding:4 }"></qrcode><p>法务云律师端</p></div>
+          </div>
         </div>
         <div class="block-bottom">
           <div class="block-item">
@@ -82,20 +68,21 @@
 </template>
 
 <script>
-  import axios from "axios";
-
   export default {
     name: "DownloadPc",
     data() {
       return {
-        android: "http://www.xhfwy.com/static/xhfwy.apk",
-        fwylsd: "http://www.xhfwy.com/static/fwylsd.apk",
+        android: "http://android.myapp.com/myapp/detail.htm?apkName=com.w2893097678.zaz",
+        fwylsd: "http://android.myapp.com/myapp/detail.htm?apkName=com.w2893097678.zaz",
         ios:
           "https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1367112695&mt=8"
       };
     },
     components: {},
     mounted() {
+    },
+    created(){
+
     },
     methods:{
       pushIndex(){
@@ -115,48 +102,6 @@
 
   @r: 30rem;
 
-  .isPc {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 70px;
-    width: 100%;
-    background-color: rgba(108, 106, 106, .4);
-    z-index: 999;
-    padding:15px;
-  }
-  .logo{
-    float:left;
-  }
-  .logo img{
-    width:40px;
-    cursor:pointer;
-  }
-  .logo span{
-    color:#fff;
-    font-size:26px;
-    font-family:'KaiTi';
-    cursor:pointer;
-  }
-  .right{
-    float:right;
-  }
-  .right span{
-    color:#fff;
-    line-height:40px;
-    padding:0 20px;
-    display:inline-block;
-    letter-spacing:2px;
-    cursor:pointer;
-  }
-  .right span:hover{
-    color:#b9b9b9;
-  }
-
-  .wrap {
-    width: 1080px;
-    margin: 0 auto;
-  }
 
   * {
     padding: 0;

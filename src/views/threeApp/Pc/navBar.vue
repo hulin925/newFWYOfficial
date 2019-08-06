@@ -1,18 +1,26 @@
 <template>
   <div>
     <!--:class="this.$isMobile()?'':'isPc'"-->
-    <div class="isPc">
+    <div class="isPc" v-if="!this.$isMobile()">
       <div class="wrap clearfix">
         <div class="logo">
           <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
           <span>芯汇法务云</span>
         </div>
         <div class="right">
-          <span v-for="item,index in navList" @click.stop="pushIndex(item,index)" :class="{active:index==nowIndex}">
+          <span v-for="item,index in navListPc" @click.stop="pushIndex(item,index)" :class="{active:index==nowIndex}">
             {{item.name}}
           </span>
         </div>
       </div>
+    </div>
+
+    <div class="isPc1" v-else>
+        <div class="right1">
+          <span v-for="item,index in navListMobile" @click.stop="pushIndexMobile(item,index)" :class="{active:index==nowIndex}">
+            {{item.name}}
+          </span>
+        </div>
     </div>
 
     <router-view></router-view>
@@ -27,15 +35,32 @@
       data(){
           return{
             nowIndex:0,
-            navList:[
+            navListPc:[
               {
                 name:'首页',
                 routerName:'IndexPc',
-                id:0
               },
               {
                 name:'法家号',
                 routerName:'navPc',
+              },
+              {
+                name:'关于我们',
+                routerName:'AboutPc',
+              },
+              {
+                name:'app下载',
+                routerName:'DownloadPc',
+              }
+            ],
+            navListMobile:[
+              {
+                name:'首页',
+                routerName:'IndexPc',
+              },
+              {
+                name:'法家号',
+                routerName:'LawyerFindRecommend',
               },
               {
                 name:'关于我们',
@@ -60,7 +85,20 @@
           }else{
             this.$router.push({name:item.routerName})
           }
-        }
+        },
+        pushIndexMobile(item,index){
+          this.nowIndex=index;
+          // if(index==1){
+          //   let routeData=this.$router.resolve({
+          //     name:item.routerName
+          //   })
+          //   window.open(routeData.href,'_blank');
+          //   // this.$router.push({name:item.routerName})
+          // }else{
+            this.$router.push({name:item.routerName})
+          // }
+        },
+
       }
     }
 </script>
@@ -77,6 +115,37 @@
     background-color: rgba(108, 106, 106, .4);
     z-index: 999;
     padding:15px;
+  }
+  .isPc1 {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100/@r;
+    width: 100%;
+    background-color: rgba(108, 106, 106, .4);
+    z-index: 999;
+  }
+  .right1{
+    display: flex;
+    justify-content:space-around;
+    line-height:100/@r;
+  }
+  .right1 span{
+    color:#fff;
+    width:25%;
+    text-align:center;
+    position:relative;
+  }
+  .right1 span.active:before{
+    position:absolute;
+    content:'';
+    width:70%;
+    height:4/@r;
+    background-color: #5d74ff;
+    color:#5d74ff;
+    left:50%;
+    bottom:0;
+    transform:translateX(-50%);
   }
   .logo{
     float:left;

@@ -136,7 +136,9 @@
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
             <div>
-              <input type="password" placeholder="请输入密码" v-model="loginForm.password"  @keyup.enter="logOn()">
+              <el-input type="password" placeholder="请输入密码" v-model="loginForm.password"  @keyup.enter="logOn()" show-password
+              class="input">
+              </el-input>
             </div>
             <div class="showErr" v-if="showErr1">
               <p>
@@ -167,7 +169,7 @@
               <span v-else>{{time}}S后重新获取</span>
             </div>
             <div>
-              <input type="password" placeholder="请输入密码" v-model="loginForm.registerPassword">
+              <el-input type="password" placeholder="请输入密码" v-model="loginForm.registerPassword" show-password></el-input>
             </div>
             <div class="selectCity">
               <el-cascader
@@ -202,7 +204,7 @@
               <span v-else>{{times}}S后重新获取</span>
             </div>
             <div v-show="!isShow">
-              <input type="password" placeholder="请输入新密码" v-model="loginForm.forgetPassword" @keyup.enter="changePassword()">
+              <el-input type="password" placeholder="请输入新密码" v-model="loginForm.forgetPassword" @keyup.enter="changePassword()" show-password></el-input>
             </div>
             <div class="showErr" v-if="showErr3">
               <p>
@@ -281,8 +283,9 @@
           checkcode: '',
           forgetPassword:'',
           registerPassword:'',
-          obj:{},
-        }
+        },
+        obj:{},
+
       }
     },
     components: {
@@ -290,7 +293,10 @@
       LawyerFindFatiaoPc
     },
     mounted() {
-      window.addEventListener('scroll', this.scrollTop);
+      this.$nextTick(()=>{
+        window.addEventListener('scroll', this.scrollTop);
+      })
+
     },
     created() {
       // let again=this.$route.query.again;
@@ -299,7 +305,7 @@
       // }
       this.obj = this.getCity(returnCitySN.cname);
       this.getType();
-      this.dataInfo=JSON.parse(sessionStorage.getItem('userInfo'));
+      this.dataInfo=JSON.parse(localStorage.getItem('userInfo'));
 
       if(this.dataInfo){
         this.face=this.dataInfo.weburl+this.dataInfo.face;
@@ -342,7 +348,7 @@
           })
           window.open(routeData.href,"_blank");
 
-          sessionStorage.setItem("LawyerId", item.uid);
+          localStorage.setItem("LawyerId", item.uid);
 
         }else if(item.outside_link){//跳转外网
           window.open(item.outside_link,'_blank');
@@ -378,7 +384,7 @@
         window.open(routerData.href,"_blank");
       },
       singOut(){//退出
-        sessionStorage.removeItem('userInfo');
+        localStorage.removeItem('userInfo');
         this.reload();
       },
       changePassword(){//修改密码
@@ -396,8 +402,11 @@
               this.showErr3 = true;
               this.errMessage = data.message;
             } else {
+              this.loginForm.name=this.loginForm.name1;
+              this.loginForm.password=this.loginForm.forgetPassword;
               this.showErr3 = false;
               this.upData=false;
+              this.logOn();
               // this.closeOut=false;
             }
           })
@@ -481,7 +490,7 @@
               this.showErr1 = false;
               // this.closeOutPc = false;
               this.$store.commit('hidenCloseOutPc');
-              sessionStorage.setItem('userInfo', JSON.stringify(data));
+              localStorage.setItem('userInfo', JSON.stringify(data));
               this.$message({
                 message:'登录成功',
                 type: 'success',
@@ -491,7 +500,7 @@
           }, err => {
           })
       },
-      goSingIn() {//登录
+      goSingIn() {//登录弹框
         this.$store.commit('showCloseOutPc');
         // this.closeOutPc = !this.closeOut;
         this.getCode=false;
@@ -529,7 +538,7 @@
           this.$refs.input1.focus();
         })
       },
-      handleChange(value) {
+      handleChange(value) {//选中的地址
         this.cityData = value;
       },
       showCode() {
@@ -542,7 +551,7 @@
           this.$refs.input2.focus();
         })
       },
-      registerData() {//注册
+      registerData() {//新用户注册
         let options = new FormData();
         options.append('username', this.loginForm.name);
         options.append('checkcode', this.loginForm.checkcode);
@@ -562,6 +571,8 @@
               this.showErr2 = true;
               this.errMessage = data.message;
             } else {
+              this.logOn();
+              this.reload();
               this.$message({
                 message:'注册成功',
                 type:'success',
@@ -570,7 +581,7 @@
               this.showErr2 = false;
               this.$store.commit('hidenCloseOutPc');
               // this.closeOutPc = false;
-              sessionStorage.setItem('userInfo', JSON.stringify(data));
+              localStorage.setItem('userInfo', JSON.stringify(data));
               setTimeout(()=>{
                 this.$message({
                   message:'登录成功',
@@ -591,7 +602,7 @@
       },
       scrollTop() {
         let scrollTop = document.documentElement.scrollTop; //滚动条的高
-        var navs=document.querySelectorAll('#navs');
+        // var navs=document.querySelectorAll('#navs');
         if (scrollTop > 50) {
           this.fixed = true;
           this.$refs.contentBoxRight.style.top="60px";
@@ -618,7 +629,6 @@
         this.indexData = 2;
       },
       changeShow(item, index) {
-        console.log(item)
         if (index == 1) {
           this.fatiao = true;
         } else {
@@ -927,7 +937,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 999999999;
+    z-index: 999;
     background-color: rgba(0, 0, 0, .2);
   }
 
@@ -986,12 +996,13 @@
   .singInFork div div {
     height: 40px;
     width: 320px;
-    margin: 10px auto;
+    /*margin: 10px auto;*/
     line-height: 40px;
   }
 
   .singInFork .selectCity {
     margin-bottom: 25px;
+    height:50px;
   }
 
   .singInFork .showErr {
@@ -1019,6 +1030,7 @@
     color: #fff;
     border-radius: 2px;
     cursor: pointer;
+    margin-top:20px;
   }
 
   .singInFork .register {
