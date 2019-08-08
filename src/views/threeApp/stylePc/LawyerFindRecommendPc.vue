@@ -121,12 +121,13 @@
             </div>
             <div class="Img clearfix" v-if="item.classify==3">
               <div v-if="item.local==0">
-                <video width="320" height="240" :poster="item.cover" controls="controls">
+                <video :poster="item.cover" controls="controls">
                   <source :src="item.videos" type="video/mp4">
                 </video>
               </div>
               <div v-else-if="item.local==1">
-                <video width="320" height="240" :poster="item.cover" controls="controls">
+                <!--//width="320" height="240"-->
+                <video :poster="item.cover" controls="controls">
                   <source :src="item.path" type="video/mp4">
                 </video>
               </div>

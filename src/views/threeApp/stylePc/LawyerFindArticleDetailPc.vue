@@ -38,16 +38,14 @@
           </div>
           <div class="content" v-if="data.classify==3">
             <div v-if="data.local==0">
-              <video
-                width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
+              <video :poster="data.cover" controls="controls" webkit-playsinline="true"
                 x5-video-player-type="h5" x5-video-player-fullscreen="true"
               >
                 <source :src="data.videos" type="video/mp4">
               </video>
             </div>
             <div v-else-if="data.local==1">
-              <video
-                width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
+              <video :poster="data.cover" controls="controls" webkit-playsinline="true"
                 x5-video-player-type="h5"
               >
                 <source :src="data.path" type="video/mp4">

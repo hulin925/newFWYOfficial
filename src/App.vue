@@ -32,7 +32,7 @@
                      oninput="value=value.replace(/[^\d]/g,'');if(value.length>11)value=value.slice(0,11)">
             </div>
             <div>
-              <el-input type="password" placeholder="请输入密码" v-model="loginForm.password"  @keyup.enter="logOn()" show-password></el-input>
+              <el-input type="password" placeholder="请输入密码" v-model="loginForm.password"  @keyup.enter.native="logOn()" show-password></el-input>
             </div>
             <div class="showErr" v-if="showErr1">
               <p>
