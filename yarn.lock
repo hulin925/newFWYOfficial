@@ -51,6 +51,12 @@
   version "11.11.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.11.3.tgz#7c6b0f8eaf16ae530795de2ad1b85d34bf2f5c58"
 
+"@xkeshi/vue-qrcode@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@xkeshi/vue-qrcode/-/vue-qrcode-1.0.0.tgz#e86e612bad5ffdf9b7956dff1ea3a48c35cd420d"
+  dependencies:
+    qrious "^4.0.2"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -1873,8 +1879,8 @@ dns-equal@^1.0.0:
   resolved "https://registry.yarnpkg.com/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
 
 dns-packet@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-1.3.1.tgz#12aa426981075be500b910eedcd0b47dd7deda5a"
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-1.3.4.tgz#e3455065824a2507ba886c55a89963bb107dec6f"
   dependencies:
     ip "^1.1.0"
     safe-buffer "^5.0.1"
@@ -4839,6 +4845,10 @@ qr.js@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
 
+qrious@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/qrious/-/qrious-4.0.2.tgz#09c4d4079d2b961617f62c69cff3b9bb66a39693"
+
 qs@6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
@@ -5190,9 +5200,13 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
+
+safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
 
 safe-regex@^1.1.0:
   version "1.1.0"
@@ -6113,9 +6127,9 @@ vue-touch@^1.1.0:
   dependencies:
     hammerjs "^2.0.6"
 
-vue@^2.5.2:
-  version "2.6.9"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.9.tgz#415c1cc1a5ed00c8f0acdd0a948139d12b7ea6b3"
+vue@^2.6.10:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
 
 vuex-i18n@^1.3.1:
   version "1.11.0"
